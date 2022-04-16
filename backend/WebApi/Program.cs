@@ -14,6 +14,11 @@ using WebApi.Common;
 using WebApi.Services;
 
 var builder = WebApplication.CreateBuilder(args);
+builder.Host.ConfigureLogging(logging =>
+{
+    if (builder.Configuration["Logging:SaveToFile"] == "True")
+        logging.AddFile("Logs/spa-{Date}.log", outputTemplate: "begin{NewLine}{Message}{NewLine}end{NewLine}");
+});
 
 // Add services to the container.
 
@@ -117,6 +122,7 @@ else
 
 app.UseCustomExceptionHandler();
 app.UseHealthChecks("/health");
+app.UseHttpsRedirection();
 app.UseStaticFiles(); //dunno if needed?
 app.UseSpaStaticFiles();
 
@@ -126,8 +132,6 @@ app.UseSwaggerUI(c =>
     c.SwaggerEndpoint("/swagger/v1/swagger.json", "SPA V1");
 });
 
-app.UseHttpsRedirection();
-
 app.UseRouting();
 
 app.UseAuthentication();
@@ -136,10 +140,11 @@ app.UseAuthorization();
 app.MapControllers();
 app.MapHub<NotificationHub>("/hubs/notification");
 
-app.UseSpa(configuration: builder =>
+app.UseSpa(spa =>
 {
+    //spa.Options.SourcePath = "app";
     if (app.Environment.IsDevelopment())
-        builder.UseProxyToSpaDevelopmentServer(baseUri: "http://localhost:8080");
+        spa.UseProxyToSpaDevelopmentServer(baseUri: "http://localhost:8080");
 });
 
 app.Run();
