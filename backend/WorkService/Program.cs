@@ -1,9 +1,11 @@
+using Infrastructure;
 using WorkService;
 
 IHost host = Host.CreateDefaultBuilder(args)
-    .ConfigureServices(services =>
+    .ConfigureServices((hostContext, services) =>
     {
-        services.AddHostedService<Worker>();
+        services.AddInfrastructure(hostContext.Configuration);
+        services.AddHostedService<QueryWorker>();
     })
     .Build();
 

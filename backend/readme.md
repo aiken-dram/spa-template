@@ -59,13 +59,21 @@ Scaffolding:
 
 In `scaffold` directory run:
 
+For DB2 database:
+
 ```sh
- dotnet ef dbcontext scaffold "server=localhost:50000;uid=db2admin;pwd=db2admin;database=SPA" IBM.EntityFrameworkCore -o Context --schema DB2ACCOUNT --table USERS -f
+ dotnet ef dbcontext scaffold "server=localhost:50000;uid=db2admin;pwd=db2admin;database=SPA" IBM.EntityFrameworkCore -o Context --schema ACCOUNT --table USERS -f
 ```
 
 Note: scaffolding will not work for DB2 version 9.7 or lower
 
-After scaffolding you can use [tools-ConsoleEFConfiguration](https://github.com/it-opfr-krd/tools-ConsoleEFConfiguration) to split entity configuration into separate files
+After scaffolding you can use [tools-ConsoleEFConfiguration](https://github.com/aiken-dram/tools-ConsoleEFConfiguration) to split entity configuration into separate files
+
+For Postgre database:
+
+```sh
+dotnet ef dbcontext scaffold "Host=localhost;Database=SPA;Username=spa_app;Password=db2admin" Npgsql.EntityFrameworkCore.PostgreSQL -o Context --schema ACCOUNT --schema DICT --schema MQ -f
+```
 
 ## Workload
 
