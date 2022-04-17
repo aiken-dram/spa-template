@@ -1,0 +1,156 @@
+{
+  "locale": "en-US",
+  "common": {
+    "appName": "Single Page Application",
+    "userManual": "User manual",
+    "phone": "phone",
+    "search": "Search",
+    "add": "Add",
+    "actions": "Actions",
+    "edit": "Edit",
+    "delete": "Delete",
+    "deleted": "Entry deleted",
+    "editSaved": "Changes saved",
+    "download": "File added to browser downloads",
+    "exportCsv": "Export to CSV",
+    "exportCsvConfirm": "Are you sure you want to export {count} rows into CSV?",
+    "noRecordSelected": "No record selected",
+    "process": "Process",
+    "cancel": "Cancel",
+    "save": "Save",
+    "yes": "Yes",
+    "ok": "Ok",
+    "error": "Error",
+    "table": {
+      "loading": "Data is loading...",
+      "noData": "No data",
+      "noResult": "No results",
+      "page": "Items on page:",
+      "pageAll": "All:",
+      "records": "Records {start} - {stop} from {length}"
+    }
+  },
+  "layout": {
+    "profile": "Profile",
+    "logOff": "Log off"
+  },
+  "flags": {
+    "activitySource": {
+      "auth": "Authorization event",
+      "history": "Application activity"
+    }
+  },
+  "route": {},
+  "profile": {
+    "login": "Login",
+    "userName": "User name",
+    "desc": "Description",
+    "update": "Update profile"
+  },
+  "nav": {
+    "home": "Home",
+    "admin": "Admin",
+    "adminAccess": "User access",
+    "adminAccessAvatar": "UA",
+    "adminDict": "Dictionaries",
+    "adminDictAvatar": "DT",
+    "doc": "Documentation",
+    "contacts": "Contacts"
+  },
+  "home": {
+    "recommendedBrowser": "Recommended browser",
+    "documentationLink": "Documentation is located here",
+    "versionHistory": "Version history"
+  },
+  "login": {
+    "pageTitle": "Log into SPA",
+    "username": "User name",
+    "password": "Password",
+    "login": "Login",
+    "applicationAdmin": "Application admin",
+    "accessAdmin": "Access admin"
+  },
+  "admin": {
+    "access": {
+      "users": {
+        "title": "Users",
+        "table": {
+          "activity": "User's activity",
+          "login": "Login",
+          "loginFilter": "Search in login field",
+          "isActive": "Is active?",
+          "isActiveFilter": "Is active?",
+          "userName": "User name",
+          "userNameFilter": "Search in user name field",
+          "groups": "Groups",
+          "desc": "Description",
+          "descFilter": "Search in description field"
+        },
+        "deleteUser": "Delete user?"
+      },
+      "package": {
+        "title": "Package",
+        "accessTable": "Access table",
+        "table": {
+          "login": "Login",
+          "password": "Password",
+          "userName": "User name",
+          "groups": "Groups"
+        },
+        "requiredFieldsNotSet": "Required fields not set."
+      },
+      "file": {
+        "title": "File",
+        "selectFile": "Select file",
+        "selectFileToUpload": "Select file to upload",
+        "textFile": "Text file",
+        "fileHint": "File should be in UTF8 codepage and contain rows like:<br /><code>Login Password</code><br />",
+        "processResult": "Process result"
+      }
+    },
+    "dict": {
+      "raions": {
+        "title": "Raions"
+      }
+    },
+    "activity": {
+      "title": "{username} activity history",
+      "table": {
+        "type": "Type",
+        "stamp": "Date and time",
+        "stampFilter": "Date and time search",
+        "action": "Action",
+        "actionFilter": "Action search",
+        "subject": "Subject",
+        "subjectFilter": "Subject search",
+        "message": "Message",
+        "messageFilter": "Message search"
+      },
+      "login": "Logging in",
+      "wrongPass": "Wrong password"
+    }
+  },
+  "forms": {
+    "common": {
+      "maxLength": "Maximum length is {length} characters",
+      "mustNotBeEmpty": "{field} must not be empty"
+    },
+    "user": {
+      "newUser": "New user",
+      "editUser": "Edit user",
+      "login": "Login",
+      "password": "Password",
+      "passwordHint": "Leave field emtpy to use old password",
+      "isActive": "Is active?",
+      "passwordExpirationDate": "Password expiration date",
+      "userName": "User name",
+      "desc": "Description",
+      "groups": "Groups",
+      "roles": "Roles",
+      "rolesHint": "Select roles in additon to group roles"
+    }
+  },
+  "versions": {
+    "ch0001": "New version"
+  }
+}

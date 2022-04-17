@@ -1,0 +1,46 @@
+{
+  "access": {
+    "name": "",
+    "phone": ""
+  },
+  "admin": {
+    "name": "",
+    "phone": ""
+  },
+  "list": [
+    {
+      "type": "Development",
+      "name": "",
+      "phone": [
+        {
+          "type": "int.",
+          "phone": ""
+        }
+      ],
+      "dept": "Department",
+      "mail": [
+        {
+          "type": "Lotus Notes",
+          "address": ""
+        }
+      ]
+    },
+    {
+      "type": "Support",
+      "name": "",
+      "phone": [
+        {
+          "type": "int.",
+          "phone": ""
+        }
+      ],
+      "dept": "Department",
+      "mail": [
+        {
+          "type": "Lotus Notes",
+          "address": ""
+        }
+      ]
+    }
+  ]
+}
