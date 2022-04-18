@@ -72,7 +72,7 @@ import BaseTableApi from "@/components/base/TableAPI";
 import BaseTableAction from "@/components/base/TableAction";
 import Confirm from "@/components/base/DialogConfirm";
 
-import UserDialog from "@/components/Dialog/UserDialog";
+import UserDialog from "@/components/Dialog/User";
 
 export default {
   name: "AccessUsers",
@@ -122,9 +122,9 @@ export default {
         },
         {
           text: this.$i18n.t("admin.access.users.table.desc"),
-          value: "desc",
+          value: "description",
           filter: {
-            name: "desc",
+            name: "description",
             label: this.$i18n.t("admin.access.users.table.descFilter"),
             type: "text",
           },

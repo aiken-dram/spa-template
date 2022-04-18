@@ -28,3 +28,10 @@ export const HELP = {
     },
   ],
 };
+
+/**
+ * SignalR hub subjects for notifications
+ */
+export const SUBJECTS = {
+  ProcessFile: "Account.User.Commands.ProcessFile",
+};

@@ -122,7 +122,7 @@ else
 
 app.UseCustomExceptionHandler();
 app.UseHealthChecks("/health");
-app.UseHttpsRedirection();
+//app.UseHttpsRedirection();
 app.UseStaticFiles(); //dunno if needed?
 app.UseSpaStaticFiles();
 
@@ -137,8 +137,11 @@ app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
 
-app.MapControllers();
-app.MapHub<NotificationHub>("/hubs/notification");
+app.UseEndpoints(endpoints =>
+    {
+        endpoints.MapControllers();
+        endpoints.MapHub<NotificationHub>("/hubs/notification");
+    });
 
 app.UseSpa(spa =>
 {

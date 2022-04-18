@@ -94,7 +94,7 @@ public class AuthService : IAuthService
             throw new BadRequestException(Messages.UserLocked);
 
         //password expired
-        if (user.PassDate <= DateOnly.FromDateTime(DateTime.Now))
+        if (user.PassDate <= DateTime.Now)
         {
             //add expired event
             var auth_expired = new UserAuth(

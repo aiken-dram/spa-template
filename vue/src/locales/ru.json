@@ -1,0 +1,168 @@
+{
+  "locale": "ru-RU",
+  "common": {
+    "appName": "Программный Комплекс",
+    "userManual": "Руководство пользователя",
+    "phone": "тел",
+    "search": "Поиск",
+    "add": "Новый",
+    "edit": "Редактировать",
+    "actions": "Действия",
+    "delete": "Удалить",
+    "deleted": "Запись удалена",
+    "editSaved": "Изменения сохранены",
+    "download": "Файл добавлен в загрузки браузера",
+    "exportCsv": "Выгрузить в CSV",
+    "exportCsvConfirm": "Экспортировать {count} записей в файл CSV?",
+    "noRecordSelected": "Не выбрано ни одной записи",
+    "process": "Обработать",
+    "cancel": "Отмена",
+    "save": "Сохранить",
+    "yes": "Да",
+    "ok": "Ok",
+    "error": "Ошибка",
+    "table": {
+      "loading": "Идет загрузка данных...",
+      "noData": "Нет данных",
+      "noResult": "Результатов не найдено",
+      "page": "Записей на странице:",
+      "pageAll": "Всего:",
+      "records": "Записи {start} - {stop} из {length}"
+    }
+  },
+  "layout": {
+    "profile": "Профиль",
+    "logOff": "Выйти"
+  },
+  "signalr": {
+    "connectingToServer": "Соединение с сервером...",
+    "connectionEstablished": "Соединение с сервером установлено",
+    "disabled": "SignalR был отключен в настройках пользователя",
+    "error": "Ошибка при выполнении запроса",
+    "result": "Выполнение запроса завершено"
+  },
+  "flags": {
+    "activitySource": {
+      "auth": "Авторизация",
+      "history": "История"
+    }
+  },
+  "route": {},
+  "profile": {
+    "login": "Логин",
+    "userName": "Имя пользователя",
+    "desc": "Описание",
+    "update": "Обновить профиль",
+    "settings": "Настройки",
+    "disableSignalR": "Отключить SignalR"
+  },
+  "nav": {
+    "home": "Главная",
+    "admin": "Администрирование",
+    "adminAccess": "Управление доступом",
+    "adminAccessAvatar": "УД",
+    "adminDict": "Справочники",
+    "adminDictAvatar": "СП",
+    "doc": "Справка",
+    "contacts": "Контакты"
+  },
+  "home": {
+    "recommendedBrowser": "Рекоммендуемый браузер",
+    "documentationLink": "Документация доступна по этой ссылке",
+    "versionHistory": "История изменений"
+  },
+  "login": {
+    "pageTitle": "Вход в ПК",
+    "username": "Имя пользователя",
+    "password": "Пароль",
+    "login": "Логин",
+    "applicationAdmin": "Администратор приложения",
+    "accessAdmin": "Администратор доступа"
+  },
+  "admin": {
+    "access": {
+      "users": {
+        "title": "Пользователи",
+        "table": {
+          "activity": "История действий пользователя",
+          "login": "Логин",
+          "loginFilter": "Поиск по логину",
+          "isActive": "Активен?",
+          "isActiveFilter": "Активен?",
+          "userName": "Имя пользователя",
+          "userNameFilter": "Поиск по имени пользователя",
+          "groups": "Группы",
+          "raions": "Районы",
+          "desc": "Описание",
+          "descFilter": "Поиск по описанию"
+        },
+        "deleteUser": "Удалить пользователя?"
+      },
+      "package": {
+        "title": "Таблица",
+        "accessTable": "Таблица доступа",
+        "table": {
+          "login": "Логин",
+          "password": "Пароль",
+          "userName": "Имя пользователя",
+          "groups": "Группы"
+        },
+        "requiredFieldsNotSet": "Необходимые поля не заполнены."
+      },
+      "file": {
+        "title": "Файл",
+        "selectFile": "Выберите файл",
+        "selectFileToUpload": "Выберите файл для обработки",
+        "textFile": "Текстовый файл",
+        "fileHint": "Файл должен быть в кодировке UTF8 и содержать строки вида:<br /><code>Логин пароль</code><br />",
+        "processResult": "Результат обработки"
+      }
+    },
+    "dict": {
+      "raions": {
+        "title": "Районы"
+      }
+    },
+    "activity": {
+      "title": "История действий пользователя {username}",
+      "table": {
+        "type": "Тип",
+        "stamp": "Дата и время",
+        "stampFilter": "Поиск по дате и времени",
+        "action": "Действие",
+        "actionFilter": "Поиск по действию",
+        "subject": "Субъект",
+        "subjectFilter": "Поиск по субъекту",
+        "message": "Сообщение",
+        "messageFilter": "Поиск по сообщению"
+      },
+      "wrongPass": "Неверный пароль",
+      "login": "Вход в программу"
+    }
+  },
+  "forms": {
+    "common": {
+      "maxLength": "Максимальная длина {length} символов",
+      "mustNotBeEmpty": "{field} не может быть пустым"
+    },
+    "user": {
+      "newUser": "Новый пользователь",
+      "editUser": "Изменение пользователя",
+      "login": "Логин",
+      "password": "Пароль",
+      "passwordHint": "Оставьте поле пустым для сохранения старого пароля",
+      "isActive": "Активен?",
+      "passwordExpirationDate": "Срок действия пароля",
+      "userName": "Имя пользователя",
+      "desc": "Описание",
+      "groups": "Группы",
+      "roles": "Роли",
+      "rolesHint": "Выберите роли в дополнение к группам",
+      "raions": "Районы",
+      "raionsHint": "Оставьте поле пустым для доступа ко всем районам"
+    }
+  },
+  "versions": {
+    "ch0001": "Новая версия"
+  }
+}

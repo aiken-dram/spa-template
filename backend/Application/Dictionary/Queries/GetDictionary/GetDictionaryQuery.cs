@@ -20,7 +20,7 @@ public class GetDictionaryQuery : IRequest<IList<DictionaryDto>>
     /// 
     /// </summary>
     /// <example>Raions</example>
-    public string Dictionary { get; set; }
+    public string Dictionary { get; set; } = null!;
 
     public class GetDictionaryQueryHandler : IRequestHandler<GetDictionaryQuery, IList<DictionaryDto>>
     {

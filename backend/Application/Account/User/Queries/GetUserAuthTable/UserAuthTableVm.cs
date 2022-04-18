@@ -50,7 +50,6 @@ public class UserAuthTableDto : IMapFrom<UserAuth>
     /// <summary>
     /// Message
     /// </summary>
-    /// <example></example>
     public string message { get; set; }
 
     public void Mapping(Profile profile)

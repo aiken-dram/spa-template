@@ -29,5 +29,5 @@ public class CurrentUserDetailVm : IMapFrom<Domain.Entities.User>
     /// User description
     /// </summary>
     /// <example>Test user #17</example>
-    public string Description { get; set; }
+    public string? Description { get; set; }
 }

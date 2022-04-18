@@ -31,7 +31,7 @@ public class AuthUserVm
     /// User name
     /// </summary>
     /// <example>Admin</example>
-    public string UserName { get; set; }
+    public string UserName { get; set; } = null!;
 
     /// <summary>
     /// Array of group names for user

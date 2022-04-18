@@ -19,7 +19,7 @@ public class ProcessFileCommand : SignalRCommand, IRequest<ProcessFileVm>
     /// <summary>
     /// Parsed content of text file
     /// </summary>
-    public IList<string?> FileContent { get; set; }
+    public IList<string> FileContent { get; set; }
 
     public class ProcessFileCommandHandler : SignalRCommandHandler, IRequestHandler<ProcessFileCommand, ProcessFileVm>
     {
@@ -51,9 +51,9 @@ public class ProcessFileCommand : SignalRCommand, IRequest<ProcessFileVm>
                 if (cnt == 1)
                 {
                     var entity = await _context.Users.SingleAsync(p => p.Login == login, cancellationToken);
-                    entity.Pass = EncryptorHelper.MD5Hash(pass) ?? String.Empty;
+                    entity.Pass = EncryptorHelper.MD5Hash(pass);
                     entity.IsActive = CharBoolean.True;
-                    entity.PassDate = DateOnly.FromDateTime(DateTime.Now.AddDays(90)); //2D - change to configuration
+                    entity.PassDate = DateTime.Now.AddDays(90); //2D - change to configuration
 
                     await _context.SaveChangesAsync(cancellationToken);
                     return Message.Success(Messages.UserPasswordUpdated(login));
@@ -67,17 +67,26 @@ public class ProcessFileCommand : SignalRCommand, IRequest<ProcessFileVm>
 
         public async Task<ProcessFileVm> Handle(ProcessFileCommand request, CancellationToken cancellationToken)
         {
+            //setup connection
+            this.IdConnection = request.IdConnection;
+
             _logger.JsonLogDebug("FileContent", request.FileContent);
 
             var res = new List<Message>();
 
             if (request.FileContent != null && request.FileContent.Count(p => !string.IsNullOrWhiteSpace(p)) > 0)
-                foreach (var l in request.FileContent.Where(p => !string.IsNullOrWhiteSpace(p)))
+            {
+                var lines = request.FileContent.Where(p => !string.IsNullOrWhiteSpace(p));
+                SetIteration(lines.Count());
+                foreach (var l in lines)
                 {
                     var m = await ProcessLine(l, cancellationToken);
-                    await Report(m);
+                    await ReportNext(m);
                     res.Add(m);
+
+                    //Thread.Sleep(TimeSpan.FromSeconds(2));
                 }
+            }
 
             var vm = new ProcessFileVm();
             vm.Items = res;

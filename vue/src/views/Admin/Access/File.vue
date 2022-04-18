@@ -43,24 +43,23 @@
     </v-stepper-step>
 
     <v-stepper-content step="2">
-      <v-list flat>
-        <v-list-item v-for="p in process" :key="p.message" color="p.state">
-          <v-list-item-icon v-if="p.state == 'success'">
-            <v-icon color="success">fa-check</v-icon>
-          </v-list-item-icon>
-          <v-list-item-icon v-if="p.state == 'error'">
-            <v-icon color="error">fa-exclamation-triangle</v-icon>
-          </v-list-item-icon>
-          <div v-html="p.message"></div>
-        </v-list-item>
-      </v-list>
-      <v-btn color="primary" @click="reset()">Закрыть</v-btn>
+      <base-signal-r
+        :api="uploadFileApi"
+        :subject="SUBJECTS.ProcessFile"
+        ref="UploadFileSignalR"
+      >
+        <template v-slot:finished>
+          <v-btn color="primary" @click="reset()">Закрыть</v-btn>
+        </template>
+      </base-signal-r>
     </v-stepper-content>
   </v-stepper>
 </template>
 
 <script>
+import { SUBJECTS } from "@/common/config";
 import { UserService } from "@/plugins/api";
+import BaseSignalR from "@/components/base/SignalR";
 
 export default {
   name: "AccessFile",
@@ -76,28 +75,34 @@ export default {
   }),
 
   methods: {
+    /** upload file */
     uploadFile() {
-      this.overlay = true;
-      let formData = new FormData();
-      formData.append("file", this.file);
-      UserService.upload(formData)
-        .then((response) => {
-          this.process = response.data.items;
-          this.step = 2;
-        })
-        .catch((error) => {
-          this.modelstate = error;
-        })
-        .finally(() => {
-          this.overlay = false;
-        });
+      this.step = 2;
+      this.$refs.UploadFileSignalR.start();
     },
+    /** reset form */
     reset() {
       this.file = null;
       this.modelstate = {};
       this.process = [];
       this.step = 1;
     },
+
+    /** upload file api */
+    uploadFileApi(idConnection) {
+      let formData = new FormData();
+      formData.append("file", this.file);
+      formData.append("idConnection", idConnection);
+      return UserService.upload(formData);
+    },
+  },
+
+  created() {
+    this.SUBJECTS = SUBJECTS;
+  },
+
+  components: {
+    BaseSignalR,
   },
 };
 </script>

@@ -217,7 +217,7 @@ public class UsersConfiguration : IEntityTypeConfiguration<User>
             .HasColumnName("DESC");
 
         entity.Property(e => e.IsActive)
-            .HasColumnType("char")
+            .HasMaxLength(1)
             .HasColumnName("IS_ACTIVE");
 
         entity.Property(e => e.Login)
@@ -232,6 +232,8 @@ public class UsersConfiguration : IEntityTypeConfiguration<User>
             .HasMaxLength(32)
             .HasColumnName("PASS");
 
-        entity.Property(e => e.PassDate).HasColumnName("PASS_DATE");
+        entity.Property(e => e.PassDate)
+            .HasColumnType("timestamp without time zone")
+            .HasColumnName("PASS_DATE");
     }
 }

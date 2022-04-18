@@ -19,11 +19,18 @@ public class SignalRNotification : SignalRCommand, INotification
     /// <example>"User's password was updated"</example>
     public object Message { get; set; }
 
-    public SignalRNotification(string idConnection, string subject, object msg)
+    /// <summary>
+    /// Progress bar value
+    /// </summary>
+    /// <example>50</example>
+    public int? Bar { get; set; }
+
+    public SignalRNotification(string idConnection, string subject, object msg, int? bar = null)
     {
         this.IdConnection = idConnection;
         this.Subject = subject;
         this.Message = msg;
+        this.Bar = bar;
     }
 
     public class SignalRNotificationHandler : INotificationHandler<SignalRNotification>
@@ -43,6 +50,7 @@ public class SignalRNotification : SignalRCommand, INotification
                 To = notification.IdConnection,
                 Subject = notification.Subject,
                 Body = notification.Message,
+                Bar = notification.Bar
             });
         }
     }

@@ -42,17 +42,18 @@ public class UserDetailVm : IMapFrom<Domain.Entities.User>
     /// User description
     /// </summary>
     /// <example>Test user #17</example>
-    public string Desc { get; set; }
+    public string? Description { get; set; }
 
     /// <summary>
     /// Array of group id's
     /// </summary>
-    public long[] Groups { get; set; }
+    public long[]? Groups { get; set; }
 
     /// <summary>
     /// Array of role id's
     /// </summary>
-    public long[] Roles { get; set; }
+    public long[]? Roles { get; set; }
+
 
     public void Mapping(Profile profile)
     {

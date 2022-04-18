@@ -76,8 +76,8 @@
       ></base-text-field>
 
       <base-text-field
-        :label="$t('forms.user.description')"
-        v-model="user.desc"
+        :label="$t('forms.user.desc')"
+        v-model="user.description"
         :rules="[
           (v) =>
             (v || '').length <= 255 ||

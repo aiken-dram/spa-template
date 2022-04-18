@@ -33,9 +33,7 @@ public class GetCurrentUserDetailQuery : IRequest<CurrentUserDetailVm>
                 .FindAsync(uid);
 
             if (entity == null)
-            {
                 throw new NotFoundException(nameof(Domain.Entities.User), uid);
-            }
 
             return _mapper.Map<CurrentUserDetailVm>(entity);
         }

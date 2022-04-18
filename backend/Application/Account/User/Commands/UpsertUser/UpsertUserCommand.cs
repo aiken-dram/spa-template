@@ -27,31 +27,31 @@ public class UpsertUserCommand : IRequest<long>
     /// Is user active (T = yes, F = no)
     /// </summary>
     /// <example>T</example>
-    public char IsActive { get; set; }
+    public string IsActive { get; set; } = null!;
 
     /// <summary>
     /// Login
     /// </summary>
     /// <example>test17</example>
-    public string Login { get; set; }
+    public string Login { get; set; } = null!;
 
     /// <summary>
     /// Password
     /// </summary>
     /// <example>test</example>
-    public string Password { get; set; }
+    public string? Password { get; set; }
 
     /// <summary>
     /// User name
     /// </summary>
     /// <example>Test user 17</example>
-    public string Name { get; set; }
+    public string Name { get; set; } = null!;
 
     /// <summary>
     /// User description
     /// </summary>
     /// <example>Test user #17</example>
-    public string Description { get; set; }
+    public string? Description { get; set; }
 
     /// <summary>
     /// Password expiration date
@@ -62,12 +62,12 @@ public class UpsertUserCommand : IRequest<long>
     /// <summary>
     /// Groups (id)
     /// </summary>
-    public long[] Groups { get; set; }
+    public long[]? Groups { get; set; }
 
     /// <summary>
     /// Roles (id)
     /// </summary>
-    public long[] Roles { get; set; }
+    public long[]? Roles { get; set; }
 
     public class UpsertUserCommandHandler : IRequestHandler<UpsertUserCommand, long>
     {
@@ -98,7 +98,7 @@ public class UpsertUserCommand : IRequest<long>
         /// <param name="cancellationToken">Cancellation token</param>
         /// <typeparam name="Tentity">type of entity</typeparam>
         /// <returns>void</returns>
-        private async Task ProcessList<Tentity>(long? requestId, long[] list, DbSet<Tentity> dbset, Expression<Func<Tentity, bool>> whereExisting, Expression<Func<Tentity, long>> selectExisting, Expression<Func<long, Tentity>> newEntity, Expression<Func<long, Expression<Func<Tentity, bool>>>> delEntity, CancellationToken cancellationToken)
+        private async Task ProcessList<Tentity>(long? requestId, long[]? list, DbSet<Tentity> dbset, Expression<Func<Tentity, bool>> whereExisting, Expression<Func<Tentity, long>> selectExisting, Expression<Func<long, Tentity>> newEntity, Expression<Func<long, Expression<Func<Tentity, bool>>>> delEntity, CancellationToken cancellationToken)
             where Tentity : class, new()
         {
             var existing = await dbset.Where(whereExisting).Select(selectExisting).ToListAsync(cancellationToken);
@@ -157,7 +157,7 @@ public class UpsertUserCommand : IRequest<long>
             entity.Login = request.Login;
             entity.IsActive = request.IsActive;
             entity.Name = request.Name;
-            entity.PassDate = request.PassDate.HasValue ? DateOnly.FromDateTime(request.PassDate.Value) : null;
+            entity.PassDate = request.PassDate;
             entity.Description = request.Description;
             if (!string.IsNullOrEmpty(request.Password))
                 entity.Pass = EncryptorHelper.MD5Hash(request.Password);

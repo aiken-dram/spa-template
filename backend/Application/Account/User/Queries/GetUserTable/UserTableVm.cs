@@ -19,25 +19,25 @@ public class UserTableDto : IMapFrom<Domain.Entities.User>
     /// Is user active (T = yes, F = no)
     /// </summary>
     /// <example>T</example>
-    public string isActive { get; set; }
+    public string isActive { get; set; } = null!;
 
     /// <summary>
     /// Login
     /// </summary>
     /// <example>test17</example>
-    public string login { get; set; }
+    public string login { get; set; } = null!;
 
     /// <summary>
     /// User name
     /// </summary>
     /// <example>Test user 17</example>
-    public string name { get; set; }
+    public string name { get; set; } = null!;
 
     /// <summary>
     /// User description
     /// </summary>
     /// <example>Test user #17</example>
-    public string desc { get; set; }
+    public string? description { get; set; }
 
     /// <summary>
     /// Password expiration date
@@ -48,7 +48,7 @@ public class UserTableDto : IMapFrom<Domain.Entities.User>
     /// <summary>
     /// Array of group names
     /// </summary>
-    public string[] groups { get; set; }
+    public string[]? groups { get; set; }
 
     public void Mapping(Profile profile)
     {

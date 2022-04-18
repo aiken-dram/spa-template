@@ -48,10 +48,10 @@ CREATE TABLE IF NOT EXISTS "ACCOUNT"."USERS"
     "ID_USER" bigserial NOT NULL,
     "LOGIN" character varying(20) NOT NULL,
     "PASS" character varying(32) NOT NULL,
-    "IS_ACTIVE" "char" NOT NULL,
+    "IS_ACTIVE" character varying(1) NOT NULL,
     "NAME" character varying(120) NOT NULL,
     "DESC" character varying(255),
-    "PASS_DATE" date,
+    "PASS_DATE" timestamp without time zone,
     CONSTRAINT "PK_USERS" PRIMARY KEY ("ID_USER")
 );
 

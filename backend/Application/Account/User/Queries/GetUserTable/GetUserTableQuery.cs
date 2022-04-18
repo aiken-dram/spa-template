@@ -22,7 +22,7 @@ public class GetUserTableQuery : TableQuery, IRequest<UserTableVm>
     /// <summary>
     /// Search string in table
     /// </summary>
-    public string FullSearch { get; set; }
+    public string? FullSearch { get; set; }
 
     public class GetUserTableQueryHandler : IRequestHandler<GetUserTableQuery, UserTableVm>
     {
@@ -59,7 +59,7 @@ public class GetUserTableQuery : TableQuery, IRequest<UserTableVm>
                 query = query.Where(p =>
                     EF.Functions.Like(p.login, $"%{request.FullSearch}%") ||
                     EF.Functions.Like(p.name, $"%{request.FullSearch}%") ||
-                    EF.Functions.Like(p.desc, $"%{request.FullSearch}%"));
+                    EF.Functions.Like(p.description, $"%{request.FullSearch}%"));
 
             var vm = new UserTableVm();
             vm.Items = await query.TableQuery(request, "idUser").ToListAsync(cancellationToken);

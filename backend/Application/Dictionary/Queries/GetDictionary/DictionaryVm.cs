@@ -19,7 +19,7 @@ public class DictionaryDto :
     /// Dictionary text
     /// </summary>
     /// <example>Description</example>
-    public string Text { get; set; }
+    public string? Text { get; set; }
 
     public void Mapping(Profile profile)
     {

@@ -8,10 +8,10 @@ public static class CharBoolean
     /// <summary>
     /// True value
     /// </summary>
-    public const char True = 'T';
+    public const string True = "T";
 
     /// <summary>
     /// False value
     /// </summary>
-    public const char False = 'F';
+    public const string False = "F";
 }
