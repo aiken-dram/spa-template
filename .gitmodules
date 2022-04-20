@@ -1,0 +1,3 @@
+[submodule "vue/src/components/base"]
+	path = vue/src/components/base
+	url = https://github.com/aiken-dram/spa-vue-base
