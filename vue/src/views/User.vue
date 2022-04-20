@@ -10,39 +10,48 @@
             {{ $t("profile.login") }}: {{ user.login }}
           </v-card-title>
           <v-form v-model="valid">
-            <base-modelstate v-model="modelstate"> </base-modelstate>
-
-            <current-user-form v-model="user">
-              <v-col cols="12" class="text-right">
-                <v-btn
-                  :disabled="!valid"
-                  color="success"
-                  class="mr-0"
-                  @click.stop="save"
-                >
-                  {{ $t("profile.update") }}
-                </v-btn>
-              </v-col>
-            </current-user-form>
-          </v-form>
-        </v-card>
-
-        <v-card class="mt-4">
-          <v-card-title> {{ $t("profile.settings") }} </v-card-title>
-
-          <v-form class="v-card-profile">
             <v-container class="py-0">
               <v-row>
+                <v-col cols="12" v-show="modelstate['Error']">
+                  <v-alert type="error">
+                    {{ modelstate["Error"] }}
+                  </v-alert>
+                </v-col>
+
                 <v-col cols="12">
-                  <v-switch
-                    v-model="disableSignalR"
-                    :label="$t('profile.disableSignalR')"
-                  ></v-switch>
+                  <base-text-field
+                    :label="$t('profile.userName')"
+                    v-model="user.name"
+                    :rules="[
+                      (v) =>
+                        (v || '').length <= 120 ||
+                        $t('forms.common.maxLength', { length: '120' }),
+                    ]"
+                    counter="120"
+                  ></base-text-field>
+                </v-col>
+
+                <v-col cols="12">
+                  <base-text-field
+                    :label="$t('profile.desc')"
+                    v-model="user.desc"
+                    :rules="[
+                      (v) =>
+                        (v || '').length <= 255 ||
+                        $t('forms.common.maxLength', { length: '255' }),
+                    ]"
+                    counter="255"
+                  ></base-text-field>
                 </v-col>
 
                 <v-col cols="12" class="text-right">
-                  <v-btn color="success" class="mr-0" @click.stop="persist">
-                    {{ $t("common.save") }}
+                  <v-btn
+                    :disabled="!valid"
+                    color="success"
+                    class="mr-0"
+                    @click.stop="save"
+                  >
+                    {{ $t("profile.update") }}
                   </v-btn>
                 </v-col>
               </v-row>
@@ -60,8 +69,7 @@
 import { mapGetters } from "vuex";
 import { UserService } from "@/plugins/api";
 
-import BaseModelstate from "@/components/base/Modelstate";
-import CurrentUserForm from "@/components/Form/CurrentUser";
+import BaseTextField from "@/components/base/TextField";
 
 export default {
   name: "UserProfile",
@@ -71,19 +79,12 @@ export default {
     valid: true,
     modelstate: {},
     user: {},
-
-    /** local config */
-    disableSignalR: false,
   }),
 
   mounted() {
     UserService.current().then(({ data }) => {
       this.user = data;
     });
-
-    if (localStorage.disableSignalR) {
-      this.disableSignalR = localStorage.disableSignalR == "true";
-    }
   },
 
   methods: {
@@ -101,10 +102,6 @@ export default {
           this.overlay = false;
         });
     },
-
-    persist() {
-      localStorage.disableSignalR = this.disableSignalR;
-    },
   },
 
   computed: {
@@ -112,8 +109,7 @@ export default {
   },
 
   components: {
-    BaseModelstate,
-    CurrentUserForm,
+    BaseTextField,
   },
 };
 </script>

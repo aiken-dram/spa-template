@@ -6,10 +6,10 @@
  * SinglaR hubs
  */
 export const HUBS = {
-  notification:
-    process.env.NODE_ENV === "production"
+  notification: "../hubs/notification",
+  /*process.env.NODE_ENV === "production"
       ? "http://10.33.0.203:8089/hubs/notification"
-      : "http://localhost:5000/hubs/notification",
+      : "../hubs/notification",*/
 };
 
 const signalR = require("@microsoft/signalr");

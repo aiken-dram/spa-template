@@ -43,7 +43,7 @@ export default {
         login: null,
         password: null,
         name: null,
-        description: null,
+        desc: null,
         isActive: null,
         isExpired: null,
         passDate: null,

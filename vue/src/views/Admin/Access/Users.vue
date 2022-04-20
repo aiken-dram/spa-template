@@ -59,6 +59,10 @@
           {{ i }}
         </v-list-item>
       </template>
+
+      <template v-slot:item.raions="{ item }">
+        <v-chip v-for="(i, index) in item.raions" :key="index">{{ i }}</v-chip>
+      </template>
     </base-table-api>
   </v-card>
 </template>
@@ -114,6 +118,11 @@ export default {
             label: this.$i18n.t("admin.access.users.table.userNameFilter"),
             type: "text",
           },
+        },
+        {
+          text: this.$i18n.t("admin.access.users.table.raions"),
+          value: "raions",
+          sortable: false,
         },
         {
           text: this.$i18n.t("admin.access.users.table.groups"),

@@ -28,6 +28,13 @@
       "page": "Items on page:",
       "pageAll": "All:",
       "records": "Records {start} - {stop} from {length}"
+    },
+    "filter": "Filter",
+    "state": {
+      "success": "Success",
+      "info": "Information",
+      "warning": "Warning",
+      "error": "Error"
     }
   },
   "layout": {

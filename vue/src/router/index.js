@@ -30,13 +30,44 @@ const routes = [
         children: [
           // admin/access
           {
-            name: "Access",
             path: "access",
             component: () =>
               import(
                 /* webpackChunkName: "admin.access" */ "@/views/Admin/Access"
               ),
             meta: { roles: [MODULES.SecurityAdmin] },
+            children: [
+              // admin/access
+              {
+                name: "Users",
+                path: "",
+                component: () =>
+                  import(
+                    /* webpackChunkName: "admin.access.users" */ "@/views/Admin/Access/Users"
+                  ),
+                meta: { roles: [MODULES.SecurityAdmin] },
+              },
+              // admin/access/package
+              {
+                name: "Package",
+                path: "package",
+                component: () =>
+                  import(
+                    /* webpackChunkName: "admin.access.package" */ "@/views/Admin/Access/Package"
+                  ),
+                meta: { roles: [MODULES.SecurityAdmin] },
+              },
+              // admin/access/file
+              {
+                name: "File",
+                path: "file",
+                component: () =>
+                  import(
+                    /* webpackChunkName: "admin.access.file" */ "@/views/Admin/Access/File"
+                  ),
+                meta: { roles: [MODULES.SecurityAdmin] },
+              },
+            ],
           },
           // admin/access
           {
