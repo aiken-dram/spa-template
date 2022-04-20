@@ -16,6 +16,11 @@ namespace Infrastructure
         public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
         {
             // database
+            services.AddDbContext<SPADbContext>(options =>
+                options.UseNpgsql(configuration.GetConnectionString("SPADatabase"), p => { p.CommandTimeout(600); })
+                    .EnableSensitiveDataLogging(true)); //for workload, though dont think there's a db2advisor in postgre
+
+            //this was IBM DB2
             /*services.AddDbContext<SPADbContext>(options =>
                 options.UseDb2(configuration.GetConnectionString("SPADatabase"), p => { p.SetServerInfo(IBMDBServerType.LUW); p.UseRowNumberForPaging(); p.CommandTimeout(600); })
                        .EnableSensitiveDataLogging(true)
