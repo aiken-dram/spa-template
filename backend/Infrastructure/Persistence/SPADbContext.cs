@@ -6,11 +6,6 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Infrastructure.Persistence
 {
-    public class SQLResult
-    {
-        public int RES { get; set; }
-    }
-
     #region COMMAND CONFIGURATION
     public class ExportResultConfiguration : IEntityTypeConfiguration<ExportResult>
     {
@@ -35,6 +30,7 @@ namespace Infrastructure.Persistence
         #region SYSTEM
         public virtual DbSet<ExportResult> ExportResult { get; set; } = null!;
         #endregion
+
 
         #region ACCOUNT
         public virtual DbSet<GroupRole> GroupRoles { get; set; } = null!;
@@ -61,7 +57,6 @@ namespace Infrastructure.Persistence
         #region COMMANDS
         public async Task<ExportResult> ExportSQLAsync(string sql, string file, CancellationToken cancellationToken)
         {
-            //!!!this is DB2 function, change this to postgre!!!
             string SQL = $"CALL SYSPROC.ADMIN_CMD('EXPORT TO \"{file}\" OF DEL MODIFIED BY COLDEL; CODEPAGE=1251 TIMESTAMPFORMAT=\"DD.MM.YYYY\" {sql}')";
             var res = await this.ExportResult.FromSqlRaw(SQL).ToListAsync(cancellationToken);
             return res.First();

@@ -2,6 +2,7 @@ using AutoMapper;
 using MediatR;
 using Shared.Application.Exceptions;
 using Application.Common.Interfaces;
+using Shared.Application.Extensions;
 
 namespace Application.Account.User.Queries.GetCurrentUserDetail;
 
@@ -29,8 +30,7 @@ public class GetCurrentUserDetailQuery : IRequest<CurrentUserDetailVm>
         public async Task<CurrentUserDetailVm> Handle(GetCurrentUserDetailQuery request, CancellationToken cancellationToken)
         {
             var uid = _user.CurrentUserId;
-            var entity = await _context.Users
-                .FindAsync(uid);
+            var entity = await _context.Users.FindIdAsync(uid, cancellationToken);
 
             if (entity == null)
                 throw new NotFoundException(nameof(Domain.Entities.User), uid);

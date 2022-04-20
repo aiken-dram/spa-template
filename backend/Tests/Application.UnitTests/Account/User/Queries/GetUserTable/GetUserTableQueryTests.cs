@@ -1,0 +1,88 @@
+using AutoMapper;
+using Infrastructure.Persistence;
+using Xunit;
+using Shouldly;
+using Application.UnitTests.Common;
+using static Application.Account.User.Queries.GetUserTable.GetUserTableQuery;
+using Application.Account.User.Queries.GetUserTable;
+using Xunit.Abstractions;
+using System.Threading.Tasks;
+using System.Threading;
+
+namespace Application.UnitTests.Account.Queries.GetUserTable;
+
+[Collection("QueryCollection")]
+public class GetUserTableQueryTests
+{
+    private readonly SPADbContext _context;
+    private readonly IMapper _mapper;
+    private XunitLogger<GetUserTableQuery> _logger;
+
+    private GetUserTableQueryHandler _sut;
+
+    public GetUserTableQueryTests(QueryTestFixture fixture, ITestOutputHelper output)
+    {
+        _context = fixture.Context;
+        _mapper = fixture.Mapper;
+        _logger = new XunitLogger<GetUserTableQuery>(output);
+        _sut = new GetUserTableQueryHandler(_context, _mapper, _logger);
+    }
+
+    /*
+    * hmm not really testing stuff like order, filters and pagination here,
+    * probably should add testing to dotnet-common project?
+    */
+
+    [Fact]
+    public async Task GetUserTableTests()
+    {
+        //Given
+        var command = new GetUserTableQuery
+        {
+            Page = 1,
+            ItemsPerPage = 10,
+            SortBy = "idUser",
+            SortDesc = false,
+            Filters = null,
+            Search = null,
+            FullSearch = null
+        };
+
+        //When
+        var result = await _sut.Handle(command, CancellationToken.None);
+
+        //Then
+        result.Total.ShouldBe(3);
+        result.Items.ShouldNotBeEmpty();
+        result.Items.Count.ShouldBe(3);
+        result.Items.ShouldContain(p => p.idUser == 1);
+        result.Items.ShouldContain(p => p.idUser == 2);
+        result.Items.ShouldContain(p => p.idUser == 3);
+    }
+
+    [Fact]
+    public async Task Handle_GivenFullSearch_FiltersResult()
+    {
+        // Given
+        var command = new GetUserTableQuery
+        {
+            Page = 1,
+            ItemsPerPage = 10,
+            SortBy = "idUser",
+            SortDesc = false,
+            Filters = null,
+            Search = null,
+            FullSearch = "user"
+        };
+
+        // When
+        var result = await _sut.Handle(command, CancellationToken.None);
+
+        // Then
+        result.Total.ShouldBe(2);
+        result.Items.ShouldNotBeEmpty();
+        result.Items.Count.ShouldBe(2);
+        result.Items.ShouldContain(p => p.idUser == 2);
+        result.Items.ShouldContain(p => p.idUser == 3);
+    }
+}

@@ -10,5 +10,5 @@ public class ProcessFileVm
     /// <summary>
     /// List of messages
     /// </summary>
-    public IList<Message> Items { get; set; }
+    public IList<Message> Items { get; set; } = null!;
 }

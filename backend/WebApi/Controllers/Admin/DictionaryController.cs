@@ -18,6 +18,8 @@ public class DictionaryController : ApiController
     ///     AccessGroups
     ///     AccessRoles
     ///     AuthActions
+    ///     Raions
+    ///     UserRaions
     /// 
     /// </remarks>
     /// <param name="Dictionary" example="Raions">Name of dictionary</param>

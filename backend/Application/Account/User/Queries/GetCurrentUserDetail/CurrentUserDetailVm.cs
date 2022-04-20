@@ -17,13 +17,13 @@ public class CurrentUserDetailVm : IMapFrom<Domain.Entities.User>
     /// Login
     /// </summary>
     /// <example>test17</example>
-    public string Login { get; set; }
+    public string Login { get; set; } = null!;
 
     /// <summary>
     /// User name
     /// </summary>
     /// <example>Test user 17</example>
-    public string Name { get; set; }
+    public string Name { get; set; } = null!;
 
     /// <summary>
     /// User description

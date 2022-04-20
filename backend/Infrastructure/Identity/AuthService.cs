@@ -1,16 +1,16 @@
 using Microsoft.EntityFrameworkCore;
 using Application.Common.Interfaces;
-using Application.Common.Models;
 using Domain.Entities;
 using Shared.Application.Exceptions;
 using Microsoft.Extensions.Logging;
-using Shared.Application.Extensions;
 using Shared.Application.Helpers;
 using Microsoft.Extensions.Configuration;
 using Infrastructure.Common;
 using Domain.Enums;
 using Domain.Common;
 using Application.Common.Extensions;
+using Infrastructure.Common.Interfaces;
+using Infrastructure.Common.Models;
 
 namespace Infrastructure.Identity;
 
@@ -68,6 +68,9 @@ public class AuthService : IAuthService
         long uid = Convert.ToInt64(userId);
         var user = await _context.Users.FirstOrDefaultAsync(p => p.IdUser == uid);
 
+        if(user == null)
+            throw new NotFoundException(nameof(User), uid);
+
         var uservm = await GetUserVm(user);
         var vm = new AuthResponse()
         {
@@ -76,12 +79,10 @@ public class AuthService : IAuthService
         return vm;
     }
 
-    public async Task<AuthResponse> LoginAsync(AuthRequest request, string System)
+    public async Task<AuthResponse> LoginAsync(AuthRequest request, string? System)
     {
         //need to convert password to hash
-        string hashpass = "";
-        if (request.Password != null)
-            hashpass = EncryptorHelper.MD5Hash(request.Password);
+        var hashpass = EncryptorHelper.MD5Hash(request.Password) ?? string.Empty;
 
         var user = await _context.Users.FirstOrDefaultAsync(x => x.Login == request.Login);
 

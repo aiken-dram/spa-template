@@ -18,19 +18,19 @@ public class UserDetailVm : IMapFrom<Domain.Entities.User>
     /// User is active (T = yes, F = no)
     /// </summary>
     /// <example>T</example>
-    public string IsActive { get; set; }
+    public string IsActive { get; set; } = null!;
 
     /// <summary>
     /// Login
     /// </summary>
     /// <example>test17</example>
-    public string Login { get; set; }
+    public string Login { get; set; } = null!;
 
     /// <summary>
     /// User name
     /// </summary>
     /// <example>Test user 17</example>
-    public string Name { get; set; }
+    public string Name { get; set; } = null!;
 
     /// <summary>
     /// Expiration date of password
@@ -53,7 +53,6 @@ public class UserDetailVm : IMapFrom<Domain.Entities.User>
     /// Array of role id's
     /// </summary>
     public long[]? Roles { get; set; }
-
 
     public void Mapping(Profile profile)
     {

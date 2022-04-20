@@ -9,6 +9,7 @@ namespace Application.Common.Behaviours;
 /// </summary>
 // Source: Clean Architecture example (https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html)
 public class LoggingBehaviour<TRequest> : IRequestPreProcessor<TRequest>
+  where TRequest: notnull
 {
     private readonly ILogger _logger;
     private readonly ICurrentUserService _currentUserService;

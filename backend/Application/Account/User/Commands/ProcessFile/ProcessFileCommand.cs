@@ -1,3 +1,7 @@
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -19,7 +23,7 @@ public class ProcessFileCommand : SignalRCommand, IRequest<ProcessFileVm>
     /// <summary>
     /// Parsed content of text file
     /// </summary>
-    public IList<string> FileContent { get; set; }
+    public IList<string?>? FileContent { get; set; }
 
     public class ProcessFileCommandHandler : SignalRCommandHandler, IRequestHandler<ProcessFileCommand, ProcessFileVm>
     {
@@ -51,7 +55,7 @@ public class ProcessFileCommand : SignalRCommand, IRequest<ProcessFileVm>
                 if (cnt == 1)
                 {
                     var entity = await _context.Users.SingleAsync(p => p.Login == login, cancellationToken);
-                    entity.Pass = EncryptorHelper.MD5Hash(pass);
+                    entity.Pass = EncryptorHelper.MD5Hash(pass) ?? String.Empty;
                     entity.IsActive = CharBoolean.True;
                     entity.PassDate = DateTime.Now.AddDays(90); //2D - change to configuration
 
@@ -80,16 +84,18 @@ public class ProcessFileCommand : SignalRCommand, IRequest<ProcessFileVm>
                 SetIteration(lines.Count());
                 foreach (var l in lines)
                 {
-                    var m = await ProcessLine(l, cancellationToken);
+                    var m = await ProcessLine(l!, cancellationToken);
                     await ReportNext(m);
                     res.Add(m);
 
-                    //Thread.Sleep(TimeSpan.FromSeconds(2));
+                    //Thread.Sleep(TimeSpan.FromSeconds(1)); //testing animation
                 }
             }
 
-            var vm = new ProcessFileVm();
-            vm.Items = res;
+            var vm = new ProcessFileVm()
+            {
+                Items = res
+            };
             return vm;
         }
     }

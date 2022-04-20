@@ -37,8 +37,8 @@ public partial class QueryResponseBuilder
 
             //2D - WIP
             sql.Append("FROM ACCOUNT.USERS U ");
-            if (par.type.HasValue)
-                sql.Append($"AND U.ID_TYPE = {par.type} ");
+            //if (par.type.HasValue)
+            //    sql.Append($"AND U.ID_TYPE = {par.type} ");
 
             string fname = $"{_databaseExportPath}{guid}";
             _logger.LogInformation($"SQL: {sql}");

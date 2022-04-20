@@ -25,11 +25,11 @@ public partial class FileBuilder : IFileBuilder
     /// <typeparam name="T">type of records</typeparam>
     /// <typeparam name="M">mapping class</typeparam>
     /// <returns>Byte data with csv file</returns>
-    private byte[] BuildCSV<T, M>(IEnumerable<T> records)
+    private byte[] BuildCSV<T, M>(IEnumerable<T>? records)
      where M : ClassMap<T>
      where T : class
     {
-        var enc1251 = CodePagesEncodingProvider.Instance.GetEncoding(1251);
+        var enc1251 = CodePagesEncodingProvider.Instance.GetEncoding(1251) ?? Encoding.UTF8;
         using var memoryStream = new MemoryStream();
         using (var streamWriter = new StreamWriter(memoryStream, enc1251))
         {
@@ -41,7 +41,7 @@ public partial class FileBuilder : IFileBuilder
         return memoryStream.ToArray();
     }
 
-    public byte[] BuildUserTableFile(IEnumerable<UserTableDto> records)
+    public byte[] BuildUserTableFile(IEnumerable<UserTableDto>? records)
     {
         return BuildCSV<UserTableDto, UserTableFileMap>(records);
     }

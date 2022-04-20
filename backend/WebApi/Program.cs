@@ -22,16 +22,21 @@ builder.Host.ConfigureLogging(logging =>
 
 // Add services to the container.
 
-builder.Services.AddInfrastructure(builder.Configuration);
-builder.Services.AddWebApiInfrastructure();
+//application DI
 builder.Services.AddApplication();
 
+//infrastructure DI
+builder.Services.AddInfrastructure(builder.Configuration);
+builder.Services.AddWebApiInfrastructure();
+
+//current user from httpcontext service
+builder.Services.AddSingleton<ICurrentUserService, CurrentUserService>();
+
+//database health check
 builder.Services.AddHealthChecks()
     .AddDbContextCheck<SPADbContext>();
 
-builder.Services.AddScoped<ICurrentUserService, CurrentUserService>();
-
-//services.AddHttpContextAccessor(); //dunno what it is
+builder.Services.AddHttpContextAccessor();
 
 builder.Services
     .AddControllers()
@@ -122,8 +127,11 @@ else
 
 app.UseCustomExceptionHandler();
 app.UseHealthChecks("/health");
-//app.UseHttpsRedirection();
-app.UseStaticFiles(); //dunno if needed?
+if (builder.Configuration["UseHttpsRedirection"] == "True")
+{
+    app.UseHttpsRedirection();
+}
+app.UseStaticFiles();
 app.UseSpaStaticFiles();
 
 app.UseSwagger();
@@ -138,10 +146,10 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.UseEndpoints(endpoints =>
-    {
-        endpoints.MapControllers();
-        endpoints.MapHub<NotificationHub>("/hubs/notification");
-    });
+{
+    endpoints.MapControllers();
+    endpoints.MapHub<NotificationHub>("/hubs/notification");
+});
 
 app.UseSpa(spa =>
 {

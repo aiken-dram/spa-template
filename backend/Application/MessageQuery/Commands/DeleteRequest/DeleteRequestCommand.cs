@@ -5,7 +5,7 @@ using Shared.Application.Extensions;
 using Domain.Enums;
 using MediatR;
 
-namespace Application.Request.Commands.DeleteRequest;
+namespace Application.MessageQuery.Commands.DeleteRequest;
 
 public class DeleteRequestCommand : IRequest
 {

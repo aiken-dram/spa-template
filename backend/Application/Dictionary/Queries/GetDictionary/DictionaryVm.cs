@@ -32,7 +32,7 @@ public class DictionaryDto :
             .ForMember(p => p.Text, o => o.MapFrom(q => q.Name));
 
         profile.CreateMap<AuthAction, DictionaryDto>()
-            .ForMember(p => p.Value, o => o.MapFrom(q => q.IdAction))
+            .ForMember(p => p.Value, o => o.MapFrom(q => Convert.ToInt64(q.IdAction)))
             .ForMember(p => p.Text, o => o.MapFrom(q => q.Description));
     }
 }

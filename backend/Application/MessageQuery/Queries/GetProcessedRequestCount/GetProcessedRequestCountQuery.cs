@@ -3,7 +3,7 @@ using Domain.Enums;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
-namespace Application.Request.Queries.GetProcessedRequestCount;
+namespace Application.MessageQuery.Queries.GetProcessedRequestCount;
 
 public class GetProcessedRequestCountQuery : IRequest<int>
 {

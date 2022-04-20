@@ -26,7 +26,7 @@ public class UserAuthTableDto : IMapFrom<UserAuth>
     /// AUTH
     /// </summary>
     /// <example>AUTH</example>
-    public string source { get; set; }
+    public string source { get; set; } = null!;
 
     /// <summary>
     /// Id of auth action in dictionary
@@ -38,19 +38,20 @@ public class UserAuthTableDto : IMapFrom<UserAuth>
     /// Description of action in dictionary
     /// </summary>
     /// <example>Wrong password</example>
-    public string action { get; set; }
+    public string? action { get; set; }
 
     /// <summary>
     /// Subject of activity:
     /// Name of system for AUTH
     /// </summary>
     /// <example>192.168.0.1</example>
-    public string subject { get; set; }
+    public string subject { get; set; } = null!;
 
     /// <summary>
     /// Message
     /// </summary>
-    public string message { get; set; }
+    /// <example></example>
+    public string? message { get; set; }
 
     public void Mapping(Profile profile)
     {

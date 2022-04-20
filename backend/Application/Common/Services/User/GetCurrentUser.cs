@@ -16,13 +16,13 @@ public partial class UserService : IUserService
         res.IdUser = uid;
 
         //user groups modules
-        var ugm = from u in _context.UserGroups.Where(p => p.IdUser == user.IdUser)
+        var ugm = from u in _context.UserGroups.Where(p => p.IdUser == user!.IdUser)
                   join g in _context.GroupRoles on u.IdGroup equals g.IdGroup
                   join r in _context.RoleModules on g.IdRole equals r.IdRole
                   select r.IdModuleNavigation.Name;
 
         //user roles modules
-        var urm = from u in _context.UserRoles.Where(p => p.IdUser == user.IdUser)
+        var urm = from u in _context.UserRoles.Where(p => p.IdUser == user!.IdUser)
                   join r in _context.RoleModules on u.IdRole equals r.IdRole
                   select r.IdModuleNavigation.Name;
 

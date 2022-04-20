@@ -129,7 +129,7 @@ public class UpsertUserCommand : IRequest<long>
 
             _logger.JsonLogDebug("Request", request);
 
-            Domain.Entities.User entity;
+            Domain.Entities.User? entity;
 
             if (request.IdUser.HasValue)
             {
@@ -142,7 +142,7 @@ public class UpsertUserCommand : IRequest<long>
             {
                 entity = new Domain.Entities.User();
 
-                _context.Users.Add(entity);
+                _context.Users.Add(entity); //check if nullable exception is thrown
             }
 
             //check if same login already exists
@@ -160,7 +160,7 @@ public class UpsertUserCommand : IRequest<long>
             entity.PassDate = request.PassDate;
             entity.Description = request.Description;
             if (!string.IsNullOrEmpty(request.Password))
-                entity.Pass = EncryptorHelper.MD5Hash(request.Password);
+                entity.Pass = EncryptorHelper.MD5Hash(request.Password) ?? String.Empty;
 
             await _context.SaveChangesAsync(cancellationToken);
 

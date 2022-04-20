@@ -8,5 +8,5 @@ public interface IFileBuilder
     /// Export user table to csv
     /// </summary>
     /// <param name="records">user table items</param>
-    byte[] BuildUserTableFile(IEnumerable<UserTableDto> records);
+    byte[] BuildUserTableFile(IEnumerable<UserTableDto>? records);
 }

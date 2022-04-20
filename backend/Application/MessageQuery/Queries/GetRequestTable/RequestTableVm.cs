@@ -1,6 +1,6 @@
 using Shared.Application.Models;
 
-namespace Application.Request.Queries.GetRequestTable;
+namespace Application.MessageQuery.Queries.GetRequestTable;
 
 public class RequestTableDto
 {

@@ -26,6 +26,7 @@ public static class Messages
     #region COMMON
     public const string LogRequest = "SPA Request: {0} {1} {2}";
     public const string LongRunningRequest = "Overpay Long Running Request: {0} ({1} milliseconds) {2} {3}";
+    public const string IterationHasNotBeenSet = "Iteration has not been set";
     #endregion
 
     #region DICTIONARY

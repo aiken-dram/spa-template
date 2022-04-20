@@ -166,13 +166,14 @@ public class UserController : ApiController
     /// Upload file with new passwords
     /// </summary>
     /// <param name="file">File with passwords</param>
+    /// <param name="idConnection">Id of SignalR connection</param>
     /// <response code="200">Result of processing file</response>
     /// <response code="403">User doesnt have security admin role</response>
     [Authorize(Roles = eAccountModule.SecurityAdmin)]
     [HttpPost]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
-    public async Task<ActionResult<ProcessFileVm>> Upload([FromForm] IFormFile file)
+    public async Task<ActionResult<ProcessFileVm>> Upload([FromForm] IFormFile file, [FromForm] string idConnection)
     {
         //read file into memory
         var result = new List<string?>();
@@ -184,7 +185,8 @@ public class UserController : ApiController
 
         var vm = await Mediator.Send(new ProcessFileCommand()
         {
-            FileContent = result
+            FileContent = result,
+            IdConnection = idConnection
         });
 
         return Ok(vm);

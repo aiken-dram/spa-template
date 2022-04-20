@@ -1,11 +1,11 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Application.Common.Models;
-using Application.Common.Interfaces;
 using System.Security.Claims;
 using System.IdentityModel.Tokens.Jwt;
 using System.Text;
 using Microsoft.IdentityModel.Tokens;
+using Infrastructure.Common.Interfaces;
+using Infrastructure.Common.Models;
 
 namespace WebApi.Controllers;
 

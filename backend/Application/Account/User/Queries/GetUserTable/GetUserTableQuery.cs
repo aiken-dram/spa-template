@@ -17,7 +17,7 @@ public class GetUserTableQuery : TableQuery, IRequest<UserTableVm>
     /// <summary>
     /// List of search filters as strings with format "{fieldName}|{operation}|{value}"
     /// </summary>
-    public IList<string> Search { get; set; }
+    public IList<string>? Search { get; set; }
 
     /// <summary>
     /// Search string in table
@@ -59,7 +59,7 @@ public class GetUserTableQuery : TableQuery, IRequest<UserTableVm>
                 query = query.Where(p =>
                     EF.Functions.Like(p.login, $"%{request.FullSearch}%") ||
                     EF.Functions.Like(p.name, $"%{request.FullSearch}%") ||
-                    EF.Functions.Like(p.description, $"%{request.FullSearch}%"));
+                    EF.Functions.Like(p.description!, $"%{request.FullSearch}%"));
 
             var vm = new UserTableVm();
             vm.Items = await query.TableQuery(request, "idUser").ToListAsync(cancellationToken);

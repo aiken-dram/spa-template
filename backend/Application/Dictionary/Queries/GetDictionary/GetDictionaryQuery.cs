@@ -19,8 +19,8 @@ public class GetDictionaryQuery : IRequest<IList<DictionaryDto>>
     ///     AuthActions
     /// 
     /// </summary>
-    /// <example>Raions</example>
-    public string Dictionary { get; set; } = null!;
+    /// <example>AuthActions</example>
+    public string? Dictionary { get; set; }
 
     public class GetDictionaryQueryHandler : IRequestHandler<GetDictionaryQuery, IList<DictionaryDto>>
     {
@@ -70,7 +70,7 @@ public class GetDictionaryQuery : IRequest<IList<DictionaryDto>>
                     return vm;
 
                 default:
-                    throw new NotFoundException(Messages.DictionaryNotFound(request.Dictionary));
+                    throw new NotFoundException(Messages.DictionaryNotFound(request.Dictionary ?? string.Empty));
             }
         }
     }

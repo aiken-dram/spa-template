@@ -10,5 +10,5 @@ public class CurrentUser
     /// <summary>
     /// List of available module names for current user
     /// </summary>
-    public string[]? Modules { get; set; }
+    public string[] Modules { get; set; } = null!;
 }

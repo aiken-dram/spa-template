@@ -1,4 +1,4 @@
-namespace Application.Common.Models;
+namespace Infrastructure.Common.Models;
 
 /// <summary>
 /// Authorization request
@@ -8,12 +8,12 @@ public class AuthRequest
     /// <summary>
     /// User login
     /// </summary>
-    public string Login { get; set; }
+    public string Login { get; set; } = null!;
 
     /// <summary>
     /// User password
     /// </summary>
-    public string Password { get; set; }
+    public string Password { get; set; } = null!;
 }
 
 /// <summary>
@@ -36,12 +36,12 @@ public class AuthUserVm
     /// <summary>
     /// Array of group names for user
     /// </summary>
-    public string[]? UserGroups { get; set; }
+    public string?[] UserGroups { get; set; } = null!;
 
     /// <summary>
     /// Array of modules for user
     /// </summary>
-    public string[]? UserModules { get; set; }
+    public string[] UserModules { get; set; } = null!;
 }
 
 /// <summary>
@@ -52,10 +52,10 @@ public class AuthResponse
     /// <summary>
     /// User information
     /// </summary>
-    public AuthUserVm User { get; set; }
+    public AuthUserVm User { get; set; } = null!;
 
     /// <summary>
     /// JWT token
     /// </summary>
-    public string Token { get; set; }
+    public string Token { get; set; } = null!;
 }

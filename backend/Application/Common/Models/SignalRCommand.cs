@@ -94,7 +94,7 @@ public class SignalRCommandHandler
     protected void Next()
     {
         if (_element == null)
-            throw new Exception("Iteration has not been set");
+            throw new Exception(Messages.IterationHasNotBeenSet);
 
         this._element++;
         this._bar = GetBar();

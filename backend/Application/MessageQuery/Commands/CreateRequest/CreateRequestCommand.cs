@@ -9,19 +9,19 @@ using Microsoft.Extensions.Logging;
 using Shared.Application.Extensions;
 using Application.Common.Extensions;
 
-namespace Application.Request.Commands.CreateRequest;
+namespace Application.MessageQuery.Commands.CreateRequest;
 
 public class CreateRequestCommand : IRequest
 {
     /// <summary>
     /// Request type
     /// </summary>
-    public string Type { get; set; }
+    public string Type { get; set; } = null!;
 
     /// <summary>
     /// JSON with request parameters
     /// </summary>
-    public string Json { get; set; }
+    public string? Json { get; set; }
 
     public class CreateRequestCommandHandler : IRequestHandler<CreateRequestCommand>
     {

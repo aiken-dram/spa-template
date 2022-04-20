@@ -36,6 +36,16 @@
                 "${workspaceFolder}/WebApi/WebApi.csproj"
             ],
             "problemMatcher": "$msCompile"
-        }
+        },
+        {
+            "label": "update shared package",
+            "type": "shell",
+            "command": ".\\.scripts\\update_shared.cmd",
+            "group": "none",
+            "presentation": {
+                "reveal": "always",
+                "panel": "new"
+            }
+        },
     ]
 }
