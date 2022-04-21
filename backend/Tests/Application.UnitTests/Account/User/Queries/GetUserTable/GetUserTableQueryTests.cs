@@ -11,7 +11,7 @@ using System.Threading;
 
 namespace Application.UnitTests.Account.Queries.GetUserTable;
 
-[Collection("QueryCollection")]
+[Collection("AccountQueryCollection")]
 public class GetUserTableQueryTests
 {
     private readonly SPADbContext _context;
@@ -20,9 +20,9 @@ public class GetUserTableQueryTests
 
     private GetUserTableQueryHandler _sut;
 
-    public GetUserTableQueryTests(QueryTestFixture fixture, ITestOutputHelper output)
+    public GetUserTableQueryTests(AccountQueryTestFixture fixture, ITestOutputHelper output)
     {
-        _context = fixture.Context;
+        _context = fixture._context;
         _mapper = fixture.Mapper;
         _logger = new XunitLogger<GetUserTableQuery>(output);
         _sut = new GetUserTableQueryHandler(_context, _mapper, _logger);
@@ -30,7 +30,8 @@ public class GetUserTableQueryTests
 
     /*
     * hmm not really testing stuff like order, filters and pagination here,
-    * probably should add testing to dotnet-common project?
+    * probably should add testing to spa-shared project? 
+    * or maybe not, since it's almost like testing ef core stuff
     */
 
     [Fact]
@@ -52,12 +53,15 @@ public class GetUserTableQueryTests
         var result = await _sut.Handle(command, CancellationToken.None);
 
         //Then
-        result.Total.ShouldBe(3);
+        result.Total.ShouldBe(6);
         result.Items.ShouldNotBeEmpty();
-        result.Items.Count.ShouldBe(3);
+        result.Items.Count.ShouldBe(6);
         result.Items.ShouldContain(p => p.idUser == 1);
         result.Items.ShouldContain(p => p.idUser == 2);
         result.Items.ShouldContain(p => p.idUser == 3);
+        result.Items.ShouldContain(p => p.idUser == 4);
+        result.Items.ShouldContain(p => p.idUser == 5);
+        result.Items.ShouldContain(p => p.idUser == 6);
     }
 
     [Fact]
@@ -79,10 +83,12 @@ public class GetUserTableQueryTests
         var result = await _sut.Handle(command, CancellationToken.None);
 
         // Then
-        result.Total.ShouldBe(2);
+        result.Total.ShouldBe(4);
         result.Items.ShouldNotBeEmpty();
-        result.Items.Count.ShouldBe(2);
-        result.Items.ShouldContain(p => p.idUser == 2);
+        result.Items.Count.ShouldBe(4);
         result.Items.ShouldContain(p => p.idUser == 3);
+        result.Items.ShouldContain(p => p.idUser == 4);
+        result.Items.ShouldContain(p => p.idUser == 5);
+        result.Items.ShouldContain(p => p.idUser == 6);
     }
 }

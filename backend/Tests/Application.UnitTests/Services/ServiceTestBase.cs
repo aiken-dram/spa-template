@@ -12,7 +12,7 @@ namespace Application.UnitTests.Services;
 
 public class ServiceTestBase : IDisposable
 {
-    public SPADbContext Context { get; private set; }
+    public SPADbContext _context { get; private set; }
     public IMapper Mapper { get; private set; }
     public Mock<ICurrentUserService> User { get; private set; }
 
@@ -22,7 +22,7 @@ public class ServiceTestBase : IDisposable
 
     public ServiceTestBase(ITestOutputHelper output)
     {
-        Context = SPADbContextFactory.CreateInMemory();
+        _context = SPADbContextFactory.CreateInMemory();
 
         var configurationProvider = new MapperConfiguration(cfg =>
         {
@@ -35,11 +35,11 @@ public class ServiceTestBase : IDisposable
 
         User = new Mock<ICurrentUserService>();
 
-        _user = new UserService(Context, Mapper, _logger_user, User.Object);
+        _user = new UserService(_context, Mapper, _logger_user, User.Object);
     }
 
     public void Dispose()
     {
-        SPADbContextFactory.Destroy(Context);
+        SPADbContextFactory.Destroy(_context);
     }
 }

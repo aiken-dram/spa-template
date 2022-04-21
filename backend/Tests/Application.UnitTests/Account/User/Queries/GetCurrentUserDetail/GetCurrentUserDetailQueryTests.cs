@@ -13,16 +13,18 @@ using static Application.Account.User.Queries.GetCurrentUserDetail.GetCurrentUse
 
 namespace Application.UnitTests.Account.User.Queries.GetCurrentUserDetail;
 
-[Collection("QueryCollection")]
+[Collection("AccountQueryCollection")]
 public class GetCurrentUserDetailQueryTests
 {
     private readonly SPADbContext _context;
     private readonly IMapper _mapper;
     private Mock<IUserService> _user = null!;
 
-    public GetCurrentUserDetailQueryTests(QueryTestFixture fixture)
+    public GetCurrentUserDetailQueryTests(AccountQueryTestFixture fixture)
     {
-        _context = fixture.Context;
+        _user = UserServiceFactory.Create();
+
+        _context = fixture._context;
         _mapper = fixture.Mapper;
     }
 
@@ -30,8 +32,6 @@ public class GetCurrentUserDetailQueryTests
     public async Task Handle_GivenValidUserId_ReturnsUserDetailVm()
     {
         //Given
-        _user = UserServiceFactory.Create();
-
         var sut = new GetCurrentUserDetailQueryHandler(_context, _mapper, _user.Object);
 
         //When
@@ -56,6 +56,6 @@ public class GetCurrentUserDetailQueryTests
         var command = new GetCurrentUserDetailQuery();
 
         //Then
-        await Assert.ThrowsAsync<NotFoundException>(() => sut.Handle(command, CancellationToken.None));
+        await Should.ThrowAsync<NotFoundException>(() => sut.Handle(command, CancellationToken.None));
     }
 }

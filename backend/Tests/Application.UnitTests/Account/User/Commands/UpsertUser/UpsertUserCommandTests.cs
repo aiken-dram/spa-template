@@ -41,7 +41,7 @@ public class UpsertUserCommandTests : TestBase
         };
 
         //Then
-        await Assert.ThrowsAsync<NotFoundException>(() => _sut.Handle(command, CancellationToken.None));
+        await Should.ThrowAsync<NotFoundException>(() => _sut.Handle(command, CancellationToken.None));
     }
 
     [Fact]
@@ -58,7 +58,7 @@ public class UpsertUserCommandTests : TestBase
             Description = "User description",
             PassDate = new DateTime(2021, 5, 28),
             Groups = new long[] { 1 },
-            Roles = new long[] { }
+            Roles = new long[] { },
         };
 
         //When
@@ -67,7 +67,7 @@ public class UpsertUserCommandTests : TestBase
         //Then
         result.ShouldBeOfType<long>();
         result.ShouldBe((long)1);
-        var user = await _context.Users.FindAsync(result);
+        var user = _context.Users.Find(result);
         user.ShouldNotBeNull();
         user.IsActive.ShouldBe("T");
         user.Login.ShouldBe("admin");
@@ -94,7 +94,7 @@ public class UpsertUserCommandTests : TestBase
             Description = "User description",
             PassDate = new DateTime(2021, 5, 28),
             Groups = new long[] { 1 },
-            Roles = new long[] { }
+            Roles = new long[] { },
         };
 
         //When
@@ -102,7 +102,7 @@ public class UpsertUserCommandTests : TestBase
 
         //Then
         result.ShouldBeOfType<long>();
-        var user = await _context.Users.FindAsync(result);
+        var user = _context.Users.Find(result);
         user.ShouldNotBeNull();
         user.IsActive.ShouldBe("T");
         user.Login.ShouldBe("new_user");
@@ -116,8 +116,8 @@ public class UpsertUserCommandTests : TestBase
     }
 
     /**
-    could use more extended testing here, like it correctly handles exceptions and changes 
-    for lists UserGroups and UserRoles correctly
+    could use more extensive testing here, like it correctly handles exceptions and changes 
+    for lists (UserGroups, UserRoles) correctly
     */
 
     [Fact]
@@ -138,6 +138,6 @@ public class UpsertUserCommandTests : TestBase
         };
 
         //Then
-        await Assert.ThrowsAsync<ValidationException>(() => _sut.Handle(command, CancellationToken.None));
+        await Should.ThrowAsync<ValidationException>(() => _sut.Handle(command, CancellationToken.None));
     }
 }

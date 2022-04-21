@@ -12,7 +12,7 @@ using static Application.Account.User.Queries.GetUserAuthTable.GetUserAuthTableQ
 
 namespace Application.UnitTests.Account.User.Queries.GetUserAuthTable;
 
-[Collection("QueryCollection")]
+[Collection("AccountQueryCollection")]
 public class GetUserAuthTableQueryTests
 {
     private readonly SPADbContext _context;
@@ -21,9 +21,9 @@ public class GetUserAuthTableQueryTests
 
     private GetUserAuthTableQueryHandler _sut;
 
-    public GetUserAuthTableQueryTests(QueryTestFixture fixture, ITestOutputHelper output)
+    public GetUserAuthTableQueryTests(AccountQueryTestFixture fixture, ITestOutputHelper output)
     {
-        _context = fixture.Context;
+        _context = fixture._context;
         _mapper = fixture.Mapper;
         _logger = new XunitLogger<GetUserAuthTableQuery>(output);
         _sut = new GetUserAuthTableQueryHandler(_context, _mapper);
@@ -44,7 +44,7 @@ public class GetUserAuthTableQueryTests
         };
 
         //Then
-        await Assert.ThrowsAsync<NotFoundException>(() => _sut.Handle(command, CancellationToken.None));
+        await Should.ThrowAsync<NotFoundException>(() => _sut.Handle(command, CancellationToken.None));
     }
 
     [Fact]

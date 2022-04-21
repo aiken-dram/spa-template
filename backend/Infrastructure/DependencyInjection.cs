@@ -5,6 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Infrastructure.Identity;
 using Infrastructure.Files;
 using Infrastructure.Common.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure
 {

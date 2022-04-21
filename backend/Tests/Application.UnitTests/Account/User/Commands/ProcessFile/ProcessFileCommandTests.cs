@@ -10,6 +10,7 @@ using Application.Account.User.Commands.ProcessFile;
 using System.Collections.Generic;
 using System;
 using MediatR;
+using Application.Notification;
 
 namespace Application.UnitTests.Account.User.Commands.ProcessFile;
 
@@ -35,28 +36,33 @@ public class ProcessFileCommandTests : TestBase
         txt.Add("admin test");
         txt.Add("wrong wrong");
         txt.Add("wrong_string_format");
-        var command = new ProcessFileCommand { IdConnection = "signalR", FileContent = txt };
-
-        //2D: add signalR tests (calling publish methods in mediator mock)
+        var command = new ProcessFileCommand { IdConnection = "connection", FileContent = txt };
 
         //When
         var result = await _sut.Handle(command, CancellationToken.None);
 
         //Then
+        //1. check result
         result.ShouldBeOfType<ProcessFileVm>();
         result.Items.ShouldNotBeEmpty();
         result.Items.Count.ShouldBe(3);
 
         result.Items[0].State.ShouldBe("success");
-        result.Items[0].Body.ShouldContain("<code>admin</code>");
+        result.Items[0].Body.ShouldContain("admin");
 
         result.Items[1].State.ShouldBe("error");
         result.Items[1].Body.ShouldContain("0");
-        result.Items[1].Body.ShouldContain("<code>wrong</code>");
+        result.Items[1].Body.ShouldContain("wrong");
 
         result.Items[2].State.ShouldBe("error");
-        result.Items[2].Body.ShouldContain("<code>wrong_string_format</code>");
+        result.Items[2].Body.ShouldContain("wrong_string_format");
 
+        //2. check mediator
+        _mediator.Verify(x => x.Publish(It.Is<SignalRNotification>(p =>
+            p.IdConnection == "connection"),
+            It.IsAny<CancellationToken>()), Times.Exactly(3));
+
+        //3. check context
         var user = _context.Users.Find((long)1);
         user.ShouldNotBeNull();
         user.Pass.ShouldBe("098f6bcd4621d373cade4e832627b4f6");

@@ -18,7 +18,6 @@ public class AuthService : IAuthService
 {
     private readonly ISPADbContext _context;
     private readonly ILogger<AuthService> _logger;
-    private readonly IConfiguration _configuration;
 
     private readonly int _lock;
     private readonly int _timeout;
@@ -30,10 +29,9 @@ public class AuthService : IAuthService
     {
         _logger = logger;
         _context = context;
-        _configuration = configuration;
 
-        _lock = Convert.ToInt32(_configuration["AuthSettings:Lock"]);
-        _timeout = Convert.ToInt32(_configuration["AuthSettings:Timeout"]);
+        _lock = Convert.ToInt32(configuration["AuthSettings:Lock"]);
+        _timeout = Convert.ToInt32(configuration["AuthSettings:Timeout"]);
     }
 
     private async Task<AuthUserVm> GetUserVm(User user)
@@ -68,7 +66,7 @@ public class AuthService : IAuthService
         long uid = Convert.ToInt64(userId);
         var user = await _context.Users.FirstOrDefaultAsync(p => p.IdUser == uid);
 
-        if(user == null)
+        if (user == null)
             throw new NotFoundException(nameof(User), uid);
 
         var uservm = await GetUserVm(user);
@@ -175,7 +173,7 @@ public class AuthService : IAuthService
 
     public async Task Validate(string userId)
     {
-        if (userId == null)
+        if (string.IsNullOrEmpty(userId))
             throw new BadRequestException(Messages.UserIdMustNotBeEmpty);
 
         long uid = Convert.ToInt64(userId);

@@ -32,7 +32,7 @@ public class UserAuthTableDto : IMapFrom<UserAuth>
     /// Id of auth action in dictionary
     /// </summary>
     /// <example>1</example>
-    public long idAction { get; set; }
+    public int idAction { get; set; }
 
     /// <summary>
     /// Description of action in dictionary

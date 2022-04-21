@@ -1,4 +1,5 @@
 using Application.Account.User.Queries.GetCurrentUserDetail;
+using Application.Account.User.Queries.GetUserAuthTable;
 using Application.Account.User.Queries.GetUserDetail;
 using Application.Account.User.Queries.GetUserTable;
 using Application.Dictionary.Queries.GetDictionary;
@@ -61,11 +62,25 @@ public class MappingTests : IClassFixture<MappingTestsFixture>
         result.ShouldNotBeNull();
         result.ShouldBeOfType<UserTableDto>();
     }
+
+    [Fact]
+    public void ShouldMapUserAuthToUserAuthTableDto()
+    {
+        // Given
+        var entity = new Domain.Entities.UserAuth();
+
+        // When
+        var result = _mapper.Map<UserAuthTableDto>(entity);
+
+        // Then
+        result.ShouldNotBeNull();
+        result.ShouldBeOfType<UserAuthTableDto>();
+    }
     #endregion
 
     #region DICTIONARY
     [Fact]
-    public void ShouldMapGroupsToDictionaryDto()
+    public void ShouldMapGroupToDictionaryDto()
     {
         var entity = new Group();
 
@@ -76,9 +91,20 @@ public class MappingTests : IClassFixture<MappingTestsFixture>
     }
 
     [Fact]
-    public void ShouldMapRolesToDictionaryDto()
+    public void ShouldMapRoleToDictionaryDto()
     {
         var entity = new Role();
+
+        var result = _mapper.Map<DictionaryDto>(entity);
+
+        result.ShouldNotBeNull();
+        result.ShouldBeOfType<DictionaryDto>();
+    }
+
+    [Fact]
+    public void ShouldMapAuthActionToDictionaryDto()
+    {
+        var entity = new AuthAction();
 
         var result = _mapper.Map<DictionaryDto>(entity);
 

@@ -8,7 +8,7 @@ using Xunit;
 using Xunit.Abstractions;
 using static Application.Account.User.Commands.DeleteUser.DeleteUserCommand;
 
-namespace Application.UnitTests.Account.User.Commands.DeleteFile;
+namespace Application.UnitTests.Account.User.Commands.DeleteUser;
 
 public class DeleteUserCommandTests : TestBase
 {
@@ -27,7 +27,7 @@ public class DeleteUserCommandTests : TestBase
         var command = new DeleteUserCommand { Id = -1 };
 
         //Then
-        await Assert.ThrowsAsync<NotFoundException>(() => _sut.Handle(command, CancellationToken.None));
+        await Should.ThrowAsync<NotFoundException>(() => _sut.Handle(command, CancellationToken.None));
     }
 
     [Fact]
@@ -40,7 +40,7 @@ public class DeleteUserCommandTests : TestBase
         await _sut.Handle(command, CancellationToken.None);
 
         // Then
-        var user = await _context.Users.FindAsync((long)2);
+        var user = _context.Users.Find((long)2);
         user.ShouldBeNull();
     }
 }

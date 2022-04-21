@@ -5,31 +5,39 @@ using Infrastructure.Persistence;
 using Microsoft.Extensions.Configuration;
 using Moq;
 using Xunit.Abstractions;
+using System.Collections.Generic;
 
-namespace Infrastructure.UnitTests.Identity
+namespace Infrastructure.UnitTests.Identity;
+
+public class AuthServiceTestBase : IDisposable
 {
-    public class AuthServiceTestBase : IDisposable
+    public SPADbContext _context { get; private set; }
+
+    public AuthService _auth { get; private set; }
+
+    private XunitLogger<AuthService> _logger;
+    private IConfiguration _config;
+
+    public AuthServiceTestBase(ITestOutputHelper output)
     {
-        public SPADbContext Context { get; private set; }
+        _context = SPADbContextFactory.CreateInMemory();
 
-        public AuthService _auth { get; private set; }
+        _logger = new XunitLogger<AuthService>(output);
 
-        private XunitLogger<AuthService> _logger;
-        private Mock<IConfiguration> _config;
+        //configuration setup for testing
+        var inMemorySettings = new Dictionary<string, string> {
+            {"AuthSettings:Lock", "10"},
+            {"AuthSettings:Timeout", "3"},
+        };
+        _config = new ConfigurationBuilder()
+            .AddInMemoryCollection(inMemorySettings)
+            .Build();
 
-        public AuthServiceTestBase(ITestOutputHelper output)
-        {
-            Context = SPADbContextFactory.CreateInMemory();
+        _auth = new AuthService(_context, _logger, _config);
+    }
 
-            _logger = new XunitLogger<AuthService>(output);
-            _config = new Mock<IConfiguration>(); //2D setup here
-
-            _auth = new AuthService(Context, _logger, _config.Object);
-        }
-
-        public void Dispose()
-        {
-            SPADbContextFactory.Destroy(Context);
-        }
+    public void Dispose()
+    {
+        SPADbContextFactory.Destroy(_context);
     }
 }

@@ -25,7 +25,7 @@ public class GetDictionaryQueryTests
 
     public GetDictionaryQueryTests(QueryTestFixture fixture)
     {
-        _context = fixture.Context;
+        _context = fixture._context;
         _mapper = fixture.Mapper;
         _user = UserServiceFactory.Create();
         _sut = new GetDictionaryQueryHandler(_context, _mapper, _user.Object);
@@ -34,41 +34,42 @@ public class GetDictionaryQueryTests
     [Fact]
     public async Task Handle_GivenUnsupportedDictionary_ThrowsNotFoundException()
     {
-        //Given
+        // Given
         var command = new GetDictionaryQuery { Dictionary = "wrong" };
 
-        //Then
-        await Assert.ThrowsAsync<NotFoundException>(() => _sut.Handle(command, CancellationToken.None));
+        // Then
+        await Should.ThrowAsync<NotFoundException>(() => _sut.Handle(command, CancellationToken.None));
     }
 
     [Fact]
     public async Task GetDictionaryAccessGroupsTests()
     {
-        //Given
+        // Given
         var command = new GetDictionaryQuery { Dictionary = "AccessGroups" };
 
-        //When
+        // When
         var result = await _sut.Handle(command, CancellationToken.None);
 
-        //Then
+        // Then
         result.ShouldBeOfType<List<DictionaryDto>>();
         result.ShouldNotBeEmpty();
-        result.Count.ShouldBe(3);
+        result.Count.ShouldBe(4);
         result.ShouldContain(p => p.Value == 1 && p.Text == "Admins");
-        result.ShouldContain(p => p.Value == 2 && p.Text == "Users");
-        result.ShouldContain(p => p.Value == 3 && p.Text == "Viewers");
+        result.ShouldContain(p => p.Value == 2 && p.Text == "Supervisors");
+        result.ShouldContain(p => p.Value == 3 && p.Text == "Users");
+        result.ShouldContain(p => p.Value == 4 && p.Text == "Viewers");
     }
 
     [Fact]
     public async Task GetDictionaryAccessRolesTests()
     {
-        //Given
+        // Given
         var command = new GetDictionaryQuery { Dictionary = "AccessRoles" };
 
-        //When
+        // When
         var result = await _sut.Handle(command, CancellationToken.None);
 
-        //Then
+        // Then
         result.ShouldBeOfType<List<DictionaryDto>>();
         result.ShouldNotBeEmpty();
         result.Count.ShouldBe(4);
@@ -76,5 +77,24 @@ public class GetDictionaryQueryTests
         result.ShouldContain(p => p.Value == 2 && p.Text == "Application admins");
         result.ShouldContain(p => p.Value == 3 && p.Text == "Supervisor");
         result.ShouldContain(p => p.Value == 4 && p.Text == "Read only");
+    }
+
+    [Fact]
+    public async Task GetDictionaryAuthActionsTests()
+    {
+        // Given
+        var command = new GetDictionaryQuery { Dictionary = "AuthActions" };
+
+        // When
+        var result = await _sut.Handle(command, CancellationToken.None);
+
+        // Then
+        result.ShouldBeOfType<List<DictionaryDto>>();
+        result.ShouldNotBeEmpty();
+        result.Count.ShouldBe(4);
+        result.ShouldContain(p => p.Value == 1 && p.Text == "Login description");
+        result.ShouldContain(p => p.Value == 2 && p.Text == "Wrong pass description");
+        result.ShouldContain(p => p.Value == 3 && p.Text == "Expired description");
+        result.ShouldContain(p => p.Value == 4 && p.Text == "Lock description");
     }
 }

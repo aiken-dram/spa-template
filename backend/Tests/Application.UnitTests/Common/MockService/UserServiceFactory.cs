@@ -9,7 +9,10 @@ namespace Application.UnitTests.Common;
 public enum eMockUser
 {
     Admin,
-    User,
+    SecAdmin,
+    Supervisor,
+    User1,
+    User2,
     Viewer,
     Invalid
 }
@@ -22,15 +25,33 @@ public class UserServiceFactory
         Modules = new string[] { "SECADM", "DICTADM", "CFGADM", "SUPERVISE" }
     };
 
-    private readonly static CurrentUser _user = new CurrentUser
+    private readonly static CurrentUser _secadm = new CurrentUser
     {
         IdUser = 2,
-        Modules = new string[] { }
+        Modules = new string[] { "SECADM" }
+    };
+
+    private readonly static CurrentUser _supervisor = new CurrentUser
+    {
+        IdUser = 3,
+        Modules = new string[] { "SUPERVISE" }
+    };
+
+    private readonly static CurrentUser _user1 = new CurrentUser
+    {
+        IdUser = 4,
+        Modules = new string[] { },
+    };
+
+    private readonly static CurrentUser _user2 = new CurrentUser
+    {
+        IdUser = 5,
+        Modules = new string[] { },
     };
 
     private readonly static CurrentUser _viewer = new CurrentUser
     {
-        IdUser = 3,
+        IdUser = 6,
         Modules = new string[] { "READONLY" }
     };
 
@@ -61,8 +82,17 @@ public class UserServiceFactory
         {
             case eMockUser.Admin:
                 break;
-            case eMockUser.User:
-                _res = _user;
+            case eMockUser.SecAdmin:
+                _res = _secadm;
+                break;
+            case eMockUser.Supervisor:
+                _res = _supervisor;
+                break;
+            case eMockUser.User1:
+                _res = _user1;
+                break;
+            case eMockUser.User2:
+                _res = _user2;
                 break;
             case eMockUser.Viewer:
                 _res = _viewer;

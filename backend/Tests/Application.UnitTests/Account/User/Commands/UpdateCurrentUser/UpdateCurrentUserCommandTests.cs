@@ -36,7 +36,7 @@ public class UpdateCurrentUserCommandTests : TestBase
         };
 
         //Then
-        await Assert.ThrowsAsync<AccessDeniedException>(() => _sut.Handle(command, CancellationToken.None));
+        await Should.ThrowAsync<AccessDeniedException>(() => _sut.Handle(command, CancellationToken.None));
     }
 
     [Fact]
@@ -54,7 +54,7 @@ public class UpdateCurrentUserCommandTests : TestBase
         await _sut.Handle(command, CancellationToken.None);
 
         //Then
-        var user = await _context.Users.FindAsync((long)1);
+        var user = _context.Users.Find((long)1);
         user.ShouldNotBeNull();
         user.Name.ShouldBe("New name");
         user.Description.ShouldBe("New description");

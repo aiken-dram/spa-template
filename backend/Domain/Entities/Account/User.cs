@@ -10,7 +10,6 @@ public partial class User
         UserAuths = new HashSet<UserAuth>();
         UserGroups = new HashSet<UserGroup>();
         UserRoles = new HashSet<UserRole>();
-        UserRaions = new HashSet<UserRaion>();
         Requests = new HashSet<Request>();
     }
 
@@ -65,11 +64,6 @@ public partial class User
     /// Collection of user roles
     /// </summary>
     public virtual ICollection<UserRole> UserRoles { get; set; }
-
-    /// <summary>
-    /// Collection of user raions
-    /// </summary>
-    public virtual ICollection<UserRaion> UserRaions { get; set; }
 
     /// <summary>
     /// Collection of requests from user

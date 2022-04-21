@@ -12,7 +12,7 @@ using static Application.Account.User.Queries.GetUserDetail.GetUserDetailQuery;
 
 namespace Application.UnitTests.Account.User.Queries.GetUserDetail;
 
-[Collection("QueryCollection")]
+[Collection("AccountQueryCollection")]
 public class GetUserDetailQueryTests
 {
     private readonly SPADbContext _context;
@@ -21,9 +21,9 @@ public class GetUserDetailQueryTests
     private readonly GetUserDetailQueryHandler _sut;
 
 
-    public GetUserDetailQueryTests(QueryTestFixture fixture)
+    public GetUserDetailQueryTests(AccountQueryTestFixture fixture)
     {
-        _context = fixture.Context;
+        _context = fixture._context;
         _mapper = fixture.Mapper;
 
         _sut = new GetUserDetailQueryHandler(_context, _mapper);
@@ -61,6 +61,6 @@ public class GetUserDetailQueryTests
         var command = new GetUserDetailQuery { Id = -1 };
 
         //Then
-        await Assert.ThrowsAsync<NotFoundException>(() => _sut.Handle(command, CancellationToken.None));
+        await Should.ThrowAsync<NotFoundException>(() => _sut.Handle(command, CancellationToken.None));
     }
 }

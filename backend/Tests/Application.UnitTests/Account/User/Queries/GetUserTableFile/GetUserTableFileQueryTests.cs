@@ -15,7 +15,7 @@ using System;
 
 namespace Application.UnitTests.Account.User.Queries.GetUserTableFile;
 
-[Collection("QueryCollection")]
+[Collection("AccountQueryCollection")]
 public class GetUserTableFileQueryTests
 {
     private XunitLogger<GetUserTableFileQuery> _logger;
@@ -24,7 +24,7 @@ public class GetUserTableFileQueryTests
 
     private GetUserTableFileQueryHandler _sut;
 
-    public GetUserTableFileQueryTests(QueryTestFixture fixture, ITestOutputHelper output)
+    public GetUserTableFileQueryTests(AccountQueryTestFixture fixture, ITestOutputHelper output)
     {
         _mediator = new Mock<IMediator>();
         _logger = new XunitLogger<GetUserTableFileQuery>(output);
