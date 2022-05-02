@@ -17,6 +17,7 @@ public static class Messages
     public static string InvalidFormatLine(string line) => $"Invalid line format: <code>{line}</code>";
     public const string NotMatchingUserId = "Id of provided user does not match to authorized one";
     public const string UserWithProvidedLoginAlreadyExists = "User with provided login already exists";
+    public const string NoAccessToAuditUsers = "User does not have access to audit other users";
     public const string Login = "Login";
     public const string Password = "Password";
     public const string UserName = "User name";

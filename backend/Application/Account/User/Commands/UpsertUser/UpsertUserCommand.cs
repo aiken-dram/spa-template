@@ -9,6 +9,7 @@ using Application.Common.Interfaces;
 using Domain.Entities;
 using FluentValidation.Results;
 using Application.Common;
+using Shared.Domain.Models;
 
 namespace Application.Account.User.Commands.UpsertUser;
 
@@ -69,16 +70,24 @@ public class UpsertUserCommand : IRequest<long>
     /// </summary>
     public long[]? Roles { get; set; }
 
+    /// <summary>
+    /// Districts (id)
+    /// </summary>
+    public long[]? Districts { get; set; }
+
     public class UpsertUserCommandHandler : IRequestHandler<UpsertUserCommand, long>
     {
         private readonly ISPADbContext _context;
+        private readonly IAppAuditService _audit;
         private readonly ILogger _logger;
 
         public UpsertUserCommandHandler(
             ISPADbContext context,
+            IAppAuditService audit,
             ILogger<UpsertUserCommand> logger)
         {
             _context = context;
+            _audit = audit;
             _logger = logger;
         }
 
@@ -130,6 +139,7 @@ public class UpsertUserCommand : IRequest<long>
             _logger.JsonLogDebug("Request", request);
 
             Domain.Entities.User? entity;
+            AuditEvent audit;
 
             if (request.IdUser.HasValue)
             {
@@ -137,12 +147,17 @@ public class UpsertUserCommand : IRequest<long>
 
                 if (entity == null)
                     throw new NotFoundException(nameof(Domain.Entities.User), request.IdUser.Value);
+
+                audit = await _audit.Edit(entity, request);
             }
             else
             {
                 entity = new Domain.Entities.User();
 
-                _context.Users.Add(entity); //check if nullable exception is thrown
+                _context.Users.Add(entity);
+
+                audit = await _audit.Create(entity, request);
+                audit.TargetName = request.Login;
             }
 
             //check if same login already exists
@@ -162,7 +177,12 @@ public class UpsertUserCommand : IRequest<long>
             if (!string.IsNullOrEmpty(request.Password))
                 entity.Pass = EncryptorHelper.MD5Hash(request.Password) ?? String.Empty;
 
+            entity.Log(audit);
             await _context.SaveChangesAsync(cancellationToken);
+
+            //well since i already wrote the next step in this way, auditing it might be difficult
+            //rewrite into single SaveChangesAsync, if possible?
+            //why wasnt i working with entity navigation properties in the first place?
 
             //UserGroups
             await ProcessList(
@@ -184,6 +204,17 @@ public class UpsertUserCommand : IRequest<long>
                 q => q.IdRole,
                 a => new UserRole() { IdUser = entity.IdUser, IdRole = a },
                 r => (p => p.IdUser == entity.IdUser && p.IdRole == r),
+                cancellationToken);
+
+            //UserDistricts
+            await ProcessList(
+                request.IdUser,
+                request.Districts,
+                _context.UserDistricts,
+                p => p.IdUser == entity.IdUser,
+                q => q.IdDistrict,
+                a => new UserDistrict() { IdUser = entity.IdUser, IdDistrict = (int)a },
+                r => (p => p.IdUser == entity.IdUser && p.IdDistrict == r),
                 cancellationToken);
 
             return entity.IdUser;

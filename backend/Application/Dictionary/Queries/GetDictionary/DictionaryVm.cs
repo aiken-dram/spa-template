@@ -7,7 +7,9 @@ namespace Application.Dictionary.Queries.GetDictionary;
 public class DictionaryDto :
     IMapFrom<Group>,
     IMapFrom<Role>,
-    IMapFrom<AuthAction>
+    IMapFrom<EventAction>,
+    IMapFrom<EventTarget>,
+    IMapFrom<Domain.Entities.District>
 {
     /// <summary>
     /// Dictionary value
@@ -31,8 +33,16 @@ public class DictionaryDto :
             .ForMember(p => p.Value, o => o.MapFrom(q => q.IdRole))
             .ForMember(p => p.Text, o => o.MapFrom(q => q.Name));
 
-        profile.CreateMap<AuthAction, DictionaryDto>()
+        profile.CreateMap<EventAction, DictionaryDto>()
             .ForMember(p => p.Value, o => o.MapFrom(q => Convert.ToInt64(q.IdAction)))
             .ForMember(p => p.Text, o => o.MapFrom(q => q.Description));
+
+        profile.CreateMap<EventTarget, DictionaryDto>()
+            .ForMember(p => p.Value, o => o.MapFrom(q => Convert.ToInt64(q.IdTarget)))
+            .ForMember(p => p.Text, o => o.MapFrom(q => q.Description));
+
+        profile.CreateMap<Domain.Entities.District, DictionaryDto>()
+            .ForMember(p => p.Value, o => o.MapFrom(q => Convert.ToInt64(q.IdDistrict)))
+            .ForMember(p => p.Text, o => o.MapFrom(q => q.IdDistrict.ToString() + " " + q.Name));
     }
 }

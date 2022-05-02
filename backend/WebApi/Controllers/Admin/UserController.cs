@@ -3,13 +3,13 @@ using Microsoft.AspNetCore.Mvc;
 using Domain.Enums;
 using Application.Account.User.Queries.GetUserTable;
 using Application.Account.User.Queries.GetUserTableFile;
-using Application.Account.User.Queries.GetUserDetail;
+using Application.Account.User.Queries.GetUser;
 using Application.Account.User.Commands.UpsertUser;
 using Application.Account.User.Commands.UpdateCurrentUser;
 using Application.Account.User.Commands.ProcessFile;
-using Application.Account.User.Queries.GetCurrentUserDetail;
+using Application.Account.User.Queries.GetCurrentUser;
 using Application.Account.User.Commands.DeleteUser;
-using Application.Account.User.Queries.GetUserAuthTable;
+using Application.Account.User.Queries.GetAuditTable;
 
 namespace WebApi.Controllers.Admin;
 
@@ -57,12 +57,11 @@ public class UserController : ApiController
     /// </summary>
     /// <param name="query">Request parameters</param>
     /// <response code="200">List of user activity</response>
-    /// <response code="403">User doesnt have security admin role</response>
-    [Authorize(Roles = eAccountModule.SecurityAdmin)]
+    /// <response code="403">User doesnt have access to audit selected user</response>
     [HttpGet]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
-    public async Task<ActionResult<UserAuthTableVm>> AuthTable([FromQuery] GetUserAuthTableQuery query)
+    public async Task<ActionResult<AuditTableVm>> AuditTable([FromQuery] GetAuditTableQuery query)
     {
         var vm = await Mediator.Send(query);
 
@@ -72,10 +71,10 @@ public class UserController : ApiController
 
     #region CRUD
     /// <summary>
-    /// Get detailed info for requested user id
+    /// Get info for requested user id
     /// </summary>
     /// <param name="id" example="1">Id of user</param>
-    /// <response code="200">Detailed user info</response>
+    /// <response code="200">User info</response>
     /// <response code="403">User doesnt have security admin role</response>
     /// <response code="404">User with requested id was not found</response>
     [Authorize(Roles = eAccountModule.SecurityAdmin)]
@@ -83,9 +82,9 @@ public class UserController : ApiController
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<ActionResult<UserDetailVm>> Get(int id)
+    public async Task<ActionResult<UserVm>> Get(int id)
     {
-        var vm = await Mediator.Send(new GetUserDetailQuery { Id = id });
+        var vm = await Mediator.Send(new GetUserQuery { Id = id });
 
         return base.Ok(vm);
     }
@@ -137,9 +136,9 @@ public class UserController : ApiController
     [HttpGet]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<ActionResult<UserDetailVm>> Current()
+    public async Task<ActionResult<CurrentUserVm>> Current()
     {
-        var vm = await Mediator.Send(new GetCurrentUserDetailQuery());
+        var vm = await Mediator.Send(new GetCurrentUserQuery());
 
         return base.Ok(vm);
     }

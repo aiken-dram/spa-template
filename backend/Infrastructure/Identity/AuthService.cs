@@ -7,10 +7,9 @@ using Shared.Application.Helpers;
 using Microsoft.Extensions.Configuration;
 using Infrastructure.Common;
 using Domain.Enums;
-using Domain.Common;
-using Application.Common.Extensions;
 using Infrastructure.Common.Interfaces;
 using Infrastructure.Common.Models;
+using Shared.Domain.Enums;
 
 namespace Infrastructure.Identity;
 
@@ -29,6 +28,7 @@ public class AuthService : IAuthService
     {
         _logger = logger;
         _context = context;
+        //_configuration = configuration;
 
         _lock = Convert.ToInt32(configuration["AuthSettings:Lock"]);
         _timeout = Convert.ToInt32(configuration["AuthSettings:Timeout"]);
@@ -39,6 +39,11 @@ public class AuthService : IAuthService
         var res = new AuthUserVm();
         res.UserID = user.IdUser;
         res.UserName = user.Name;
+
+        res.UserDistricts = await _context.UserDistricts.Where(p => p.IdUser == user.IdUser)
+                .Include(j => j.IdDistrictNavigation)
+                .Select(q => q.IdDistrictNavigation.IdDistrict)
+                .ToArrayAsync();
 
         res.UserGroups = await _context.UserGroups.Where(p => p.IdUser == user.IdUser)
             .Include(j => j.IdGroupNavigation)
@@ -66,10 +71,7 @@ public class AuthService : IAuthService
         long uid = Convert.ToInt64(userId);
         var user = await _context.Users.FirstOrDefaultAsync(p => p.IdUser == uid);
 
-        if (user == null)
-            throw new NotFoundException(nameof(User), uid);
-
-        var uservm = await GetUserVm(user);
+        var uservm = await GetUserVm(user!);
         var vm = new AuthResponse()
         {
             User = uservm
@@ -95,24 +97,21 @@ public class AuthService : IAuthService
         //password expired
         if (user.PassDate <= DateTime.Now)
         {
+            user.Log(AuthAudit.Expired(user, System));
             //add expired event
-            var auth_expired = new UserAuth(
-                user.IdUser,
-                await _context.AuthActions.DictionaryActionAsync(eAuthAction.Expired, default(CancellationToken)),
-                System);
-            _context.UserAuth.Add(auth_expired);
             await _context.SaveChangesAsync(default(CancellationToken));
             throw new BadRequestException(Messages.PasswordExpired);
         }
 
 
         //timeout
-        var prev_auth = await _context.UserAuth.Include(p => p.IdActionNavigation)
+        var prev_auth = await _context.UserEvents
             .Where(p => p.IdUser == user.IdUser)
+            .Where(p => p.IdTarget == (int)eEventTarget.Auth)
             .OrderByDescending(q => q.Stamp)
             .Skip(0).Take(_lock)
             .ToListAsync();
-        var cnt_wrong = prev_auth.TakeWhile(p => p.IdActionNavigation.Action == eAuthAction.WrongPassword).Count();
+        var cnt_wrong = prev_auth.TakeWhile(p => p.IdAction == (int)eAuthEventAction.WrongPassword).Count();
         if (cnt_wrong >= _timeout)
         {
             var last_wrong = prev_auth.First().Stamp;
@@ -127,11 +126,7 @@ public class AuthService : IAuthService
         //wrong password
         if (user.Pass != hashpass)
         {
-            var auth_wrongpass = new UserAuth(
-                user.IdUser,
-                await _context.AuthActions.DictionaryActionAsync(eAuthAction.WrongPassword, default(CancellationToken)),
-                System);
-            _context.UserAuth.Add(auth_wrongpass);
+            user.Log(AuthAudit.WrongPassword(user, System));
             await _context.SaveChangesAsync(default(CancellationToken));
             //check if password lock now
 
@@ -140,11 +135,7 @@ public class AuthService : IAuthService
                 //lock user
                 user.IsActive = CharBoolean.False;
                 //add lock event
-                var auth_lock = new UserAuth(
-                    user.IdUser,
-                    await _context.AuthActions.DictionaryActionAsync(eAuthAction.Lock, default(CancellationToken)),
-                    System);
-                _context.UserAuth.Add(auth_lock);
+                user.Log(AuthAudit.Lock(user, System));
                 await _context.SaveChangesAsync(default(CancellationToken));
                 throw new BadRequestException(Messages.WrongPassLock(_lock));
             }
@@ -162,11 +153,7 @@ public class AuthService : IAuthService
         };
 
         //save login in UserAuth
-        var auth_login = new UserAuth(
-            user.IdUser,
-            await _context.AuthActions.DictionaryActionAsync(eAuthAction.Login, default(CancellationToken)),
-            System);
-        _context.UserAuth.Add(auth_login);
+        user.Log(AuthAudit.Login(user, System));
         await _context.SaveChangesAsync(default(CancellationToken));
         return vm;
     }

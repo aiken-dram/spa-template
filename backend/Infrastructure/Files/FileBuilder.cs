@@ -35,7 +35,8 @@ public partial class FileBuilder : IFileBuilder
         {
             using var csvWriter = new CsvWriter(streamWriter, CultureInfo.GetCultureInfo("ru-RU"));
             csvWriter.Context.RegisterClassMap<M>();
-            csvWriter.WriteRecords(records);
+            if (records != null)
+                csvWriter.WriteRecords(records);
         }
 
         return memoryStream.ToArray();

@@ -42,6 +42,11 @@ public class AuthUserVm
     /// Array of modules for user
     /// </summary>
     public string[] UserModules { get; set; } = null!;
+
+    /// <summary>
+    /// Array of districts for user
+    /// </summary>
+    public int[]? UserDistricts { get; set; }
 }
 
 /// <summary>

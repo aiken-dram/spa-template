@@ -116,44 +116,6 @@ public class RolesConfiguration : IEntityTypeConfiguration<Role>
     }
 }
 
-public class UserAuthsConfiguration : IEntityTypeConfiguration<UserAuth>
-{
-    public void Configure(EntityTypeBuilder<UserAuth> entity)
-    {
-        entity.HasKey(e => e.IdAuth);
-
-        entity.ToTable("USER_AUTHS", "ACCOUNT");
-
-        entity.Property(e => e.IdAuth).HasColumnName("ID_AUTH");
-
-        entity.Property(e => e.IdAction).HasColumnName("ID_ACTION");
-
-        entity.Property(e => e.IdUser).HasColumnName("ID_USER");
-
-        entity.Property(e => e.Message)
-            .HasMaxLength(100)
-            .HasColumnName("MESSAGE");
-
-        entity.Property(e => e.Stamp)
-            .HasColumnType("timestamp without time zone")
-            .HasColumnName("STAMP");
-
-        entity.Property(e => e.System)
-            .HasMaxLength(255)
-            .HasColumnName("SYSTEM");
-
-        entity.HasOne(d => d.IdActionNavigation)
-            .WithMany(p => p.UserAuths)
-            .HasForeignKey(d => d.IdAction)
-            .HasConstraintName("FK_USER_AUTHS_AUTH_ACTION");
-
-        entity.HasOne(d => d.IdUserNavigation)
-            .WithMany(p => p.UserAuths)
-            .HasForeignKey(d => d.IdUser)
-            .HasConstraintName("FK_USER_AUTHS_USER");
-    }
-}
-
 public class UserGroupsConfiguration : IEntityTypeConfiguration<UserGroup>
 {
     public void Configure(EntityTypeBuilder<UserGroup> entity)

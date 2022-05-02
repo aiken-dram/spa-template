@@ -6,6 +6,7 @@ using Infrastructure.Identity;
 using Infrastructure.Files;
 using Infrastructure.Common.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using Infrastructure.Service;
 
 namespace Infrastructure
 {
@@ -27,6 +28,9 @@ namespace Infrastructure
                        .EnableSensitiveDataLogging(true)
                        .AddInterceptors(new DB9QueryInterceptor())); //this is for old DB2 version 9.8*/
             services.AddScoped<ISPADbContext>(provider => provider.GetRequiredService<SPADbContext>());
+
+            //Domain events
+            services.AddScoped<IDomainEventService, DomainEventService>();
 
             //Message query
             services.AddTransient<IMessageService, MessageService>();

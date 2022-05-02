@@ -43,24 +43,4 @@ namespace Infrastructure.Persistence.Configuration
                 .HasColumnName("STATE");
         }
     }
-
-    public class AuthActionConfiguration : IEntityTypeConfiguration<AuthAction>
-    {
-        public void Configure(EntityTypeBuilder<AuthAction> entity)
-        {
-            entity.HasKey(e => e.IdAction);
-
-            entity.ToTable("AUTH_ACTIONS", "DICT");
-
-            entity.Property(e => e.IdAction).HasColumnName("ID_ACTION");
-
-            entity.Property(e => e.Action)
-                .HasMaxLength(120)
-                .HasColumnName("ACTION");
-
-            entity.Property(e => e.Description)
-                .HasMaxLength(255)
-                .HasColumnName("DESC");
-        }
-    }
 }

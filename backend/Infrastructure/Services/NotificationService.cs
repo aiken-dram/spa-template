@@ -2,9 +2,8 @@ using Application.Common.Interfaces;
 using Shared.Application.Models;
 using Infrastructure.Hubs;
 using Microsoft.AspNetCore.SignalR;
-using System.Threading.Tasks;
 
-namespace Infrastructure
+namespace Infrastructure.Service
 {
     public class NotificationService : INotificationService
     {

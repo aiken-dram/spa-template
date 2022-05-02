@@ -1,11 +1,9 @@
-using Domain.Common.Interfaces;
-
 namespace Domain.Entities;
 
 /// <summary>
 /// Request type dictionary
 /// </summary>
-public partial class RequestType : IDictionaryType
+public partial class RequestType
 {
     public RequestType()
     {

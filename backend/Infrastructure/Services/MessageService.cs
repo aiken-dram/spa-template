@@ -7,7 +7,7 @@ using Application.Common.Interfaces;
 using Microsoft.Extensions.Logging;
 using RabbitMQ.Client;
 
-namespace Infrastructure
+namespace Infrastructure.Service
 {
     public class MessageService : IMessageService
     {

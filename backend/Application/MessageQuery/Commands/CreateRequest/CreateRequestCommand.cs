@@ -7,9 +7,8 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Shared.Application.Extensions;
-using Application.Common.Extensions;
 
-namespace Application.MessageQuery.Commands.CreateRequest;
+namespace Application.Request.Commands.CreateRequest;
 
 public class CreateRequestCommand : IRequest
 {
@@ -53,13 +52,14 @@ public class CreateRequestCommand : IRequest
                 throw new NotFoundException(nameof(RequestType), request.Type);
 
             //1. add request to database
-            var entity = new Domain.Entities.Request();
-            entity.Created = DateTime.Now;
-            entity.IdType = reqType.IdType;
-            entity.IdUser = _user.CurrentUserId;
-            entity.Json = request.Json;
-            entity.IdState = await _context.RequestStates
-                .DictionaryStateAsync(eRequestState.InQueue, cancellationToken);
+            var entity = new Domain.Entities.Request()
+            {
+                Created = DateTime.Now,
+                IdType = reqType.IdType,
+                IdUser = _user.CurrentUserId,
+                Json = request.Json,
+                IdState = (int)eRequestState.InQueue
+            };
             _context.Requests.Add(entity);
             await _context.SaveChangesAsync(cancellationToken);
 

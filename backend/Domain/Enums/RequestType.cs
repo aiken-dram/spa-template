@@ -1,10 +1,21 @@
+using Shared.Domain.Attributes;
+
 namespace Domain.Enums;
 
-public static class eRequestType
+/// <summary>
+/// Request types for message query processing
+/// </summary>
+public enum eRequestType : int
 {
     /// <summary>
-    /// Export data from table of users
+    /// Export data from audit table
     /// </summary>
-    public const string UserExport = "USER_EXPORT";
-}
+    [Dictionary("TABLE_EXPORT_AUDIT")]
+    TableExportAudit = 1,
 
+    /// <summary>
+    /// Export data from sample table
+    /// </summary>
+    [Dictionary("TABLE_EXPORT_SAMPLE")]
+    TableExportSample = 1,
+}

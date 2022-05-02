@@ -1,16 +1,25 @@
-﻿namespace Domain.Entities;
+﻿using Domain.Enums;
+using Shared.Domain.Attributes;
+using Shared.Domain.Models;
+
+namespace Domain.Entities;
 
 /// <summary>
 /// Application user
 /// </summary>
-public partial class User
+public partial class User : AuditableEntity, IHasDomainEvent
 {
+    #region ENTITY
+    /// <summary>
+    /// Default constructor
+    /// </summary>
     public User()
     {
-        UserAuths = new HashSet<UserAuth>();
         UserGroups = new HashSet<UserGroup>();
         UserRoles = new HashSet<UserRole>();
+        UserDistricts = new HashSet<UserDistrict>();
         Requests = new HashSet<Request>();
+        UserEvents = new HashSet<UserEvent>();
     }
 
     /// <summary>
@@ -21,6 +30,7 @@ public partial class User
     /// <summary>
     /// User login
     /// </summary>
+    [Audit]
     public string Login { get; set; } = null!;
 
     /// <summary>
@@ -33,27 +43,26 @@ public partial class User
     /// T - true
     /// F - false
     /// </summary>
+    [Audit(isCharBoolean: true)]
     public string IsActive { get; set; } = null!;
 
     /// <summary>
     /// Expire date of the password
     /// </summary>
+    [Audit]
     public DateTime? PassDate { get; set; }
 
     /// <summary>
     /// User name
     /// </summary>
+    [Audit]
     public string Name { get; set; } = null!;
 
     /// <summary>
     /// User description
     /// </summary>
+    [Audit]
     public string? Description { get; set; }
-
-    /// <summary>
-    /// Collection of user authorizations
-    /// </summary>
-    public virtual ICollection<UserAuth> UserAuths { get; set; }
 
     /// <summary>
     /// Collection of user groups
@@ -66,7 +75,33 @@ public partial class User
     public virtual ICollection<UserRole> UserRoles { get; set; }
 
     /// <summary>
+    /// Collection of user district
+    /// </summary>
+    public virtual ICollection<UserDistrict> UserDistricts { get; set; }
+
+    /// <summary>
     /// Collection of requests from user
     /// </summary>
     public virtual ICollection<Request> Requests { get; set; }
+
+    /// <summary>
+    /// Collection of audit events for general targets
+    /// </summary>
+    public virtual ICollection<UserEvent> UserEvents { get; set; }
+    #endregion
+
+    #region DOMAIN EVENTS
+    /// <summary>
+    /// Domain events
+    /// </summary>
+    public List<DomainEvent> DomainEvents { get; set; } = new List<DomainEvent>();
+    #endregion
+
+    #region AUDIT
+    public override int AuditIdTarget => (int)eEventTarget.AccountUser;
+
+    public override long? AuditTargetId => this.IdUser;
+
+    public override string AuditTargetName => this.Login;
+    #endregion
 }

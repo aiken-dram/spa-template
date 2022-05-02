@@ -40,7 +40,6 @@ public partial class QueryResponseBuilder : IQueryResponseBuilder
             throw new NotFoundException(nameof(Domain.Entities.Request), Id);
 
         //switch by request type and call appropriate export
-        //well, atm only one type
-        await UserTableExportAsync(req, cancellationToken);
+        await TableExportAuditAsync(req, cancellationToken);
     }
 }

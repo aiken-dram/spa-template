@@ -1,32 +1,39 @@
+using Shared.Domain.Attributes;
+
 namespace Domain.Enums;
 
 /// <summary>
 /// Request states for message query processing
 /// </summary>
-public static class eRequestState
+public enum eRequestState : int
 {
     /// <summary>
     /// State after creating request to make a document
     /// </summary>
-    public const string InQueue = "QUEUE";
+    [Dictionary("QUEUE")]
+    InQueue = 1,
 
     /// <summary>
     /// State of request in process of making the file
     /// </summary>
-    public const string Processing = "PROCESSING";
+    [Dictionary("PROCESSING")]
+    Processing = 2,
 
     /// <summary>
     /// File has been created, ready to download
     /// </summary>
-    public const string Ready = "READY";
+    [Dictionary("READY")]
+    Ready = 3,
 
     /// <summary>
     /// Fila has been downloaded
     /// </summary>
-    public const string Delivered = "DELIVERED";
+    [Dictionary("DELIVERED")]
+    Delivered = 4,
 
     /// <summary>
     /// Error while creating file
     /// </summary>
-    public const string Error = "ERROR";
+    [Dictionary("ERROR")]
+    Error = 5
 }

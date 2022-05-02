@@ -32,13 +32,16 @@ public class UpdateCurrentUserCommand : IRequest
     public class UpdateCurrentUserCommandHandler : IRequestHandler<UpdateCurrentUserCommand>
     {
         private readonly ISPADbContext _context;
+        private readonly IAppAuditService _audit;
         private readonly IUserService _user;
 
         public UpdateCurrentUserCommandHandler(
             ISPADbContext context,
+            IAppAuditService audit,
             IUserService user)
         {
             _context = context;
+            _audit = audit;
             _user = user;
         }
 
@@ -55,9 +58,13 @@ public class UpdateCurrentUserCommand : IRequest
             if (entity == null)
                 throw new NotFoundException(nameof(Domain.Entities.User), request.IdUser);
 
+            //audit
+            var audit = await _audit.Edit(entity, request, null);
+
             entity.Name = request.Name;
             entity.Description = request.Description;
 
+            entity.Log(audit);
             await _context.SaveChangesAsync(cancellationToken);
 
             return Unit.Value;

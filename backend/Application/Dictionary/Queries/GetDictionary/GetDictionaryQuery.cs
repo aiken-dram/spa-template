@@ -14,12 +14,15 @@ public class GetDictionaryQuery : IRequest<IList<DictionaryDto>>
     /// Dictionary name
     /// List of available dictionaries:
     ///
+    ///     Districts
+    ///     UserDistricts
     ///     AccessGroups
     ///     AccessRoles
-    ///     AuthActions
+    ///     EventActions
+    ///     EventTargets
     /// 
     /// </summary>
-    /// <example>AuthActions</example>
+    /// <example>Districts</example>
     public string? Dictionary { get; set; }
 
     public class GetDictionaryQueryHandler : IRequestHandler<GetDictionaryQuery, IList<DictionaryDto>>
@@ -45,6 +48,39 @@ public class GetDictionaryQuery : IRequest<IList<DictionaryDto>>
             List<DictionaryDto> vm;
             switch (request.Dictionary)
             {
+                //list of all districts in dictionary
+                case "Districts":
+                    vm = await _context.Districts
+                        .ProjectTo<DictionaryDto>(_mapper.ConfigurationProvider)
+                        .OrderBy(p => p.Value)
+                        .ToListAsync(cancellationToken);
+                    return vm;
+
+                //list of districts available for current user in dictionary
+                case "UserDistricts":
+                    long uid = _user.CurrentUserId;
+                    if (await _context.UserDistricts.CountAsync(p => p.IdUser == uid) > 0)
+                    {
+                        //user Districts have been defined in link table
+                        var query = from r in _context.Districts
+                                    join u in _context.UserDistricts.Where(p => p.IdUser == uid)
+                                    on r.IdDistrict equals u.IdDistrict
+                                    select r;
+                        vm = await query
+                            .ProjectTo<DictionaryDto>(_mapper.ConfigurationProvider)
+                            .OrderBy(p => p.Value)
+                            .ToListAsync(cancellationToken);
+                    }
+                    else
+                    {
+                        //no user districts have been defined, return all districts by default then
+                        vm = await _context.Districts
+                            .ProjectTo<DictionaryDto>(_mapper.ConfigurationProvider)
+                            .OrderBy(p => p.Value)
+                            .ToListAsync(cancellationToken);
+                    }
+                    return vm;
+
                 // list of access groups
                 case "AccessGroups":
                     vm = await _context.Groups
@@ -61,9 +97,17 @@ public class GetDictionaryQuery : IRequest<IList<DictionaryDto>>
                         .ToListAsync(cancellationToken);
                     return vm;
 
-                //list of auth actions
-                case "AuthActions":
-                    vm = await _context.AuthActions
+                //list of audit event actions
+                case "EventActions":
+                    vm = await _context.EventActions
+                        .ProjectTo<DictionaryDto>(_mapper.ConfigurationProvider)
+                        .OrderBy(p => p.Value)
+                        .ToListAsync(cancellationToken);
+                    return vm;
+
+                //list of audit event targets
+                case "EventTargets":
+                    vm = await _context.EventTargets
                         .ProjectTo<DictionaryDto>(_mapper.ConfigurationProvider)
                         .OrderBy(p => p.Value)
                         .ToListAsync(cancellationToken);

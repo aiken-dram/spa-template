@@ -1,8 +1,8 @@
 using MediatR;
 
-namespace Application.MessageQuery.Queries.GetRequestFile;
+namespace Application.Request.Queries.GetRequestFile;
 
 public class GetRequestFileQuery : IRequest<RequestFileVm>
 {
-
+    public long Id { get; set; }
 }

@@ -1,11 +1,9 @@
-using Domain.Common.Interfaces;
-
 namespace Domain.Entities;
 
 /// <summary>
 /// Request state dictionary
 /// </summary>
-public partial class RequestState : IDictionaryState
+public partial class RequestState
 {
     public RequestState()
     {

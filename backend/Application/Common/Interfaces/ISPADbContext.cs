@@ -43,14 +43,24 @@ public interface ISPADbContext
     DbSet<UserRole> UserRoles { get; set; }
 
     /// <summary>
+    /// Links between application users and districts
+    /// </summary>
+    DbSet<UserDistrict> UserDistricts { get; set; }
+
+    /// <summary>
     /// Application users
     /// </summary>
     DbSet<User> Users { get; set; }
 
     /// <summary>
-    /// User authorization events
+    /// User audit events
     /// </summary>
-    DbSet<UserAuth> UserAuth { get; set; }
+    DbSet<UserEvent> UserEvents { get; set; }
+
+    /// <summary>
+    /// User audit events data
+    /// </summary>
+    DbSet<UserEventData> UserEventData { get; set; }
     #endregion
 
     #region DICTIONARY
@@ -65,9 +75,19 @@ public interface ISPADbContext
     DbSet<RequestState> RequestStates { get; set; }
 
     /// <summary>
-    /// Dictionary of authorization event actions
+    /// Dictionary of districts
     /// </summary>
-    DbSet<AuthAction> AuthActions { get; set; }
+    DbSet<District> Districts { get; set; }
+
+    /// <summary>
+    /// Dictionary of audit event actions
+    /// </summary>
+    DbSet<EventAction> EventActions { get; set; }
+
+    /// <summary>
+    /// Dictionary of audit event targets
+    /// </summary>
+    DbSet<EventTarget> EventTargets { get; set; }
     #endregion
 
     #region MESSAGE QUERY
@@ -84,6 +104,30 @@ public interface ISPADbContext
     Task<int> SaveChangesAsync(CancellationToken cancellationToken);
 
     #region COMMANDS
+    /// <summary>
+    /// Load file into database table
+    /// </summary>
+    /// <param name="file">Name of file</param>
+    /// <param name="method">Method</param>
+    /// <param name="table">Table name</param>
+    /// <param name="fields">Fields</param>
+    /// <param name="cancellationToken">Cancellation token</param>
+    /// <returns>Load result</returns>
+    Task<LoadResult> UploadFileAsync(string file, string method, string table, string fields, CancellationToken cancellationToken);
+
+    /// <summary>
+    /// Sets integrity on selected table with immediate checked
+    /// </summary>
+    /// <param name="table">Name of table</param>
+    /// <param name="cancellationToken">Cancellation token</param>
+    Task<int> SetIntegrityAsync(string table, CancellationToken cancellationToken);
+
+    /// <summary>
+    /// Get SQL messages from sql request
+    /// </summary>
+    /// <param name="sql">SQL request</param>
+    IQueryable<SqlMessage> GetSqlMessages(string sql);
+
     /// <summary>
     /// EXPORT SQL to CSV file
     /// </summary>

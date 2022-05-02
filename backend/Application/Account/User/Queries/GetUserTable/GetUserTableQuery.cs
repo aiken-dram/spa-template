@@ -59,7 +59,7 @@ public class GetUserTableQuery : TableQuery, IRequest<UserTableVm>
                 query = query.Where(p =>
                     EF.Functions.Like(p.login, $"%{request.FullSearch}%") ||
                     EF.Functions.Like(p.name, $"%{request.FullSearch}%") ||
-                    EF.Functions.Like(p.description!, $"%{request.FullSearch}%"));
+                    EF.Functions.Like(p.description ?? String.Empty, $"%{request.FullSearch}%"));
 
             var vm = new UserTableVm();
             vm.Items = await query.TableQuery(request, "idUser").ToListAsync(cancellationToken);

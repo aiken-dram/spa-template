@@ -50,10 +50,16 @@ public class UserTableDto : IMapFrom<Domain.Entities.User>
     /// </summary>
     public string[]? groups { get; set; }
 
+    /// <summary>
+    /// Array of district numbers
+    /// </summary>
+    public int[]? districts { get; set; }
+
     public void Mapping(Profile profile)
     {
         profile.CreateMap<Domain.Entities.User, UserTableDto>()
-            .ForMember(p => p.groups, o => o.MapFrom(q => q.UserGroups.Select(r => r.IdGroupNavigation.Name)));
+            .ForMember(p => p.groups, o => o.MapFrom(q => q.UserGroups.Select(r => r.IdGroupNavigation.Name)))
+            .ForMember(p => p.districts, o => o.MapFrom(q => q.UserDistricts.Select(r => r.IdDistrict)));
     }
 }
 

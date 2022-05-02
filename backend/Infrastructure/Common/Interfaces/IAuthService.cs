@@ -1,4 +1,3 @@
-
 using Infrastructure.Common.Models;
 
 namespace Infrastructure.Common.Interfaces;

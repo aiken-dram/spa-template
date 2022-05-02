@@ -65,15 +65,15 @@ builder.Services.AddSwaggerGen(c =>
         Type = SecuritySchemeType.ApiKey,
         Scheme = "Bearer"
     });
-    c.AddSecurityRequirement(new OpenApiSecurityRequirement{
-                    {
-                        new OpenApiSecurityScheme{
-                            Reference = new OpenApiReference{
-                                Id = "Bearer", //The name of the previously defined security scheme.
-                                Type = ReferenceType.SecurityScheme
-                            }
-                        },new List<string>()
-                    }
+    c.AddSecurityRequirement(new OpenApiSecurityRequirement {
+        {
+            new OpenApiSecurityScheme{
+                Reference = new OpenApiReference{
+                    Id = "Bearer", //The name of the previously defined security scheme.
+                    Type = ReferenceType.SecurityScheme
+                }
+            },new List<string>()
+        }
     });
     var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
     var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
