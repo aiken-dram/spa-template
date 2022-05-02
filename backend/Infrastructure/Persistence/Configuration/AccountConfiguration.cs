@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Infrastructure.Persistence.Configuration;
 
-public class GroupRolesConfiguration : IEntityTypeConfiguration<GroupRole>
+public class GroupRoleConfiguration : IEntityTypeConfiguration<GroupRole>
 {
     public void Configure(EntityTypeBuilder<GroupRole> entity)
     {
@@ -31,7 +31,7 @@ public class GroupRolesConfiguration : IEntityTypeConfiguration<GroupRole>
     }
 }
 
-public class GroupsConfiguration : IEntityTypeConfiguration<Group>
+public class GroupConfiguration : IEntityTypeConfiguration<Group>
 {
     public void Configure(EntityTypeBuilder<Group> entity)
     {
@@ -51,7 +51,7 @@ public class GroupsConfiguration : IEntityTypeConfiguration<Group>
     }
 }
 
-public class ModulesConfiguration : IEntityTypeConfiguration<Module>
+public class ModuleConfiguration : IEntityTypeConfiguration<Module>
 {
     public void Configure(EntityTypeBuilder<Module> entity)
     {
@@ -71,7 +71,7 @@ public class ModulesConfiguration : IEntityTypeConfiguration<Module>
     }
 }
 
-public class RoleModulesConfiguration : IEntityTypeConfiguration<RoleModule>
+public class RoleModuleConfiguration : IEntityTypeConfiguration<RoleModule>
 {
     public void Configure(EntityTypeBuilder<RoleModule> entity)
     {
@@ -86,7 +86,6 @@ public class RoleModulesConfiguration : IEntityTypeConfiguration<RoleModule>
         entity.HasOne(d => d.IdModuleNavigation)
             .WithMany(p => p.RoleModules)
             .HasForeignKey(d => d.IdModule)
-            .OnDelete(DeleteBehavior.ClientSetNull)
             .HasConstraintName("FK_ROLE_MODULES_MODULE");
 
         entity.HasOne(d => d.IdRoleNavigation)
@@ -96,7 +95,7 @@ public class RoleModulesConfiguration : IEntityTypeConfiguration<RoleModule>
     }
 }
 
-public class RolesConfiguration : IEntityTypeConfiguration<Role>
+public class RoleConfiguration : IEntityTypeConfiguration<Role>
 {
     public void Configure(EntityTypeBuilder<Role> entity)
     {
@@ -116,7 +115,7 @@ public class RolesConfiguration : IEntityTypeConfiguration<Role>
     }
 }
 
-public class UserGroupsConfiguration : IEntityTypeConfiguration<UserGroup>
+public class UserGroupConfiguration : IEntityTypeConfiguration<UserGroup>
 {
     public void Configure(EntityTypeBuilder<UserGroup> entity)
     {
@@ -140,7 +139,7 @@ public class UserGroupsConfiguration : IEntityTypeConfiguration<UserGroup>
     }
 }
 
-public class UserRolesConfiguration : IEntityTypeConfiguration<UserRole>
+public class UserRoleConfiguration : IEntityTypeConfiguration<UserRole>
 {
     public void Configure(EntityTypeBuilder<UserRole> entity)
     {
@@ -164,7 +163,7 @@ public class UserRolesConfiguration : IEntityTypeConfiguration<UserRole>
     }
 }
 
-public class UsersConfiguration : IEntityTypeConfiguration<User>
+public class UserConfiguration : IEntityTypeConfiguration<User>
 {
     public void Configure(EntityTypeBuilder<User> entity)
     {
@@ -179,7 +178,7 @@ public class UsersConfiguration : IEntityTypeConfiguration<User>
             .HasColumnName("DESC");
 
         entity.Property(e => e.IsActive)
-            .HasColumnType("char")
+            .HasMaxLength(1)
             .HasColumnName("IS_ACTIVE");
 
         entity.Property(e => e.Login)
@@ -194,6 +193,89 @@ public class UsersConfiguration : IEntityTypeConfiguration<User>
             .HasMaxLength(32)
             .HasColumnName("PASS");
 
-        entity.Property(e => e.PassDate).HasColumnName("PASS_DATE");
+        entity.Property(e => e.PassDate)
+            .HasColumnType("timestamp without time zone")
+            .HasColumnName("PASS_DATE");
+    }
+}
+
+public class UserEventConfiguration : IEntityTypeConfiguration<UserEvent>
+{
+    public void Configure(EntityTypeBuilder<UserEvent> entity)
+    {
+        entity.HasKey(e => e.IdEvent);
+
+        entity.ToTable("USER_EVENTS", "ACCOUNT");
+
+        entity.Property(e => e.IdEvent).HasColumnName("ID_EVENT");
+
+        entity.Property(e => e.IdAction).HasColumnName("ID_ACTION");
+
+        entity.Property(e => e.IdTarget).HasColumnName("ID_TARGET");
+
+        entity.Property(e => e.IdUser).HasColumnName("ID_USER");
+
+        entity.Property(e => e.Message)
+            .HasMaxLength(255)
+            .HasColumnName("MESSAGE");
+
+        entity.Property(e => e.Stamp)
+            .HasColumnType("timestamp without time zone")
+            .HasColumnName("STAMP");
+
+        entity.Property(e => e.TargetId).HasColumnName("TARGET_ID");
+
+        entity.Property(e => e.TargetName)
+            .HasMaxLength(255)
+            .HasColumnName("TARGET_NAME");
+
+        entity.HasOne(d => d.IdActionNavigation)
+            .WithMany(p => p.UserEvents)
+            .HasForeignKey(d => d.IdAction)
+            .HasConstraintName("FK_USER_EVENTS_EVENT_ACTION");
+
+        entity.HasOne(d => d.IdTargetNavigation)
+            .WithMany(p => p.UserEvents)
+            .HasForeignKey(d => d.IdTarget)
+            .HasConstraintName("FK_USER_EVENTS_EVENT_TARGET");
+
+        entity.HasOne(d => d.IdUserNavigation)
+            .WithMany(p => p.UserEvents)
+            .HasForeignKey(d => d.IdUser)
+            .HasConstraintName("FK_USER_EVENTS_USER");
+    }
+}
+
+public class UserEventDataConfiguration : IEntityTypeConfiguration<UserEventData>
+{
+    public void Configure(EntityTypeBuilder<UserEventData> entity)
+    {
+        entity.HasKey(e => e.IdEvent);
+
+        entity.ToTable("USER_EVENT_DATA", "ACCOUNT");
+
+        entity.Property(e => e.IdEvent)
+            .ValueGeneratedNever()
+            .HasColumnName("ID_EVENT");
+
+        entity.Property(e => e.Id)
+            .ValueGeneratedOnAdd()
+            .HasColumnName("ID");
+
+        entity.Property(e => e.IdType).HasColumnName("ID_TYPE");
+
+        entity.Property(e => e.Json)
+            .HasMaxLength(500)
+            .HasColumnName("JSON");
+
+        entity.HasOne(d => d.IdEventNavigation)
+            .WithMany(p => p.UserEventData)
+            .HasForeignKey(d => d.IdEvent)
+            .HasConstraintName("FK_USER_EVENT_DATA_USER_EVENT");
+
+        entity.HasOne(d => d.IdTypeNavigation)
+            .WithMany(p => p.UserEventData)
+            .HasForeignKey(d => d.IdType)
+            .HasConstraintName("FK_USER_EVENT_DATA_EVENT_DATA_TYPE");
     }
 }

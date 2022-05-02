@@ -72,7 +72,13 @@ After scaffolding you can use [tools-ConsoleEFConfiguration](https://github.com/
 For Postgre database:
 
 ```sh
-dotnet ef dbcontext scaffold "Host=localhost;Database=SPA;Username=spa_app;Password=db2admin" Npgsql.EntityFrameworkCore.PostgreSQL -o Context --schema ACCOUNT --schema DICT --schema MQ -f
+dotnet ef dbcontext scaffold "Host=localhost;Database=TMP;Username=spa_app;Password=db2admin" Npgsql.EntityFrameworkCore.PostgreSQL -o Context --schema ACCOUNT --schema DICT --schema MQ -f
+```
+
+For MySQL database:
+
+```sh
+dotnet ef dbcontext scaffold "server=127.0.0.1;uid=root;pwd=db2admin;database=mq" MySql.EntityFrameworkCore -o Context -f
 ```
 
 ## Workload
