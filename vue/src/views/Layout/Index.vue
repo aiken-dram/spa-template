@@ -6,14 +6,14 @@
 
     <layout-view />
 
-    <error ref="error"></error>
-    <message ref="message"></message>
+    <error ref="error" />
+    <message ref="message" />
   </v-app>
 </template>
 
 <script>
-import Error from "@/components/base/DialogError";
-import Message from "@/components/base/DialogMessage";
+import Error from "@/components/base/Dialog/Error";
+import Message from "@/components/base/Dialog/Message";
 
 export default {
   name: "LayoutIndex",

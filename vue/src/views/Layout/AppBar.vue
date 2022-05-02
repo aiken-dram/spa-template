@@ -6,11 +6,13 @@
       {{ $t("common.appName") }}
     </v-toolbar-title>
 
-    <v-spacer></v-spacer>
+    <v-spacer />
 
     <v-btn small text :href="HELP.root + doc.href" target="_blank" class="mr-2">
       <v-icon left small>fa-question-circle</v-icon> {{ $t(doc.name) }}
     </v-btn>
+
+    <mq-toolbar ref="MessageQuery" />
 
     <v-menu
       bottom
@@ -26,7 +28,7 @@
         </v-btn>
       </template>
 
-      <v-list>
+      <v-list dense>
         <v-list-item to="/user">
           <v-list-item-icon>
             <v-icon>fa-user</v-icon>
@@ -50,6 +52,8 @@
 import { mapState, mapMutations, mapGetters } from "vuex";
 import { LOGOUT } from "@/store/actions.type";
 import { HELP } from "@/common/config";
+
+import MqToolbar from "@/components/MQToolbar";
 
 export default {
   name: "LayoutAppBar",
@@ -94,6 +98,10 @@ export default {
 
   beforeCreate() {
     this.HELP = HELP;
+  },
+
+  components: {
+    MqToolbar,
   },
 };
 </script>

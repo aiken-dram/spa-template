@@ -1,17 +1,21 @@
 <template>
   <v-card>
-    <confirm ref="confirm"></confirm>
+    <confirm ref="confirm" />
     <user-dialog ref="UserDialog" :refresh-table="load" />
     <base-table-api
       :headers="headers"
       :search="search"
       :data-table="dataTable"
-      download-icon="fa-file-csv"
-      @download-csv="downloadCSV"
+      export-page-icon="fa-file-csv"
+      @export-page="exportPageCSV"
       ref="UserTable"
     >
-      <template v-slot:top>
+      <v-card flat>
         <v-toolbar flat>
+          <v-btn color="primary" @click.stop="create()">
+            {{ $t("common.add") }}...
+          </v-btn>
+          <v-divider class="mx-4" inset vertical></v-divider>
           <v-text-field
             v-model="search"
             append-icon="fa-search"
@@ -20,14 +24,9 @@
             single-line
             hide-details
           ></v-text-field>
-          <v-spacer></v-spacer>
-          <v-divider class="mx-4" inset vertical></v-divider>
-
-          <v-btn color="primary" @click.stop="create()">
-            {{ $t("common.add") }}...
-          </v-btn>
+          <v-spacer />
         </v-toolbar>
-      </template>
+      </v-card>
 
       <template v-slot:item.idUser="{ item }">
         <base-table-action
@@ -43,7 +42,7 @@
         <base-table-action
           icon="fa-history"
           :tooltip="$t('admin.access.users.table.activity')"
-          @click="$router.push(`activity/${item.idUser}`)"
+          @click="$router.push(`audit/${item.idUser}`)"
         ></base-table-action>
       </template>
 
@@ -60,8 +59,10 @@
         </v-list-item>
       </template>
 
-      <template v-slot:item.raions="{ item }">
-        <v-chip v-for="(i, index) in item.raions" :key="index">{{ i }}</v-chip>
+      <template v-slot:item.districts="{ item }">
+        <v-chip v-for="(i, index) in item.districts" :key="index">
+          {{ i }}
+        </v-chip>
       </template>
     </base-table-api>
   </v-card>
@@ -70,16 +71,17 @@
 <script>
 import { mapMutations } from "vuex";
 import { download } from "@/common/file";
-import { UserService } from "@/plugins/api";
+import UserService from "@/api/user";
 
-import BaseTableApi from "@/components/base/TableAPI";
-import BaseTableAction from "@/components/base/TableAction";
-import Confirm from "@/components/base/DialogConfirm";
+import BaseTableApi from "@/components/base/Table/TableAPI";
+import BaseTableAction from "@/components/base/Table/Action";
+import Confirm from "@/components/base/Dialog/Confirm";
 
 import UserDialog from "@/components/Dialog/User";
 
 export default {
   name: "AccessUsers",
+
   data() {
     return {
       search: "", //search in table
@@ -120,8 +122,8 @@ export default {
           },
         },
         {
-          text: this.$i18n.t("admin.access.users.table.raions"),
-          value: "raions",
+          text: this.$i18n.t("admin.access.users.table.districts"),
+          value: "districts",
           sortable: false,
         },
         {
@@ -177,37 +179,25 @@ export default {
         )
         .then((confirm) => {
           if (confirm) {
-            console.log("users.del");
+            //console.log("users.del");
             this.$refs.UserDialog.del(item.idUser);
           }
         });
     },
 
-    downloadCSV(params, total) {
-      //2D: probably need warning here if count > some number
-      this.$refs.confirm
-        .open(
-          this.$i18n.t("common.exportCsv"),
-          this.$i18n.t("common.exportCsvConfirm", { count: total }),
-          {
-            color: "primary",
-          }
-        )
-        .then((confirm) => {
-          if (confirm) {
-            this.setOverlay(true);
-            UserService.tablecsv(params)
-              .then((response) => {
-                download(response);
-                this.$root.$message(this.$i18n.t("common.download"), "primary");
-              })
-              .catch((error) => {
-                this.$root.$error(error);
-              })
-              .finally(() => {
-                this.setOverlay(false);
-              });
-          }
+    exportPageCSV(params) {
+      //this is just exporting current page
+      this.setOverlay(true);
+      UserService.tablecsv(params)
+        .then((response) => {
+          download(response);
+          this.$root.$message(this.$i18n.t("common.download"), "primary");
+        })
+        .catch((error) => {
+          this.$root.$error(error);
+        })
+        .finally(() => {
+          this.setOverlay(false);
         });
     },
   },

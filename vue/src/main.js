@@ -10,7 +10,7 @@ import "@mdi/font/css/materialdesignicons.css";
 import "@fortawesome/fontawesome-free/css/all.css";
 
 import filters from "./common/filters";
-import ApiService from "./plugins/api";
+import ApiService from "./api";
 
 Vue.config.productionTip = false;
 Object.keys(filters).forEach((key) => Vue.filter(key, filters[key]));

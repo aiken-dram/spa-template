@@ -3,7 +3,7 @@
     <base-overlay v-model="overlay" />
     <v-form v-model="valid">
       <base-modelstate v-model="modelstate" />
-      <user-form v-model="user" />
+      <district-form v-model="district" />
     </v-form>
 
     <template v-slot:buttons>
@@ -18,15 +18,15 @@
 </template>
 
 <script>
-import UserService from "@/api/user";
+import DistrictService from "@/api/district";
 
 import BaseDialog from "@/components/base/Dialog/Dialog";
 import BaseOverlay from "@/components/base/Overlay";
 import BaseModelstate from "@/components/base/Modelstate";
-import UserForm from "@/components/Form/User";
+import DistrictForm from "@/components/Form/District";
 
 export default {
-  name: "UserDialog",
+  name: "DistrictDialog",
 
   props: {
     refreshTable: Function,
@@ -39,17 +39,9 @@ export default {
       valid: true,
       modelstate: {},
 
-      user: {
-        login: null,
-        password: null,
+      district: {
+        idDistrict: null,
         name: null,
-        description: null,
-        isActive: null,
-        isExpired: null,
-        passDate: null,
-        groups: [],
-        roles: [],
-        districts: [],
       },
     };
   },
@@ -61,15 +53,15 @@ export default {
     },
 
     create() {
-      this.user = {};
+      this.district = {};
       this.modelstate = {};
       this.show = true;
     },
 
-    open(idUser) {
-      return UserService.get(idUser)
+    open(id) {
+      return DistrictService.get(id)
         .then(({ data }) => {
-          this.user = data;
+          this.district = data;
           this.modelstate = {};
           this.show = true;
         })
@@ -80,7 +72,7 @@ export default {
 
     save() {
       this.overlay = true;
-      UserService.edit(this.user)
+      DistrictService.upsert(this.district)
         .then(() => {
           this.close();
           this.refreshTable();
@@ -95,8 +87,8 @@ export default {
         });
     },
 
-    del(idUser) {
-      UserService.delete(idUser)
+    del(id) {
+      DistrictService.delete(id)
         .then(() => {
           this.$root.$message(this.$i18n.t("common.deleted"), "success");
         })
@@ -111,11 +103,12 @@ export default {
 
   computed: {
     formTitle() {
-      if (!this.user.idUser) return this.$i18n.t("forms.user.newUser");
-      else return this.$i18n.t("forms.user.editUser");
+      if (!this.district.idDistrict)
+        return this.$i18n.t("forms.district.newDistrict");
+      else return this.$i18n.t("forms.district.editDistrict");
     },
     isNew() {
-      return !this.user.idUser;
+      return !this.district.idDistrict;
     },
   },
 
@@ -123,7 +116,7 @@ export default {
     BaseDialog,
     BaseOverlay,
     BaseModelstate,
-    UserForm,
+    DistrictForm,
   },
 };
 </script>

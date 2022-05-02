@@ -30,7 +30,7 @@
                   class="caption"
                   v-for="(ch, j) in v.changes"
                   :key="j"
-                  v-text="$t(ch)"
+                  v-text="ch"
                 ></div>
               </v-col>
             </v-row>
@@ -42,7 +42,7 @@
 </template>
 
 <script>
-import { JsonService } from "@/plugins/api";
+import { JsonService } from "@/api";
 
 export default {
   name: "HomePage",

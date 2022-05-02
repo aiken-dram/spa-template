@@ -9,7 +9,7 @@
       <v-progress-linear v-if="loading" indeterminate absolute top>
       </v-progress-linear>
       <!-- If using vue-router -->
-      <router-view></router-view>
+      <router-view />
     </v-container>
   </v-main>
 </template>

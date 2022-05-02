@@ -10,48 +10,44 @@
             {{ $t("profile.login") }}: {{ user.login }}
           </v-card-title>
           <v-form v-model="valid">
+            <base-modelstate v-model="modelstate"> </base-modelstate>
+
+            <current-user-form v-model="user">
+              <v-col cols="12" class="text-right">
+                <v-btn
+                  :disabled="!valid"
+                  color="success"
+                  class="mr-0"
+                  @click.stop="save"
+                >
+                  {{ $t("profile.update") }}
+                </v-btn>
+              </v-col>
+            </current-user-form>
+          </v-form>
+        </v-card>
+
+        <v-card class="mt-4">
+          <v-card-title> {{ $t("profile.settings") }} </v-card-title>
+
+          <v-form class="v-card-profile">
             <v-container class="py-0">
               <v-row>
-                <v-col cols="12" v-show="modelstate['Error']">
-                  <v-alert type="error">
-                    {{ modelstate["Error"] }}
-                  </v-alert>
-                </v-col>
-
                 <v-col cols="12">
-                  <base-text-field
-                    :label="$t('profile.userName')"
-                    v-model="user.name"
-                    :rules="[
-                      (v) =>
-                        (v || '').length <= 120 ||
-                        $t('forms.common.maxLength', { length: '120' }),
-                    ]"
-                    counter="120"
-                  ></base-text-field>
-                </v-col>
-
-                <v-col cols="12">
-                  <base-text-field
-                    :label="$t('profile.desc')"
-                    v-model="user.desc"
-                    :rules="[
-                      (v) =>
-                        (v || '').length <= 255 ||
-                        $t('forms.common.maxLength', { length: '255' }),
-                    ]"
-                    counter="255"
-                  ></base-text-field>
+                  <v-switch
+                    v-model="disableSignalR"
+                    :label="$t('profile.disableSignalR')"
+                  ></v-switch>
+                  <v-switch
+                    v-model="darkTheme"
+                    @change="toggleDark"
+                    :label="$t('profile.darkTheme')"
+                  />
                 </v-col>
 
                 <v-col cols="12" class="text-right">
-                  <v-btn
-                    :disabled="!valid"
-                    color="success"
-                    class="mr-0"
-                    @click.stop="save"
-                  >
-                    {{ $t("profile.update") }}
+                  <v-btn color="success" class="mr-0" @click.stop="persist">
+                    {{ $t("common.save") }}
                   </v-btn>
                 </v-col>
               </v-row>
@@ -60,16 +56,25 @@
         </v-card>
       </v-col>
 
-      <v-col cols="12" md="8"> </v-col>
+      <v-col cols="12" md="8">
+        <audit-card
+          v-if="user.idUser"
+          :id="user.idUser"
+          current-user
+        ></audit-card>
+      </v-col>
     </v-row>
   </v-container>
 </template>
 
 <script>
 import { mapGetters } from "vuex";
-import { UserService } from "@/plugins/api";
+import UserService from "@/api/user";
 
-import BaseTextField from "@/components/base/TextField";
+import BaseModelstate from "@/components/base/Modelstate";
+import CurrentUserForm from "@/components/Form/CurrentUser";
+
+import AuditCard from "./Admin/Audit";
 
 export default {
   name: "UserProfile",
@@ -79,12 +84,24 @@ export default {
     valid: true,
     modelstate: {},
     user: {},
+
+    /** local config */
+    disableSignalR: false,
+    darkTheme: false,
   }),
 
   mounted() {
     UserService.current().then(({ data }) => {
       this.user = data;
+      //alright here we should call
     });
+
+    if (localStorage.disableSignalR) {
+      this.disableSignalR = localStorage.disableSignalR == "true";
+    }
+    if (localStorage.darkTheme) {
+      this.darkTheme = localStorage.darkTheme == "true";
+    }
   },
 
   methods: {
@@ -102,6 +119,15 @@ export default {
           this.overlay = false;
         });
     },
+
+    persist() {
+      localStorage.disableSignalR = this.disableSignalR;
+      localStorage.darkTheme = this.darkTheme;
+    },
+
+    toggleDark() {
+      this.$vuetify.theme.dark = !this.$vuetify.theme.dark;
+    },
   },
 
   computed: {
@@ -109,7 +135,9 @@ export default {
   },
 
   components: {
-    BaseTextField,
+    BaseModelstate,
+    CurrentUserForm,
+    AuditCard,
   },
 };
 </script>

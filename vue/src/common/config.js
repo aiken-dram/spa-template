@@ -14,7 +14,10 @@ export const MODULES = {
 export const DICT = {
   AccessGroups: "AccessGroups",
   AccessRoles: "AccessRoles",
-  AuthActions: "AuthActions",
+  EventTargets: "EventTargets",
+  EventActions: "EventActions",
+  Districts: "Districts",
+  UserDistricts: "UserDistricts",
 };
 
 /** Documentation links */
@@ -27,4 +30,11 @@ export const HELP = {
       href: "/manuals/user.html",
     },
   ],
+};
+
+/**
+ * SignalR hub subjects for notifications
+ */
+export const SUBJECTS = {
+  ProcessFile: "Account.User.Commands.ProcessFile",
 };

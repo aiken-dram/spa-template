@@ -1,7 +1,7 @@
 //import Vue from "vue";
 //import i18n from "@/plugins/i18n";
 
-import { DictionaryService } from "@/plugins/api";
+import DictionaryService from "@/api/dictionary";
 import { DICT } from "@/common/config";
 import { DICT_FETCH } from "./actions.type";
 import { SET_DICT } from "./mutations.type";
@@ -10,7 +10,10 @@ const initialState = {
   dict: {
     [DICT.AccessGroups]: [],
     [DICT.AccessRoles]: [],
-    [DICT.AuthActions]: [],
+    [DICT.EventActions]: [],
+    [DICT.EventTargets]: [],
+    [DICT.Districts]: [],
+    [DICT.UserDistricts]: [],
   },
 };
 

@@ -76,17 +76,62 @@ const routes = [
             component: () =>
               import(/* webpackChunkName: "admin.dict" */ "@/views/Admin/Dict"),
           },
-          // admin/activity/{id}
+          // admin/audit
           {
-            name: "User activity",
-            path: "activity/:id",
+            name: "Audit",
+            path: "audit",
             component: () =>
               import(
-                /* webpackChunkName: "admin.activity" */ "@/views/Admin/Activity"
+                /* webpackChunkName: "admin.audit" */ "@/views/Admin/Audit"
               ),
             meta: { roles: [MODULES.SecurityAdmin] },
           },
+          // admin/audit/{id}
+          {
+            name: "Audit user",
+            path: "audit/:id",
+            component: () =>
+              import(
+                /* webpackChunkName: "admin.audit" */ "@/views/Admin/Audit"
+              ),
+            meta: { roles: [MODULES.SecurityAdmin] },
+            props: (route) => ({ id: Number(route.params.id) }),
+          },
         ],
+      },
+      // sample
+      {
+        path: "sample",
+        component: () =>
+          import(/* webpackChunkName: "sample" */ "@/views/Sample"),
+        children: [
+          // sample/
+          {
+            name: "Sample work",
+            path: "/",
+            component: () =>
+              import(
+                /* webpackChunkName: "sample.work" */ "@/views/Sample/Work"
+              ),
+          },
+          // admin/audit/{id}
+          {
+            name: "Sample entity",
+            path: "get/:id",
+            component: () =>
+              import(
+                /* webpackChunkName: "admin.audit" */ "@/views/Sample/Get"
+              ),
+            props: (route) => ({ id: Number(route.params.id) }),
+          },
+        ],
+      },
+      // message query
+      {
+        name: "Message query",
+        path: "mq",
+        component: () =>
+          import(/* webpackChunkName: "contacts" */ "@/views/MessageQuery"),
       },
       // contact
       {

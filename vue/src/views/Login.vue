@@ -98,8 +98,8 @@
 
 <script>
 import { LOGIN } from "@/store/actions.type";
-import { JsonService } from "@/plugins/api";
-import { HealthService } from "@/plugins/api";
+import { JsonService } from "@/api";
+import { HealthService } from "@/api";
 
 export default {
   name: "LoginPage",
@@ -112,7 +112,6 @@ export default {
       modelstate: {},
       adminContact: {},
       accessContact: {},
-      old_version: {},
 
       login: null,
       password: null,

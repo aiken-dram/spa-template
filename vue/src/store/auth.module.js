@@ -1,4 +1,4 @@
-import ApiService from "@/plugins/api";
+import ApiService from "@/api";
 import JwtService from "@/plugins/jwt";
 import { LOGIN, LOGOUT, CHECK_AUTH } from "./actions.type";
 import { SET_AUTH, PURGE_AUTH, UPDATE_AUTH } from "./mutations.type";

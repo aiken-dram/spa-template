@@ -12,6 +12,10 @@
     "deleted": "Запись удалена",
     "editSaved": "Изменения сохранены",
     "download": "Файл добавлен в загрузки браузера",
+    "requestCreated": "Запрос создан",
+    "requestProcessed": "Обработан",
+    "exportPage": "Выгрузить текущую страницу таблицы в файл",
+    "exportAll": "Экспортировать всю таблицу в файл",
     "exportCsv": "Выгрузить в CSV",
     "exportCsvConfirm": "Экспортировать {count} записей в файл CSV?",
     "noRecordSelected": "Не выбрано ни одной записи",
@@ -26,8 +30,15 @@
       "noData": "Нет данных",
       "noResult": "Результатов не найдено",
       "page": "Записей на странице:",
-      "pageAll": "Всего:",
+      "pageAll": "Все",
       "records": "Записи {start} - {stop} из {length}"
+    },
+    "filter": "Фильтр",
+    "state": {
+      "success": "Успех",
+      "info": "Информация",
+      "warning": "Предупреждение",
+      "error": "Ошибка"
     }
   },
   "layout": {
@@ -42,9 +53,11 @@
     "result": "Выполнение запроса завершено"
   },
   "flags": {
-    "activitySource": {
+    "auditTarget": {
       "auth": "Авторизация",
-      "history": "История"
+      "accountUsers": "Таблица пользователей",
+      "mqRequests": "Запросы",
+      "dictRaions": "Справочник районов"
     }
   },
   "route": {},
@@ -53,14 +66,21 @@
     "userName": "Имя пользователя",
     "desc": "Описание",
     "update": "Обновить профиль",
-    "settings": "Настройки",
-    "disableSignalR": "Отключить SignalR"
+    "settings": "Локальные настройки",
+    "disableSignalR": "Отключить SignalR",
+    "darkTheme": "Темная тема"
   },
   "nav": {
     "home": "Главная",
+    "sample": "Пример",
+    "sampleWork": "Обработка",
+    "sampleWorkAvatar": "РА",
+    "mq": "Запросы",
     "admin": "Администрирование",
     "adminAccess": "Управление доступом",
     "adminAccessAvatar": "УД",
+    "adminAudit": "Аудит",
+    "adminAuditAvatar": "АУ",
     "adminDict": "Справочники",
     "adminDictAvatar": "СП",
     "doc": "Справка",
@@ -84,7 +104,7 @@
       "users": {
         "title": "Пользователи",
         "table": {
-          "activity": "История действий пользователя",
+          "activity": "Аудит действий пользователя",
           "login": "Логин",
           "loginFilter": "Поиск по логину",
           "isActive": "Активен?",
@@ -120,24 +140,55 @@
     },
     "dict": {
       "raions": {
-        "title": "Районы"
+        "title": "Районы",
+        "table": {
+          "idRaion": "Номер района",
+          "name": "Наименование"
+        },
+        "deleteRaion": "Удалить район?"
+      }
+    }
+  },
+  "audit": {
+    "title": "Аудит действий пользователя {username}",
+    "table": {
+      "user": "Пользователь",
+      "userFilter": "Поиск по логину",
+      "type": "Тип",
+      "stamp": "Дата и время",
+      "stampFilter": "Поиск по дате и времени",
+      "target": "Категория",
+      "targetFilter": "Поиск по категории",
+      "action": "Действие",
+      "actionFilter": "Поиск по действию",
+      "targetName": "Субъект",
+      "targetNameFilter": "Поиск по наименованию субъекта",
+      "data": "Данные"
+    },
+    "data": {
+      "remoteSystem": "Удаленная система",
+      "history": {
+        "replacedWith": "изменено на",
+        "field": "Поле",
+        "updated": "изменено"
       }
     },
-    "activity": {
-      "title": "История действий пользователя {username}",
-      "table": {
-        "type": "Тип",
-        "stamp": "Дата и время",
-        "stampFilter": "Поиск по дате и времени",
-        "action": "Действие",
-        "actionFilter": "Поиск по действию",
-        "subject": "Субъект",
-        "subjectFilter": "Поиск по субъекту",
-        "message": "Сообщение",
-        "messageFilter": "Поиск по сообщению"
+    "fields": {
+      "ACCOUNT": {
+        "USERS": {
+          "Name": "Имя пользователя",
+          "Description": "Описание",
+          "Login": "Логин",
+          "Pass": "Пароль",
+          "IsActive": "Активен",
+          "PassDate": "Срок действия пароля"
+        }
       },
-      "wrongPass": "Неверный пароль",
-      "login": "Вход в программу"
+      "DICT": {
+        "RAIONS": {
+          "Name": "Наименование"
+        }
+      }
     }
   },
   "forms": {
@@ -160,6 +211,12 @@
       "rolesHint": "Выберите роли в дополнение к группам",
       "raions": "Районы",
       "raionsHint": "Оставьте поле пустым для доступа ко всем районам"
+    },
+    "raion": {
+      "newRaion": "Новый район",
+      "editRaion": "Редактирование района",
+      "idRaion": "Номер района",
+      "name": "Наименование"
     }
   },
   "versions": {

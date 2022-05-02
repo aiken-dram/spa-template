@@ -1,15 +1,20 @@
 /** Flags for table columns */
 export default {
-  activitySource: [
+  /*  auditTarget: [
     {
       value: "AUTH",
       icon: "fa-user",
-      tooltip: "flags.activitySource.auth",
+      tooltip: "flags.auditTarget.auth",
     },
     {
-      value: "HISTORY",
+      value: "ACCOUNT.USERS",
       icon: "fa-edit",
-      tooltip: "flags.activitySource.history",
+      tooltip: "flags.auditTarget.accountUsers",
     },
-  ],
+    {
+      value: "MQ.REQUESTS",
+      icon: "fa-envelope",
+      tooltip: "flags.auditTarget.mqRequests",
+    },
+  ],*/
 };

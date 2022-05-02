@@ -7,7 +7,7 @@
     <v-stepper-content step="1">
       <v-col cols="6">
         <v-overlay :value="overlay">
-          <v-progress-circular indeterminate size="64"></v-progress-circular>
+          <v-progress-circular indeterminate size="64" />
         </v-overlay>
         <v-alert type="error" v-show="modelstate['Error']">
           {{ modelstate["Error"] }}
@@ -58,7 +58,7 @@
 
 <script>
 import { SUBJECTS } from "@/common/config";
-import { UserService } from "@/plugins/api";
+import UserService from "@/api/user";
 import BaseSignalR from "@/components/base/SignalR";
 
 export default {

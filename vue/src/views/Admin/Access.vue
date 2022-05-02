@@ -8,7 +8,7 @@
 
     <v-tabs-items v-model="tab">
       <v-tab-item v-for="t of tabs" :key="t.id" :value="t.route">
-        <router-view v-if="tab == t.route"></router-view>
+        <router-view v-if="tab == t.route" />
       </v-tab-item>
     </v-tabs-items>
   </div>

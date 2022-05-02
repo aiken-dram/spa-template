@@ -1,7 +1,7 @@
 <template>
   <v-card>
     <v-overlay :value="overlay">
-      <v-progress-circular indeterminate size="64"></v-progress-circular>
+      <v-progress-circular indeterminate size="64" />
     </v-overlay>
     <v-card-title>
       {{ $t("admin.access.package.accessTable") }}
@@ -83,7 +83,7 @@
 <script>
 import { DICT } from "@/common/config";
 import { mapGetters } from "vuex";
-import { UserService } from "@/plugins/api";
+import UserService from "@/api/user";
 
 export default {
   name: "AccessPackage",
@@ -105,7 +105,7 @@ export default {
         login: null,
         password: null,
         name: null,
-        raion: null,
+        district: null,
         group: null,
       };
       this.packages.push(p);
@@ -141,7 +141,7 @@ export default {
             phone: null,
             groups: [p.group],
             roles: [],
-            raions: p.raion ? [p.raion] : [],
+            districts: p.district ? [p.district] : [],
           };
           return UserService.edit(data)
             .then(() => {

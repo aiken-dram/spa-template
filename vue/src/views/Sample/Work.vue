@@ -1,10 +1,10 @@
 <template>
-  <div></div>
+  <div>Sample Work</div>
 </template>
 
 <script>
 export default {
-  name: "DictRaions",
+  name: "SampleWork",
 };
 </script>
 

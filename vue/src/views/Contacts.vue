@@ -7,15 +7,15 @@
       class="mr-4"
     >
       <v-card>
-        <v-card-title v-text="contact.type"></v-card-title>
+        <v-card-title v-text="contact.type" />
 
         <v-card-text>
-          <div class="my-4 subtitle-1" v-text="contact.name"></div>
+          <div class="my-4 subtitle-1" v-text="contact.name" />
 
-          <div v-text="contact.dept"></div>
+          <div v-text="contact.dept" />
         </v-card-text>
 
-        <v-divider class="mx-4"></v-divider>
+        <v-divider class="mx-4" />
 
         <v-list two-line>
           <v-list-item v-for="p in contact.phone" :key="p.type">
@@ -24,12 +24,12 @@
             </v-list-item-icon>
 
             <v-list-item-content>
-              <v-list-item-title v-text="p.phone"></v-list-item-title>
-              <v-list-item-subtitle v-text="p.type"></v-list-item-subtitle>
+              <v-list-item-title v-text="p.phone" />
+              <v-list-item-subtitle v-text="p.type" />
             </v-list-item-content>
           </v-list-item>
 
-          <v-divider inset></v-divider>
+          <v-divider inset />
 
           <v-list-item v-for="m in contact.mail" :key="m.type">
             <v-list-item-icon>
@@ -37,8 +37,8 @@
             </v-list-item-icon>
 
             <v-list-item-content>
-              <v-list-item-title v-text="m.address"></v-list-item-title>
-              <v-list-item-subtitle v-text="m.type"></v-list-item-subtitle>
+              <v-list-item-title v-text="m.address" />
+              <v-list-item-subtitle v-text="m.type" />
             </v-list-item-content>
           </v-list-item>
         </v-list>
@@ -48,7 +48,7 @@
 </template>
 
 <script>
-import { JsonService } from "@/plugins/api";
+import { JsonService } from "@/api";
 
 export default {
   name: "ContactsPage",

@@ -4,7 +4,7 @@
 
 <script>
 export default {
-  name: "UserPage",
+  name: "SampleWorkToolbar",
 };
 </script>
 

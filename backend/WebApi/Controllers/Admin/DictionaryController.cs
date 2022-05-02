@@ -18,11 +18,11 @@ public class DictionaryController : ApiController
     ///     AccessGroups
     ///     AccessRoles
     ///     AuthActions
-    ///     Raions
-    ///     UserRaions
+    ///     Districts
+    ///     UserDistricts
     /// 
     /// </remarks>
-    /// <param name="Dictionary" example="Raions">Name of dictionary</param>
+    /// <param name="Dictionary" example="Districts">Name of dictionary</param>
     /// <response code="200">Dictionary with requested name</response>
     /// <response code="404">Dictionary with requested name was not found</response>
     [HttpGet("{Dictionary}")]

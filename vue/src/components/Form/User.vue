@@ -76,8 +76,8 @@
       ></base-text-field>
 
       <base-text-field
-        :label="$t('forms.user.description')"
-        v-model="user.desc"
+        :label="$t('forms.user.desc')"
+        v-model="user.description"
         :rules="[
           (v) =>
             (v || '').length <= 255 ||
@@ -100,6 +100,14 @@
         :dictionary="DICT.AccessRoles"
         :hint="$t('forms.user.rolesHint')"
       ></base-select-multiple>
+
+      <base-select-multiple
+        :label="$t('forms.user.districts')"
+        v-model="user.districts"
+        :dictionary="DICT.Districts"
+        deletable-chips
+        :hint="$t('forms.user.districtsHint')"
+      ></base-select-multiple>
     </v-col>
   </v-row>
 </template>
@@ -109,7 +117,7 @@ import { DICT } from "@/common/config";
 
 import BaseCheckbox from "@/components/base/Checkbox";
 import BaseTextField from "@/components/base/TextField";
-import BaseDatePicker from "@/components/base/DatePicker";
+import BaseDatePicker from "@/components/base/DateTime/DatePicker";
 import BaseSelectMultiple from "@/components/base/SelectMultiple";
 
 export default {

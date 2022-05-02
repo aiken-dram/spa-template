@@ -12,10 +12,10 @@
         <v-list-group v-if="item.children" :key="item.name">
           <template v-slot:activator>
             <v-list-item-icon>
-              <v-icon v-text="item.icon"></v-icon>
+              <v-icon v-text="item.icon" />
             </v-list-item-icon>
             <v-list-item-content>
-              <v-list-item-title v-text="item.name"></v-list-item-title>
+              <v-list-item-title v-text="item.name" />
             </v-list-item-content>
           </template>
 
@@ -33,7 +33,7 @@
               ></v-avatar>
             </v-list-item-icon>
             <v-list-item-content>
-              <v-list-item-title v-text="child.name"></v-list-item-title>
+              <v-list-item-title v-text="child.name" />
             </v-list-item-content>
           </v-list-item>
         </v-list-group>
@@ -45,10 +45,10 @@
           link
         >
           <v-list-item-icon>
-            <v-icon v-text="item.icon"></v-icon>
+            <v-icon v-text="item.icon" />
           </v-list-item-icon>
           <v-list-item-content>
-            <v-list-item-title v-text="item.name"></v-list-item-title>
+            <v-list-item-title v-text="item.name" />
           </v-list-item-content>
         </v-list-item>
 
@@ -59,10 +59,10 @@
           :target="item.target"
         >
           <v-list-item-icon>
-            <v-icon v-text="item.icon"></v-icon>
+            <v-icon v-text="item.icon" />
           </v-list-item-icon>
           <v-list-item-content>
-            <v-list-item-title v-text="item.name"></v-list-item-title>
+            <v-list-item-title v-text="item.name" />
           </v-list-item-content>
         </v-list-item>
       </template>
@@ -86,6 +86,22 @@ export default {
           icon: "fa-home",
         },
         {
+          name: this.$t("nav.sample"),
+          icon: "fa-globe",
+          children: [
+            {
+              name: this.$t("nav.sampleWork"),
+              route: "/sample",
+              avatar: this.$t("nav.sampleWorkAvatar"),
+            },
+          ],
+        },
+        {
+          name: this.$t("nav.mq"),
+          route: "/mq",
+          icon: "fa-mail-bulk",
+        },
+        {
           name: this.$t("nav.admin"),
           icon: "fa-cog",
           children: [
@@ -93,6 +109,12 @@ export default {
               name: this.$i18n.t("nav.adminAccess"),
               route: "/admin/access",
               avatar: this.$i18n.t("nav.adminAccessAvatar"),
+              role: MODULES.SecurityAdmin,
+            },
+            {
+              name: this.$i18n.t("nav.adminAudit"),
+              route: "/admin/audit",
+              avatar: this.$i18n.t("nav.adminAuditAvatar"),
               role: MODULES.SecurityAdmin,
             },
             {
