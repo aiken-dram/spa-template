@@ -1,5 +1,3 @@
-using Application.Common.Interfaces;
-
 namespace Application.Services;
 
 public partial class UserService : IUserService

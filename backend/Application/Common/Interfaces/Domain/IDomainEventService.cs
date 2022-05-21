@@ -1,5 +1,3 @@
-using Shared.Domain.Models;
-
 namespace Application.Common.Interfaces;
 
 /// <summary>

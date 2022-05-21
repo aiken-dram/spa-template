@@ -1,6 +1,4 @@
-using Application.Common.Mappings;
 using AutoMapper;
-using Shared.Application.Models;
 
 namespace Application.Account.User.Queries.GetUserTable;
 

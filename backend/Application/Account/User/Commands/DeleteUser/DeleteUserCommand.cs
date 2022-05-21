@@ -1,13 +1,9 @@
-using Application.Common.Interfaces;
-using Shared.Application.Exceptions;
-using MediatR;
-using Domain.Events;
-
 namespace Application.Account.User.Commands.DeleteUser;
 
 /// <summary>
 /// Delete user
 /// </summary>
+[Authorize(Modules = eAccountModule.SecurityAdmin)]
 public class DeleteUserCommand : IRequest
 {
     /// <summary>
@@ -15,42 +11,38 @@ public class DeleteUserCommand : IRequest
     /// </summary>
     /// <example>1</example>
     public long Id { get; set; }
+}
 
-    public class DeleteUserCommandHandler : IRequestHandler<DeleteUserCommand>
+public class DeleteUserCommandHandler : IRequestHandler<DeleteUserCommand>
+{
+    private readonly ISPADbContext _context;
+    private IAuditBuilder _audit => _context.AuditBuilder;
+
+    public DeleteUserCommandHandler(
+        ISPADbContext context)
     {
-        private readonly ISPADbContext _context;
-        private readonly IAppAuditService _audit;
+        _context = context;
+    }
 
-        public DeleteUserCommandHandler(
-            ISPADbContext context, 
-            IAppAuditService audit)
-        {
-            _context = context;
-            _audit = audit;
-        }
+    public async Task<Unit> Handle(DeleteUserCommand request, CancellationToken cancellationToken)
+    {
+        //already have roles declared on api controller
+        //no further restrictions necessary
 
-        public async Task<Unit> Handle(DeleteUserCommand request, CancellationToken cancellationToken)
-        {
-            //already have roles declared on api controller
-            //no further restrictions necessary
+        var entity = await _context.Users
+            .FindAsync(request.Id);
 
-            var entity = await _context.Users
-                .FindAsync(request.Id);
+        if (entity == null)
+            throw new NotFoundException(nameof(Domain.Entities.User), request.Id);
 
-            if (entity == null)
-                throw new NotFoundException(nameof(Domain.Entities.User), request.Id);
+        //add delete to audit log
+        entity.Log(_audit.Delete(entity));
 
-            //add delete to audit log
-            entity.Log(_audit.Delete(entity));
+        _context.Users.Remove(entity);
 
-            _context.Users.Remove(entity);
+        await _context.SaveChangesAsync(cancellationToken);
 
-            //add delete to domain events
-            entity.DomainEvents.Add(new UserDeletedEvent());
-
-            await _context.SaveChangesAsync(cancellationToken);
-
-            return Unit.Value;
-        }
+        return Unit.Value;
     }
 }
+

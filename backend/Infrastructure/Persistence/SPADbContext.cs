@@ -6,7 +6,8 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Domain.Enums;
 using Shared.Domain.Models;
 using Shared.Domain.Attributes;
-using Infrastructure.Common;
+using Shared.Application.Interfaces;
+using Infrastructure.Services;
 
 namespace Infrastructure.Persistence;
 
@@ -53,6 +54,7 @@ public partial class SPADbContext : DbContext, ISPADbContext
 {
     private readonly IDomainEventService _domainEventService;
     private readonly ICurrentUserService _currentUserService;
+    private readonly IAuditBuilder _audit;
 
     public SPADbContext(
         DbContextOptions<SPADbContext> options,
@@ -62,7 +64,14 @@ public partial class SPADbContext : DbContext, ISPADbContext
     {
         _domainEventService = domainEventService;
         _currentUserService = currentUserService;
+
+        // constructor is here since we'll be calling AuditBuilde from this context
+        // cant use DI cause of circular dependency (well i havent researched this yet)
+        // option configuration goes here, if necessary
+        _audit = new AppAuditBuilder(this, options => { });
     }
+
+    public IAuditBuilder AuditBuilder => _audit;
 
     #region SYSTEM
     public virtual DbSet<SQLResult> SQLResult { get; set; } = null!;
@@ -81,24 +90,45 @@ public partial class SPADbContext : DbContext, ISPADbContext
     public virtual DbSet<UserRole> UserRoles { get; set; } = null!;
     public virtual DbSet<UserDistrict> UserDistricts { get; set; } = null!;
     public virtual DbSet<User> Users { get; set; } = null!;
-    public virtual DbSet<UserEvent> UserEvents { get; set; } = null!;
-    public virtual DbSet<UserEventData> UserEventData { get; set; } = null!;
+    public virtual DbSet<UserAudit> UserAudits { get; set; } = null!;
+    public virtual DbSet<UserAuditData> UserAuditData { get; set; } = null!;
+    public virtual DbSet<VAudit> VAudits { get; set; } = null!;
+    public virtual DbSet<VAuditData> VAuditData { get; set; } = null!;
     #endregion
 
     #region DICTIONARY
     public virtual DbSet<RequestType> RequestTypes { get; set; } = null!;
     public virtual DbSet<RequestState> RequestStates { get; set; } = null!;
-    public virtual DbSet<EventAction> EventActions { get; set; } = null!;
-    public virtual DbSet<EventTarget> EventTargets { get; set; } = null!;
+    public virtual DbSet<AuditAction> AuditActions { get; set; } = null!;
+    public virtual DbSet<AuditTarget> AuditTargets { get; set; } = null!;
     public virtual DbSet<District> Districts { get; set; } = null!;
+    public virtual DbSet<AuditDataType> AuditDataTypes { get; set; } = null!;
+    public virtual DbSet<RScriptParamType> RScriptParamTypes { get; set; } = null!;
+
+#warning This is example, remove next 2 lines in actual application
+    public DbSet<SampleDict> SampleDicts { get; set; } = null!;
+    public DbSet<SampleType> SampleTypes { get; set; } = null!;
     #endregion
 
     #region QUERY
     public virtual DbSet<Request> Requests { get; set; } = null!;
     #endregion
 
+    #region R
+    public DbSet<Domain.Entities.RScript> RScripts { get; set; } = null!;
+    public DbSet<RScriptParam> RScriptParams { get; set; } = null!;
+    public DbSet<RScriptTreeNode> RScriptTree { get; set; } = null!;
+    #endregion
+
+#warning This is example, remove entire region in actual application
+    #region SAMPLE
+    public virtual DbSet<Sample> Samples { get; set; } = null!;
+    public DbSet<SampleChild> SampleChildren { get; set; } = null!;
+    public DbSet<SampleAudit> SampleAudits { get; set; } = null!;
+    public DbSet<SampleAuditData> SampleAuditData { get; set; } = null!;
+    #endregion
+
     #region COMMANDS
-    /** these are DB2 funcitons, 2D: change to postgre */
     public async Task<LoadResult> UploadFileAsync(string file, string method, string table, string fields, CancellationToken cancellationToken)
     {
         string sql = $"CALL SYSPROC.ADMIN_CMD('LOAD FROM \"{file}\" OF DEL MODIFIED BY COLDEL; CODEPAGE=1251 DATEFORMAT=\"DD.MM.YYYY\" METHOD P({method}) MESSAGES ON SERVER INSERT INTO {table} ({fields})')";
@@ -134,7 +164,7 @@ public partial class SPADbContext : DbContext, ISPADbContext
 
     public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())
     {
-        //Will create audit events for AuditableEntities that have [AutoAudit] attribute
+        //Will create audit for AuditableEntities that have [AutoAudit] attribute
         foreach (var entry in ChangeTracker.Entries<AuditableEntity>())
         {
             var t = entry.Entity.GetType();
@@ -143,22 +173,22 @@ public partial class SPADbContext : DbContext, ISPADbContext
                 switch (entry.State)
                 {
                     case EntityState.Added:
-                        entry.Entity.AuditEvents.Add(AutoAuditHelper.Create(entry));
+                        entry.Entity.Audits.Add(await _audit.Create(entry));
                         break;
 
                     case EntityState.Modified:
-                        entry.Entity.AuditEvents.Add(AutoAuditHelper.Edit(entry));
+                        entry.Entity.Audits.Add(await _audit.Edit(entry));
                         break;
 
                     case EntityState.Deleted:
-                        entry.Entity.AuditEvents.Add(AutoAuditHelper.Delete(entry));
+                        entry.Entity.Audits.Add(_audit.Delete(entry));
                         break;
                 }
             }
         }
 
         var audits = ChangeTracker.Entries<AuditableEntity>()
-            .Select(x => x.Entity.AuditEvents)
+            .Select(x => x.Entity.Audits)
             .SelectMany(x => x)
             .Where(audit => !audit.IsLogged)
             .ToList().ToArray();
@@ -192,24 +222,33 @@ public partial class SPADbContext : DbContext, ISPADbContext
     }
 
     /// <summary>
-    /// Save audit event log into database
+    /// Save audit log into database
     /// </summary>
-    /// <param name="auditEvents"></param>
-    public void Log(IEnumerable<AuditEvent> auditEvents)
+    /// <param name="audits">List of audits</param>
+    public void Log(IEnumerable<Audit> audits)
     {
         //current user
         var uid = Convert.ToInt64(_currentUserService.UserId);
 
-        // later i would need to split audit into appropriate tables, 
-        // but for now i only have logs in ACCOUNT schema
-        foreach (var @event in auditEvents)
+        // split audit into appropriate tables
+        foreach (var audit in audits)
         {
-            @event.IsLogged = true;
-            //insert current user for not auth events
-            if (@event.IdTarget != (int)eEventTarget.Auth)
-                @event.IdUser = uid;
-            //add user events
-            UserEvents.Add(new UserEvent(@event));
+            audit.IsLogged = true;
+            //insert current user for not auth audit
+            if (audit.IdTarget != (int)eAuditTarget.Auth)
+                audit.IdUser = uid;
+            switch (audit.IdTarget)
+            {
+                case (int)eAuditTarget.Sample:
+                    //add audit for sample to SampleAudit table
+                    SampleAudits.Add(new SampleAudit(audit));
+                    break;
+                default:
+                    //default is adding audit to UserAudits table
+                    UserAudits.Add(new UserAudit(audit));
+                    break;
+            }
+
         }
     }
 }

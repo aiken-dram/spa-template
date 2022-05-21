@@ -1,30 +1,25 @@
-using Application.Common.Interfaces;
-using Microsoft.Extensions.Options;
-using Shared.Application.Services;
-using Shared.Domain.Attributes;
-
 namespace Application.Services;
 
-public class AppAuditService : AuditService, IAppAuditService
+public class AuditService : IAuditService
 {
-    private ISPADbContext _context;
+    private readonly ISPADbContext _context;
+    private IAuditBuilder _audit => _context.AuditBuilder;
 
-    public AppAuditService(IOptions<AuditOptions> options, ISPADbContext context)
-    : base(options)
+    public AuditService(ISPADbContext context)
     {
         _context = context;
     }
 
-    public override async Task<Dictionary<object, string>> GetDictionary(string dictionary)
+    public async Task<Audit> UserUpdatePassword(Domain.Entities.User entity)
     {
-        //return dictionary from dictionary name
-        //well, dont have any dictionaries now
-        return new Dictionary<object, string>();
-    }
+        var res = new Audit(
+            entity,
+            (int)eUserAuditAction.UpdatePassword,
+            null);
 
-    public override async Task<string> PropertyToString(object? val, AuditAttribute attr)
-    {
-        //custom property conversion to string here
-        return await base.PropertyToString(val, attr);
+        // AuditData
+        res.Add(await _audit.PropertyValue(entity, p => p.PassDate));
+
+        return res;
     }
 }

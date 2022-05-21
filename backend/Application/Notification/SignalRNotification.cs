@@ -1,8 +1,3 @@
-using Application.Common.Interfaces;
-using Application.Common.Models;
-using Shared.Application.Models;
-using MediatR;
-
 namespace Application.Notification;
 
 public class SignalRNotification : SignalRCommand, INotification
@@ -32,26 +27,26 @@ public class SignalRNotification : SignalRCommand, INotification
         this.Message = msg;
         this.Bar = bar;
     }
+}
 
-    public class SignalRNotificationHandler : INotificationHandler<SignalRNotification>
+public class SignalRNotificationHandler : INotificationHandler<SignalRNotification>
+{
+    private readonly INotificationService _notification;
+
+    public SignalRNotificationHandler(INotificationService notification)
     {
-        private readonly INotificationService _notification;
+        _notification = notification;
+    }
 
-        public SignalRNotificationHandler(INotificationService notification)
+    public async Task Handle(SignalRNotification notification, CancellationToken cancellationToken)
+    {
+        await _notification.SendAsync(new SignalRMessageDto
         {
-            _notification = notification;
-        }
-
-        public async Task Handle(SignalRNotification notification, CancellationToken cancellationToken)
-        {
-            await _notification.SendAsync(new SignalRMessageDto
-            {
-                From = "server",
-                To = notification.IdConnection,
-                Subject = notification.Subject,
-                Body = notification.Message,
-                Bar = notification.Bar
-            });
-        }
+            From = "server",
+            To = notification.IdConnection,
+            Subject = notification.Subject,
+            Body = notification.Message,
+            Bar = notification.Bar
+        });
     }
 }

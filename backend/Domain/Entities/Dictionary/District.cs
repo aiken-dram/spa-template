@@ -1,8 +1,4 @@
-﻿using Domain.Enums;
-using Shared.Domain.Attributes;
-using Shared.Domain.Models;
-
-namespace Domain.Entities;
+﻿namespace Domain.Entities;
 
 /// <summary>
 /// District dictionary
@@ -36,7 +32,7 @@ public partial class District : AuditableEntity
     #endregion
 
     #region AUDIT
-    public override int AuditIdTarget => (int)eEventTarget.DictionaryDistrict;
+    public override int AuditIdTarget => (int)eAuditTarget.DictionaryDistrict;
 
     public override long? AuditTargetId => this.IdDistrict;
 

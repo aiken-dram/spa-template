@@ -1,5 +1,3 @@
-using Application.Common.Interfaces;
-using Application.Common.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace Application.Services;
@@ -8,6 +6,10 @@ public partial class UserService : IUserService
 {
     public async Task<CurrentUser> GetCurrentUserAsync(CancellationToken cancellationToken)
     {
+        /*
+        could have moved this to domain layer, but CurrentUser is not in domain, and not needed there
+        not related to domain logic aswell, so... skip i guess
+        */
         long uid = Convert.ToInt64(_user.UserId);
         var user = await _context.Users.FirstOrDefaultAsync(p => p.IdUser == uid, cancellationToken);
 

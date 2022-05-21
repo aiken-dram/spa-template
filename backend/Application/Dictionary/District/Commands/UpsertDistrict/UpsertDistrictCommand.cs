@@ -1,10 +1,6 @@
-using Application.Common.Interfaces;
-using MediatR;
-using Shared.Application.Extensions;
-using Shared.Domain.Models;
-
 namespace Application.Dictionary.District.Commands.UpsertDistrict;
 
+[Authorize(Modules = eAccountModule.DictionaryAdmin)]
 public class UpsertDistrictCommand : IRequest
 {
     /// <summary>
@@ -16,49 +12,41 @@ public class UpsertDistrictCommand : IRequest
     /// Name of District
     /// </summary>
     public string Name { get; set; } = null!;
+}
 
-    public class UpsertDistrictCommandHandler : IRequestHandler<UpsertDistrictCommand>
+public class UpsertDistrictCommandHandler : IRequestHandler<UpsertDistrictCommand>
+{
+    private readonly ISPADbContext _context;
+
+    public UpsertDistrictCommandHandler(
+        ISPADbContext context)
     {
-        private readonly ISPADbContext _context;
-        private readonly IAppAuditService _audit;
+        _context = context;
+    }
 
-        public UpsertDistrictCommandHandler(
-            ISPADbContext context,
-            IAppAuditService audit)
+    public async Task<Unit> Handle(UpsertDistrictCommand request, CancellationToken cancellationToken)
+    {
+        //check access
+        Domain.Entities.District? entity;
+
+        entity = await _context.Districts.FindIdAsync(request.IdDistrict, cancellationToken);
+
+        if (entity == null)
         {
-            _context = context;
-            _audit = audit;
+            entity = new Domain.Entities.District()
+            {
+                IdDistrict = request.IdDistrict,
+                Name = request.Name
+            };
+            _context.Districts.Add(entity);
+        }
+        else
+        {
+            entity.Name = request.Name;
         }
 
-        public async Task<Unit> Handle(UpsertDistrictCommand request, CancellationToken cancellationToken)
-        {
-            //check access
-            Domain.Entities.District? entity;
-            //AuditEvent audit;
+        await _context.SaveChangesAsync(cancellationToken);
 
-            entity = await _context.Districts.FindIdAsync(request.IdDistrict, cancellationToken);
-
-            if (entity == null)
-            {
-                entity = new Domain.Entities.District()
-                {
-                    IdDistrict = request.IdDistrict,
-                    Name = request.Name
-                };
-                _context.Districts.Add(entity);
-                //audit = await _audit.Create(entity, request);
-                //audit.TargetName = request.IdDistrict.ToString();
-            }
-            else
-            {
-                //audit = await _audit.Edit(entity, request);
-                entity.Name = request.Name;
-            }
-
-            //entity.Log(audit);
-            await _context.SaveChangesAsync(cancellationToken);
-
-            return Unit.Value;
-        }
+        return Unit.Value;
     }
 }

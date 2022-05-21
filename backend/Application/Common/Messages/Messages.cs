@@ -21,7 +21,7 @@ public static class Messages
     public const string Login = "Login";
     public const string Password = "Password";
     public const string UserName = "User name";
-    public static string UserTableFileName(string fname) => $"User table {fname}.csv";
+    public static string UserTableFileName(DateTime d) => $"User table {d:yyyy-MM-ss}.csv";
     #endregion
 
     #region COMMON
@@ -34,7 +34,19 @@ public static class Messages
     public static string DictionaryNotFound(string dict) => $"Could not find dictinary with requested name '{dict}'.";
     #endregion
 
-    #region QUERY
+    #region MESSAGE QUERY
     public const string NoAccessToDeleteRequest = "User does not have access to delete this request";
+    public const string RequestHasNotBeenProcessed = "Request has not been processed";
+    public const string RequestHasNoGuid = "Request does not have GUID value";
+    public static string AuditTableFileName(DateTime? d) => $"Audit table {d:yyyy-MM-dd}.csv";
+    public static string SampleTableFileName(DateTime? d) => $"Sample table {d:yyyy-MM-dd}.csv";
     #endregion
+
+    #region R
+    public const string CanOnlyDeleteEmptyBranches = "Can only delete empty tree branches";
+    #endregion
+
+    #region SAMPLE
+    #endregion
+
 }

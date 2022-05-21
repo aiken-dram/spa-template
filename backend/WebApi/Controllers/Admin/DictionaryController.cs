@@ -22,7 +22,7 @@ public class DictionaryController : ApiController
     ///     UserDistricts
     /// 
     /// </remarks>
-    /// <param name="Dictionary" example="Districts">Name of dictionary</param>
+    /// <param name="Dictionary" example="AccessGroups">Name of dictionary</param>
     /// <response code="200">Dictionary with requested name</response>
     /// <response code="404">Dictionary with requested name was not found</response>
     [HttpGet("{Dictionary}")]

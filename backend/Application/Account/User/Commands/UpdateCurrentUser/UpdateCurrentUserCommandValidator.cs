@@ -1,4 +1,3 @@
-using Application.Common;
 using FluentValidation;
 
 namespace Application.Account.User.Commands.UpdateCurrentUser;

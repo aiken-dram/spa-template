@@ -1,5 +1,3 @@
-using Shared.Application.Models;
-
 namespace Application.Account.User.Commands.ProcessFile;
 
 /// <summary>

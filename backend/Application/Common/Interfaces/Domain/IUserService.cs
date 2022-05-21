@@ -1,7 +1,8 @@
-using Application.Common.Models;
-
 namespace Application.Common.Interfaces;
 
+/// <summary>
+/// Service for retrieving current user information
+/// </summary>
 public interface IUserService
 {
     /// <summary>

@@ -47,5 +47,15 @@
                 "panel": "new"
             }
         },
+        {
+            "label": "update all package",
+            "type": "shell",
+            "command": ".\\.scripts\\update_packages.cmd",
+            "group": "none",
+            "presentation": {
+                "reveal": "always",
+                "panel": "new"
+            }
+        },
     ]
 }

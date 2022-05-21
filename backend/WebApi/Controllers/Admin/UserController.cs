@@ -1,6 +1,5 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Domain.Enums;
 using Application.Account.User.Queries.GetUserTable;
 using Application.Account.User.Queries.GetUserTableFile;
 using Application.Account.User.Queries.GetUser;
@@ -24,7 +23,6 @@ public class UserController : ApiController
     /// </summary>
     /// <response code="200">Table of users</response>
     /// <response code="403">User doesnt have security admin role</response>
-    [Authorize(Roles = eAccountModule.SecurityAdmin)]
     [HttpGet]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
@@ -41,7 +39,6 @@ public class UserController : ApiController
     /// <param name="query">Request parameters</param>
     /// <response code="200">.csv file with users data</response>
     /// <response code="403">User doesnt have security admin role</response>
-    [Authorize(Roles = eAccountModule.SecurityAdmin)]
     [HttpGet]
     [ProducesResponseType(typeof(FileResult), 200)]
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
@@ -77,7 +74,6 @@ public class UserController : ApiController
     /// <response code="200">User info</response>
     /// <response code="403">User doesnt have security admin role</response>
     /// <response code="404">User with requested id was not found</response>
-    [Authorize(Roles = eAccountModule.SecurityAdmin)]
     [HttpGet("{id}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
@@ -96,7 +92,6 @@ public class UserController : ApiController
     /// <response code="200">Id of updated or created user</response>
     /// <response code="403">User doesnt have security admin role</response>
     /// <response code="404">User with provided id in user data was not found</response>
-    [Authorize(Roles = eAccountModule.SecurityAdmin)]
     [HttpPost]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
@@ -115,7 +110,6 @@ public class UserController : ApiController
     /// <response code="204">User was deleted</response>
     /// <response code="403">User doesnt have security admin role</response>
     /// <response code="404">User with provided id was not found</response>
-    [Authorize(Roles = eAccountModule.SecurityAdmin)]
     [HttpDelete("{id}")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
@@ -168,7 +162,6 @@ public class UserController : ApiController
     /// <param name="idConnection">Id of SignalR connection</param>
     /// <response code="200">Result of processing file</response>
     /// <response code="403">User doesnt have security admin role</response>
-    [Authorize(Roles = eAccountModule.SecurityAdmin)]
     [HttpPost]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status403Forbidden)]

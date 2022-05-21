@@ -1,5 +1,3 @@
-using Shared.Domain.Attributes;
-
 namespace Domain.Enums;
 
 /// <summary>

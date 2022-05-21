@@ -13,7 +13,7 @@ public partial class RequestType
     /// <summary>
     /// Id of type in database
     /// </summary>
-    public int IdType { get; set; }
+    public eRequestType IdType { get; set; }
 
     /// <summary>
     /// Name of type

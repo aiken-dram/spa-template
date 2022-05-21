@@ -1,4 +1,3 @@
-using Application.Common.Interfaces;
 using AutoMapper;
 using Microsoft.Extensions.Logging;
 

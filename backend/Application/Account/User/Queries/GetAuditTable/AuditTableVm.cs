@@ -1,14 +1,14 @@
-using Application.Common.Mappings;
 using AutoMapper;
-using Shared.Application.Models;
-using Domain.Entities;
 
 namespace Application.Account.User.Queries.GetAuditTable;
 
-public class AuditDataTableDto : IMapFrom<UserEventData>
+/// <summary>
+/// Data transfer object for user audit data
+/// </summary>
+public class AuditDataTableDto : IMapFrom<UserAuditData>
 {
     /// <summary>
-    /// Id of event data
+    /// Id of audit data
     /// </summary>
     public long id { get; set; }
 
@@ -29,20 +29,20 @@ public class AuditDataTableDto : IMapFrom<UserEventData>
 
     public void Mapping(Profile profile)
     {
-        profile.CreateMap<UserEventData, AuditDataTableDto>()
+        profile.CreateMap<UserAuditData, AuditDataTableDto>()
             .ForMember(p => p.type, o => o.MapFrom(m => m.IdTypeNavigation.Type));
     }
 }
 
 /// <summary>
-/// Data transfer object for user authorization event
+/// Data transfer object for user audit
 /// </summary>
-public class AuditTableDto : IMapFrom<UserEvent>
+public class AuditTableDto : IMapFrom<UserAudit>
 {
     /// <summary>
-    /// Id of user activity event
+    /// Id of user audit
     /// </summary>
-    public long idEvent { get; set; }
+    public long idAudit { get; set; }
 
     /// <summary>
     /// Id of user
@@ -80,7 +80,7 @@ public class AuditTableDto : IMapFrom<UserEvent>
     public string? action { get; set; }
 
     /// <summary>
-    /// Date and time of user activity event
+    /// Date and time of user audit
     /// </summary>
     public DateTime stamp { get; set; }
 
@@ -100,23 +100,23 @@ public class AuditTableDto : IMapFrom<UserEvent>
     public string? message { get; set; }
 
     /// <summary>
-    /// Collection of event data
+    /// Collection of audit data
     /// </summary>
-    public ICollection<AuditDataTableDto>? eventData { get; set; }
+    public ICollection<AuditDataTableDto>? auditData { get; set; }
 
     public void Mapping(Profile profile)
     {
-        profile.CreateMap<UserEvent, AuditTableDto>()
+        profile.CreateMap<UserAudit, AuditTableDto>()
             .ForMember(p => p.login, o => o.MapFrom(m => m.IdUserNavigation.Login))
             .ForMember(p => p.target, o => o.MapFrom(m => m.IdTargetNavigation.Target))
             .ForMember(p => p.targetDesc, o => o.MapFrom(m => m.IdTargetNavigation.Description))
             .ForMember(p => p.action, o => o.MapFrom(m => m.IdActionNavigation.Description))
-            .ForMember(p => p.eventData, o => o.MapFrom(m => m.UserEventData));
+            .ForMember(p => p.auditData, o => o.MapFrom(m => m.UserAuditData));
     }
 }
 
 /// <summary>
-/// View model for table of user authorization events
+/// View model for table of user audit
 /// </summary>
 public class AuditTableVm : TableVm<AuditTableDto>
 {

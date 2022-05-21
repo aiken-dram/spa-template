@@ -1,5 +1,4 @@
 using Application.Notification;
-using MediatR;
 
 namespace Application.Common.Models;
 

@@ -1,14 +1,12 @@
 using AutoMapper;
-using MediatR;
 using Microsoft.EntityFrameworkCore;
-using Shared.Application.Exceptions;
-using Application.Common.Interfaces;
 
 namespace Application.Account.User.Queries.GetUser;
 
 /// <summary>
 /// Get user by provided Id
 /// </summary>
+[Authorize(Modules = eAccountModule.SecurityAdmin)]
 public class GetUserQuery : IRequest<UserVm>
 {
     /// <summary>
@@ -16,35 +14,35 @@ public class GetUserQuery : IRequest<UserVm>
     /// </summary>
     /// <example>1</example>
     public int Id { get; set; }
+}
 
-    public class GetUserQueryHandler : IRequestHandler<GetUserQuery, UserVm>
+public class GetUserQueryHandler : IRequestHandler<GetUserQuery, UserVm>
+{
+    private readonly ISPADbContext _context;
+    private readonly IMapper _mapper;
+
+    public GetUserQueryHandler(
+        ISPADbContext context,
+        IMapper mapper)
     {
-        private readonly ISPADbContext _context;
-        private readonly IMapper _mapper;
+        _context = context;
+        _mapper = mapper;
+    }
 
-        public GetUserQueryHandler(
-            ISPADbContext context,
-            IMapper mapper)
-        {
-            _context = context;
-            _mapper = mapper;
-        }
+    public async Task<UserVm> Handle(GetUserQuery request, CancellationToken cancellationToken)
+    {
+        //already have roles declared on api controller
+        //no further restrictions necessary
 
-        public async Task<UserVm> Handle(GetUserQuery request, CancellationToken cancellationToken)
-        {
-            //already have roles declared on api controller
-            //no further restrictions necessary
+        var entity = await _context.Users
+            .Include(p => p.UserGroups).Include(p => p.UserRoles).Include(p => p.UserDistricts)
+            .Where(e => e.IdUser == request.Id)
+            .SingleOrDefaultAsync(cancellationToken);
 
-            var entity = await _context.Users
-                .Include(p => p.UserGroups).Include(p => p.UserRoles).Include(p => p.UserDistricts)
-                .Where(e => e.IdUser == request.Id)
-                .SingleOrDefaultAsync(cancellationToken);
+        if (entity == null)
+            throw new NotFoundException(nameof(Domain.Entities.User), request.Id);
 
-            if (entity == null)
-                throw new NotFoundException(nameof(Domain.Entities.User), request.Id);
-
-            var vm = _mapper.Map<UserVm>(entity);
-            return vm;
-        }
+        var vm = _mapper.Map<UserVm>(entity);
+        return vm;
     }
 }

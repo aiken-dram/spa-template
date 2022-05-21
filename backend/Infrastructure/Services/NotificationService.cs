@@ -18,5 +18,10 @@ namespace Infrastructure.Service
         {
             await _hubContext.Clients.Client(message.To).SendAsync("notification", message);
         }
+
+        public async Task SendAllAsync(SignalRMessageDto message)
+        {
+            await _hubContext.Clients.All.SendAsync("notification", message);
+        }
     }
 }

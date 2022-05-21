@@ -1,5 +1,3 @@
-using Application.Common.Mappings;
-
 namespace Application.Dictionary.District.Queries.GetDistrict;
 
 public class DistrictVm : IMapFrom<Domain.Entities.District>

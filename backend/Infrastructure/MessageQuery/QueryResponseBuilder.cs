@@ -4,8 +4,9 @@ using Microsoft.Extensions.Logging;
 using Shared.Application.Extensions;
 using Microsoft.Extensions.Configuration;
 using Infrastructure.Common.Interfaces;
+using Domain.Enums;
 
-namespace Infrastructure.Query;
+namespace Infrastructure.MessageQuery;
 
 public partial class QueryResponseBuilder : IQueryResponseBuilder
 {
@@ -13,9 +14,9 @@ public partial class QueryResponseBuilder : IQueryResponseBuilder
     private readonly ILogger _logger;
     private readonly ISPADbContext _context;
 
-    private readonly string _localPath;
-    private readonly string _exportPath;
+    private readonly string _requestStoragePath;
     private readonly string _databaseExportPath;
+    private readonly string _databaseExportRemotePath;
 
     public QueryResponseBuilder(
         ILogger<QueryResponseBuilder> logger,
@@ -26,9 +27,9 @@ public partial class QueryResponseBuilder : IQueryResponseBuilder
         _context = context;
         _configuration = configuration;
 
-        _localPath = _configuration["SiteSettings:LocalPath"];
-        _exportPath = _configuration["SiteSettings:ExportPath"];
+        _requestStoragePath = _configuration["SiteSettings:RequestStoragePath"];
         _databaseExportPath = _configuration["SiteSettings:DatabaseExportPath"];
+        _databaseExportRemotePath = _configuration["SiteSettings:DatabaseExportRemotePath"];
     }
 
     public async Task ProcessRequestAsync(long Id, CancellationToken cancellationToken)
@@ -40,6 +41,14 @@ public partial class QueryResponseBuilder : IQueryResponseBuilder
             throw new NotFoundException(nameof(Domain.Entities.Request), Id);
 
         //switch by request type and call appropriate export
-        await TableExportAuditAsync(req, cancellationToken);
+        switch (req.IdType)
+        {
+            case eRequestType.TableExportAudit:
+                await TableExportAuditAsync(req, cancellationToken);
+                break;
+            case eRequestType.TableExportSample:
+                await TableExportSampleAsync(req, cancellationToken);
+                break;
+        }
     }
 }

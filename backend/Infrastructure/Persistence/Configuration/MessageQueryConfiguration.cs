@@ -1,61 +1,84 @@
+using IBM.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Infrastructure.Persistence.Configuration;
 
-public class DocumentConfiguration : IEntityTypeConfiguration<Domain.Entities.Request>
+public class RequestConfiguration : IEntityTypeConfiguration<Domain.Entities.Request>
 {
     public void Configure(EntityTypeBuilder<Domain.Entities.Request> entity)
     {
-        entity.HasKey(e => e.IdRequest);
+        entity.HasKey(e => e.IdRequest)
+            .HasName("REQUESTS_PK")
+            .ForDb2IsClustered(false);
 
         entity.ToTable("REQUESTS", "MQ");
 
-        entity.Property(e => e.IdRequest).HasColumnName("ID_REQUEST");
+        entity.Property(e => e.IdRequest)
+            .HasColumnType("bigint(8)")
+            .HasColumnName("ID_REQUEST");
 
         entity.Property(e => e.Created)
-            .HasColumnType("timestamp without time zone")
+            .HasMaxLength(10)
+            .HasPrecision(10)
             .HasColumnName("CREATED");
 
         entity.Property(e => e.Delivered)
-            .HasColumnType("timestamp without time zone")
+            .HasMaxLength(10)
+            .HasPrecision(10)
             .HasColumnName("DELIVERED");
 
         entity.Property(e => e.Guid)
             .HasMaxLength(100)
+            .HasPrecision(100)
+            .IsUnicode(false)
             .HasColumnName("GUID");
 
-        entity.Property(e => e.IdState).HasColumnName("ID_STATE");
+        entity.Property(e => e.IdState)
+            .HasColumnType("integer(4)")
+            .HasColumnName("ID_STATE");
 
-        entity.Property(e => e.IdType).HasColumnName("ID_TYPE");
+        entity.Property(e => e.IdType)
+            .HasColumnType("integer(4)")
+            .HasColumnName("ID_TYPE");
 
-        entity.Property(e => e.IdUser).HasColumnName("ID_USER");
-
-        entity.Property(e => e.Json)
-            .HasMaxLength(500)
-            .HasColumnName("JSON");
+        entity.Property(e => e.IdUser)
+            .HasColumnType("bigint(8)")
+            .HasColumnName("ID_USER");
 
         entity.Property(e => e.Message)
             .HasMaxLength(500)
+            .HasPrecision(500)
+            .IsUnicode(false)
             .HasColumnName("MESSAGE");
 
+        entity.Property(e => e.Json)
+            .HasMaxLength(500)
+            .HasPrecision(500)
+            .IsUnicode(false)
+            .HasColumnName("JSON");
+
         entity.Property(e => e.Processed)
-            .HasColumnType("timestamp without time zone")
+            .HasMaxLength(10)
+            .HasPrecision(10)
             .HasColumnName("PROCESSED");
 
         entity.HasOne(d => d.IdStateNavigation)
             .WithMany(p => p.Requests)
             .HasForeignKey(d => d.IdState)
-            .HasConstraintName("FK_REQUESTS_REQUEST_STATE");
+            .HasConstraintName("REQUESTS_REQUEST_STATES_FK");
 
         entity.HasOne(d => d.IdTypeNavigation)
             .WithMany(p => p.Requests)
             .HasForeignKey(d => d.IdType)
-            .HasConstraintName("FK_REQUESTS_REQUEST_TYPE");
+            .HasConstraintName("REQUESTS_REQUEST_TYPES_FK");
 
         entity.HasOne(d => d.IdUserNavigation)
             .WithMany(p => p.Requests)
             .HasForeignKey(d => d.IdUser)
-            .HasConstraintName("FK_REQUESTS_USER");
+            .HasConstraintName("REQUESTS_USERS_FK");
+
+        entity.Ignore(e => e.DomainEvents);
+        entity.Ignore(e => e.Audits);
     }
 }

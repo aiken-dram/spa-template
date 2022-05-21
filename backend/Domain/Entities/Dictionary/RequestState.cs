@@ -13,7 +13,7 @@ public partial class RequestState
     /// <summary>
     /// Id of state in database
     /// </summary>
-    public int IdState { get; set; }
+    public eRequestState IdState { get; set; }
 
     /// <summary>
     /// Name of state

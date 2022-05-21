@@ -4,23 +4,57 @@ using Shared.Domain.Models;
 
 namespace Infrastructure.Identity;
 
-public class AuthAudit
+/// <summary>
+/// Audit for authorization
+/// </summary>
+public static class AuthAudit
 {
-    public static AuditEvent Auth(int idAction, User user, string? system)
-    => new AuditEvent((int)eEventTarget.Auth, idAction, user.AuditTargetId, user.AuditTargetName, system)
+    /// <summary>
+    /// Create Audit for authorization
+    /// </summary>
+    /// <param name="idAction">Id of audit action</param>
+    /// <param name="user">User entity</param>
+    /// <param name="system">Name of system</param>
+    /// <returns>Audit</returns>
+    public static Audit Auth(int idAction, User user, string? system)
+    => new Audit((int)eAuditTarget.Auth, idAction, user.AuditTargetId, user.AuditTargetName, system)
     {
         IdUser = user.IdUser,
     };
 
-    public static AuditEvent Expired(User entity, string? system)
-    => Auth((int)eAuthEventAction.Expired, entity, system);
+    /// <summary>
+    /// Audit for password expired
+    /// </summary>
+    /// <param name="entity">User entity</param>
+    /// <param name="system">Name of system</param>
+    /// <returns>Audit</returns>
+    public static Audit Expired(User entity, string? system)
+    => Auth((int)eAuthAuditAction.Expired, entity, system);
 
-    public static AuditEvent WrongPassword(User entity, string? system)
-    => Auth((int)eAuthEventAction.WrongPassword, entity, system);
+    /// <summary>
+    /// Audit for wrong password
+    /// </summary>
+    /// <param name="entity">User entity</param>
+    /// <param name="system">Name of system</param>
+    /// <returns>Audit</returns>
+    public static Audit WrongPassword(User entity, string? system)
+    => Auth((int)eAuthAuditAction.WrongPassword, entity, system);
 
-    public static AuditEvent Lock(User entity, string? system)
-    => Auth((int)eAuthEventAction.Lock, entity, system);
+    /// <summary>
+    /// Audit for locking user
+    /// </summary>
+    /// <param name="entity">User entity</param>
+    /// <param name="system">Name of system</param>
+    /// <returns>Audit</returns>
+    public static Audit Lock(User entity, string? system)
+    => Auth((int)eAuthAuditAction.Lock, entity, system);
 
-    public static AuditEvent Login(User entity, string? system)
-    => Auth((int)eAuthEventAction.Login, entity, system);
+    /// <summary>
+    /// Audit for successfull authorization
+    /// </summary>
+    /// <param name="entity">User entity</param>
+    /// <param name="system">Name of system</param>
+    /// <returns>Audit</returns>
+    public static Audit Login(User entity, string? system)
+    => Auth((int)eAuthAuditAction.Login, entity, system);
 }

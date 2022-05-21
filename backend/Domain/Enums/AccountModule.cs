@@ -16,7 +16,7 @@ public static class eAccountModule
     public const string DictionaryAdmin = "DICTADM";
 
     /// <summary>
-    /// Configuration admin
+    /// Configuration admin (includes R script sctructure)
     /// </summary>
     public const string ConfigurationAdmin = "CFGADM";
 

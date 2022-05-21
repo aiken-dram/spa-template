@@ -6,6 +6,7 @@ IHost host = Host.CreateDefaultBuilder(args)
     {
         services.AddInfrastructure(hostContext.Configuration);
         services.AddHostedService<QueryWorker>();
+        services.AddHostedService<RScriptWorker>();
     })
     .Build();
 

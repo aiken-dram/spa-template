@@ -1,5 +1,3 @@
-using Shared.Domain.Attributes;
-
 namespace Domain.Enums;
 
 /// <summary>
@@ -17,5 +15,11 @@ public enum eRequestType : int
     /// Export data from sample table
     /// </summary>
     [Dictionary("TABLE_EXPORT_SAMPLE")]
-    TableExportSample = 1,
+    TableExportSample = 2,
+
+    /// <summary>
+    /// Run R script
+    /// </summary>
+    [Dictionary("RSCRIPT")]
+    RScript = 3
 }

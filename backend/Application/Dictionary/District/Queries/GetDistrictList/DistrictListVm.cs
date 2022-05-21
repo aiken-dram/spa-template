@@ -1,6 +1,3 @@
-using Application.Common.Mappings;
-using Shared.Application.Models;
-
 namespace Application.Dictionary.District.Queries.GetDistrictList;
 
 public class DistrictListDto : IMapFrom<Domain.Entities.District>

@@ -1,7 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Application.Common.Enums;
 using Application.Common.Interfaces;
 using Application.MessageQuery.Queries.GetRequestToolbar;
@@ -20,14 +16,14 @@ namespace WebApi.Controllers.MessageQuery;
 public class RequestController : ApiController
 {
     private IConfiguration _configuration;
-    private IMessageService _message;
+    private IMessageQueryService _mq;
 
     public RequestController(
         IConfiguration configuration,
-        IMessageService message)
+        IMessageQueryService mq)
     {
         this._configuration = configuration;
-        _message = message;
+        _mq = mq;
     }
 
     /// <summary>
@@ -54,7 +50,7 @@ public class RequestController : ApiController
     public async Task<FileResult> Download(long id)
     {
         var vm = await Mediator.Send(new GetRequestFileQuery() { Id = id });
-        string fname = _configuration.GetValue<string>("SiteSettings:ExportPath");
+        string fname = _configuration.GetValue<string>("SiteSettings:RequestStoragePath");
         fname += vm.Guid;
         var content = await System.IO.File.ReadAllBytesAsync(fname);
         return File(content, vm.ContentType, vm.FileName);
@@ -94,9 +90,9 @@ public class RequestController : ApiController
     /// </summary>
     [HttpGet]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    public ActionResult<int> Queue()
+    public ActionResult<int> QueueLength()
     {
-        int queue = _message.Queue(eQueue.QueryService);
+        int queue = _mq.QueueLength(eQueue.QueryService);
         return base.Ok(queue);
     }
 

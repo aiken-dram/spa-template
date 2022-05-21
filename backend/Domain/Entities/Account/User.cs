@@ -1,13 +1,9 @@
-﻿using Domain.Enums;
-using Shared.Domain.Attributes;
-using Shared.Domain.Models;
-
-namespace Domain.Entities;
+﻿namespace Domain.Entities;
 
 /// <summary>
 /// Application user
 /// </summary>
-public partial class User : AuditableEntity, IHasDomainEvent
+public partial class User : AuditableEntity
 {
     #region ENTITY
     /// <summary>
@@ -19,7 +15,8 @@ public partial class User : AuditableEntity, IHasDomainEvent
         UserRoles = new HashSet<UserRole>();
         UserDistricts = new HashSet<UserDistrict>();
         Requests = new HashSet<Request>();
-        UserEvents = new HashSet<UserEvent>();
+        UserAudits = new HashSet<UserAudit>();
+        SampleAudits = new HashSet<SampleAudit>();
     }
 
     /// <summary>
@@ -85,23 +82,38 @@ public partial class User : AuditableEntity, IHasDomainEvent
     public virtual ICollection<Request> Requests { get; set; }
 
     /// <summary>
-    /// Collection of audit events for general targets
+    /// Collection of audit for general targets
     /// </summary>
-    public virtual ICollection<UserEvent> UserEvents { get; set; }
-    #endregion
+    public virtual ICollection<UserAudit> UserAudits { get; set; }
 
-    #region DOMAIN EVENTS
+
     /// <summary>
-    /// Domain events
+    /// Collection of audit for sample
     /// </summary>
-    public List<DomainEvent> DomainEvents { get; set; } = new List<DomainEvent>();
+#warning This is example, remove in actual application
+    public virtual ICollection<SampleAudit> SampleAudits { get; set; }
     #endregion
 
     #region AUDIT
-    public override int AuditIdTarget => (int)eEventTarget.AccountUser;
+    public override int AuditIdTarget => (int)eAuditTarget.AccountUser;
 
     public override long? AuditTargetId => this.IdUser;
 
     public override string AuditTargetName => this.Login;
+    #endregion
+
+    #region DOMAIN LOGIC
+    /// <summary>
+    /// Update password from file
+    /// </summary>
+    /// <param name="hash">MD5 hash of password to store in Pass field</param>
+    /// <param name="passDate">Increment of password expiration date (default 90)</param>
+    public void UpdatePassword(string? hash, int passDate = 90)
+    {
+        //well, it wasnt worth moving this here, just as example i guess?
+        this.Pass = hash ?? String.Empty;
+        this.IsActive = CharBoolean.True;
+        this.PassDate = DateTime.Now.AddDays(passDate);
+    }
     #endregion
 }

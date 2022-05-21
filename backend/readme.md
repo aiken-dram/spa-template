@@ -62,7 +62,7 @@ In `scaffold` directory run:
 For DB2 database:
 
 ```sh
- dotnet ef dbcontext scaffold "server=localhost:50000;uid=db2admin;pwd=db2admin;database=SPA" IBM.EntityFrameworkCore -o Context --schema ACCOUNT --table USERS -f
+ dotnet ef dbcontext scaffold "server=localhost:50000;uid=db2inst1;pwd=db2admin;database=SPA" IBM.EntityFrameworkCore -o Context --schema ACCOUNT --schema DICT --schema MQ --schema R --schema SAMPLE -f
 ```
 
 Note: scaffolding will not work for DB2 version 9.7 or lower

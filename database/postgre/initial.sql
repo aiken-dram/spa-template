@@ -1,71 +1,95 @@
---initial database values--
---//DICTIONARY//--
+/* DICTIONARY */
+DELETE FROM "DICT"."DISTRICTS";
+INSERT INTO "DICT"."DISTRICTS"
+  ("ID_DISTRICT", "NAME") VALUES
+  (1 ,'District A'),
+  (2 ,'District B'),
+  (3 ,'District C');
+  
 DELETE FROM "DICT"."REQUEST_TYPES";
-ALTER SEQUENCE "DICT"."REQUEST_TYPES_ID_TYPE_seq" RESTART WITH 1;
 INSERT INTO "DICT"."REQUEST_TYPES" 
-  ("TYPE", "DESC") VALUES
-  ('USER_EXPORT', 'Export all users to csv');
+  ("ID_TYPE", "TYPE", "DESC") VALUES
+  (1, 'TABLE_EXPORT_AUDIT', 'Audit table export'),
+  (2, 'TABLE_EXPORT_SAMPLE', 'Sample table export');
   
 DELETE FROM "DICT"."REQUEST_STATES";
-ALTER SEQUENCE "DICT"."REQUEST_STATES_ID_STATE_seq" RESTART WITH 1;
 INSERT INTO "DICT"."REQUEST_STATES" 
-  ("STATE", "DESC") VALUES
-  ('QUEUE'     , 'In queue'),
-  ('PROCESSING', 'Processing'),
-  ('READY'     , 'Ready'),
-  ('DELIVERED' , 'Delivered'),
-  ('ERROR'     , 'Error');
+  ("ID_STATE", "STATE", "DESC") VALUES
+  (1, 'QUEUE'     , 'In queue'),
+  (2, 'PROCESSING', 'Processing'),
+  (3, 'READY'     , 'Ready'),
+  (4, 'DELIVERED' , 'Delivered'),
+  (5, 'ERROR'     , 'Error');
 
-DELETE FROM "DICT"."AUTH_ACTIONS";
-ALTER SEQUENCE "DICT"."AUTH_ACTIONS_ID_ACTION_seq" RESTART WITH 1;
-INSERT INTO "DICT"."AUTH_ACTIONS" 
-  ("ACTION", "DESC") VALUES
-  ('LOGIN'    , 'Logging into program'),
-  ('WRONGPASS', 'Entered wrong password'),
-  ('EXPIRED'  , 'Password was expired'),
-  ('LOCK'     , 'User was locked');
+DELETE FROM "DICT"."EVENT_ACTIONS";
+INSERT INTO "DICT"."EVENT_ACTIONS" 
+  ("ID_ACTION", "ACTION", "DESC") VALUES
+  (1, 'CREATE'            ,'Create'),
+  (2, 'EDIT'              ,'Edit'),
+  (3, 'DELETE'            ,'Delete'),
+  (4, 'AUTH_LOGIN'        ,'Logging in'),
+  (5, 'AUTH_WRONGPASS'    ,'Wrong password'),
+  (6, 'AUTH_EXPIRED'      ,'Password expired'),
+  (7, 'AUTH_LOCK'         ,'User locked'),
+  (8, 'USER_UPDATE_PASS'  ,'Update password from file');
   
---//ACCOUNT//--
+DELETE FROM "DICT"."EVENT_TARGETS";
+INSERT INTO "DICT"."EVENT_TARGETS" 
+  ("ID_TARGET", "TARGET", "DESC") VALUES
+  (1, 'AUTH'          ,'Authorization'),
+  (2, 'ACCOUNT.USERS' ,'Application users'),
+  (3, 'MQ.REQUESTS'   ,'Requests'),
+  (4, 'DICT.DISTRICTS'   ,'District dictionary');
+
+DELETE FROM "DICT"."EVENT_DATA_TYPES";
+INSERT INTO "DICT"."EVENT_DATA_TYPES" 
+  ("ID_TYPE", "TYPE", "DESC") VALUES
+  (1, 'VALUE'         ,'Value'),
+  (2, 'FIELD_VALUE'   ,'Field and value'),
+  (3, 'FIELD_OLD_NEW' ,'Field, old and new value');
+  
+/* ACCOUNT */
 DELETE FROM "ACCOUNT"."USERS";
 ALTER SEQUENCE "ACCOUNT"."USERS_ID_USER_seq" RESTART WITH 1;
 INSERT INTO "ACCOUNT"."USERS"
-  ("LOGIN"      ,"PASS"                            ,"IS_ACTIVE" ,"PASS_DATE"  ,"NAME"              ,"DESC") VALUES
-  ('admin'      ,'21232f297a57a5a743894a0e4a801fc3','T'         ,'01.01.2050' ,'Application admin' ,'Application administrator description'),
-  ('secadm'     ,'21232f297a57a5a743894a0e4a801fc3','T'         ,'01.01.2050' ,'Account admin'     ,'Application account administrator description'),
-  ('supervisor' ,'098f6bcd4621d373cade4e832627b4f6','T'         ,'01.01.2050' ,'Supervisor'        ,'Supervisor description'),
-  ('user'       ,'098f6bcd4621d373cade4e832627b4f6','T'         ,'01.01.2050' ,'User'              ,'User description'),
-  ('viewer'     ,'098f6bcd4621d373cade4e832627b4f6','T'         ,'01.01.2050' ,'Viewer'            ,'Viewer description');
+  ("LOGIN"     ,"PASS"                            ,"IS_ACTIVE" ,"PASS_DATE"  ,"NAME"                  ,"DESC") VALUES
+  ('admin'     ,'21232f297a57a5a743894a0e4a801fc3','T'         ,'2050-01-01' ,'Application admin'     ,'Application admin description'),
+  ('secadm'    ,'21232f297a57a5a743894a0e4a801fc3','T'         ,'2050-01-01' ,'Access admmin'         ,'Access admin description'),
+  ('supervise' ,'098f6bcd4621d373cade4e832627b4f6','T'         ,'2050-01-01' ,'Supervisor'            ,'Supervisor description'),
+  ('user'      ,'098f6bcd4621d373cade4e832627b4f6','T'         ,'2050-01-01' ,'User'                  ,'User description'),
+  ('view'      ,'098f6bcd4621d373cade4e832627b4f6','T'         ,'2050-01-01' ,'Viewer'                ,'Viewer description');
    
 DELETE FROM "ACCOUNT"."GROUPS";
 ALTER SEQUENCE "ACCOUNT"."GROUPS_ID_GROUP_seq" RESTART WITH 1;
 INSERT INTO "ACCOUNT"."GROUPS"
   ("NAME", "DESC") VALUES
-  ('Administrators'         ,'Application administrators'),
-  ('Account administrators' ,'Application account administrators'),
-  ('Supervisors'            ,'Users with extended access to data'),
-  ('Users'                  ,'Application users'),
-  ('Viewers'                ,'Users with restricted access to read only');
+  ('Admins'         ,'Group of application admins'),
+  ('Access admins'  ,'Group of access admins'),
+  ('Supervisors'    ,'Group of supervisors'),
+  ('Users'          ,'Group of application users'),
+  ('Viewers'        ,'Group of users with readonly access');
   
 DELETE FROM "ACCOUNT"."ROLES";
 ALTER SEQUENCE "ACCOUNT"."ROLES_ID_ROLE_seq" RESTART WITH 1;
 INSERT INTO "ACCOUNT"."ROLES"
   ("NAME", "DESC") VALUES
-  ('Application admin'       ,'Full access to application'),
-  ('Access admin'            ,'Access to account administration'),
-  ('Extended data access'    ,'Extended access to data'),
-  ('Restricted to view only' ,'Restricted access to read only');
+  ('Admin'        ,'Admin role'),
+  ('Access admin' ,'Access admin role'),
+  ('Supervisor'   ,'Supervisor role'),
+  ('Readonly'     ,'Read only role');
   
 DELETE FROM "ACCOUNT"."MODULES";
 ALTER SEQUENCE "ACCOUNT"."MODULES_ID_MODULE_seq" RESTART WITH 1;
 INSERT INTO "ACCOUNT"."MODULES"
   ("NAME", "DESC") VALUES
-  ('DICTADM'   ,'Access to dictionary administration'),
-  ('CFGADM'    ,'Access to configuration administration'),
-  ('SECADM'    ,'Access to account administration'),
-  ('SUPERVISE' ,'Extended data access'),
-  ('READONLY'  ,'Restricted access to read only');
+  ('DICTADM'   ,'Dictionary admin module'),
+  ('CFGADM'    ,'Application configuration module'),
+  ('SECADM'    ,'Security admin module'),
+  ('SUPERVISE' ,'Extended data access module'),
+  ('READONLY'  ,'Read only access restriction module');
   
 DELETE FROM "ACCOUNT"."USER_GROUPS";
+ALTER SEQUENCE "ACCOUNT"."USER_GROUPS_ID_seq" RESTART WITH 1;
 INSERT INTO "ACCOUNT"."USER_GROUPS"
   ("ID_USER", "ID_GROUP") VALUES
   (1, 1),
@@ -75,6 +99,7 @@ INSERT INTO "ACCOUNT"."USER_GROUPS"
   (5, 5);
   
 DELETE FROM "ACCOUNT"."GROUP_ROLES";
+ALTER SEQUENCE "ACCOUNT"."GROUP_ROLES_ID_seq" RESTART WITH 1;
 INSERT INTO "ACCOUNT"."GROUP_ROLES"
   ("ID_GROUP", "ID_ROLE") VALUES
   (1, 1),
@@ -85,6 +110,7 @@ INSERT INTO "ACCOUNT"."GROUP_ROLES"
   (5, 4);
   
 DELETE FROM "ACCOUNT"."ROLE_MODULES";
+ALTER SEQUENCE "ACCOUNT"."ROLE_MODULES_ID_seq" RESTART WITH 1;
 INSERT INTO "ACCOUNT"."ROLE_MODULES"
   ("ID_ROLE", "ID_MODULE") VALUES
   (1, 1),
@@ -92,3 +118,9 @@ INSERT INTO "ACCOUNT"."ROLE_MODULES"
   (2, 3),
   (3, 4),
   (4, 5);
+
+DELETE FROM "ACCOUNT"."USER_DISTRICTS";
+ALTER SEQUENCE "ACCOUNT"."USER_DISTRICTS_ID_seq" RESTART WITH 1;
+INSERT INTO "ACCOUNT"."USER_DISTRICTS"
+  ("ID_USER", "ID_DISTRICT") VALUES
+  (4, 1);

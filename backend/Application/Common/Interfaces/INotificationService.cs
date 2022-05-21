@@ -1,5 +1,3 @@
-using Shared.Application.Models;
-
 namespace Application.Common.Interfaces;
 
 public interface INotificationService
@@ -9,4 +7,10 @@ public interface INotificationService
     /// </summary>
     /// <param name="message">SignalR message data transfer object</param>
     Task SendAsync(SignalRMessageDto message);
+
+    /// <summary>
+    /// Send message to all clients
+    /// </summary>
+    /// <param name="message">SignalR message data transfer object</param>
+    Task SendAllAsync(SignalRMessageDto message);
 }

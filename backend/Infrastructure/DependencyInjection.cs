@@ -1,12 +1,15 @@
 ﻿using Application.Common.Interfaces;
-using Infrastructure.Persistence;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Infrastructure.Identity;
 using Infrastructure.Files;
+using Infrastructure.Persistence;
+using IBM.EntityFrameworkCore;
+using Shared.Infrastructure.Interceptors;
 using Infrastructure.Common.Interfaces;
-using Microsoft.EntityFrameworkCore;
 using Infrastructure.Service;
+using Infrastructure.MessageQuery;
+using Infrastructure.RScript;
 
 namespace Infrastructure
 {
@@ -17,26 +20,31 @@ namespace Infrastructure
         /// </summary>
         public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
         {
-            // database
+            // Database (switching to DB2 in docker, cuz easier)
             services.AddDbContext<SPADbContext>(options =>
-                options.UseNpgsql(configuration.GetConnectionString("SPADatabase"), p => { p.CommandTimeout(600); })
-                    .EnableSensitiveDataLogging(true)); //for workload, though dont think there's a db2advisor in postgre
-
-            //this was IBM DB2
-            /*services.AddDbContext<SPADbContext>(options =>
-                options.UseDb2(configuration.GetConnectionString("SPADatabase"), p => { p.SetServerInfo(IBMDBServerType.LUW); p.UseRowNumberForPaging(); p.CommandTimeout(600); })
-                       .EnableSensitiveDataLogging(true)
-                       .AddInterceptors(new DB9QueryInterceptor())); //this is for old DB2 version 9.8*/
+                options.UseDb2(configuration.GetConnectionString("SPADatabase"), p =>
+                {
+                    p.SetServerInfo(IBMDBServerType.LUW);
+                    p.UseRowNumberForPaging();
+                    p.CommandTimeout(600);
+                })
+                .EnableSensitiveDataLogging(true));
             services.AddScoped<ISPADbContext>(provider => provider.GetRequiredService<SPADbContext>());
 
             //Domain events
             services.AddScoped<IDomainEventService, DomainEventService>();
 
             //Message query
-            services.AddTransient<IMessageService, MessageService>();
+            services.AddTransient<IMessageQueryService, MessageQueryService>();
 
-            //File builder
-            services.AddTransient<IFileBuilder, FileBuilder>();
+            //Query builder
+            services.AddTransient<IQueryResponseBuilder, QueryResponseBuilder>();
+
+            //R script builder
+            services.AddTransient<IRScriptBuilder, RScriptBuilder>();
+
+            //File service
+            services.AddTransient<IFileService, FileService>();
 
             return services;
         }

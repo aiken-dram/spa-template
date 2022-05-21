@@ -1,5 +1,4 @@
 using AutoMapper;
-using Application.Common.Mappings;
 
 namespace Application.Account.User.Queries.GetUser;
 

@@ -1,6 +1,4 @@
-using Application.Common.Mappings;
 using AutoMapper;
-using Shared.Application.Models;
 
 namespace Application.MessageQuery.Queries.GetRequestToolbar;
 
@@ -34,17 +32,17 @@ public class RequestToolbarDto : IMapFrom<Domain.Entities.Request>
     /// <summary>
     /// Timestamp of creating request
     /// </summary>
-    public DateTime Created { get; set; }
+    public DateTime created { get; set; }
 
     /// <summary>
     /// Timestamp of processing request
     /// </summary>
-    public DateTime? Processed { get; set; }
+    public DateTime? processed { get; set; }
 
     /// <summary>
     /// Message
     /// </summary>
-    public string? Message { get; set; }
+    public string? message { get; set; }
 
     public void Mapping(Profile profile)
     {
@@ -56,5 +54,7 @@ public class RequestToolbarDto : IMapFrom<Domain.Entities.Request>
 
 public class RequestToolbarVm : ListVm<RequestToolbarDto>
 {
-    public int? Count { get; set; }
+    public int? CountReady { get; set; }
+
+    public int? CountTotal { get; set; }
 }

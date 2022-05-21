@@ -1,6 +1,3 @@
-using MediatR;
-using Shared.Domain.Models;
-
 namespace Application.Common.Models;
 
 public class DomainEventNotification<TDomainEvent> : INotification where TDomainEvent : DomainEvent

@@ -1,8 +1,4 @@
 using AutoMapper;
-using MediatR;
-using Shared.Application.Exceptions;
-using Application.Common.Interfaces;
-using Shared.Application.Extensions;
 
 namespace Application.Account.User.Queries.GetCurrentUser;
 
@@ -10,32 +6,32 @@ namespace Application.Account.User.Queries.GetCurrentUser;
 /// Get currently authenticated user information
 /// </summary>
 public class GetCurrentUserQuery : IRequest<CurrentUserVm>
+{ }
+
+public class GetCurrentUserQueryHandler : IRequestHandler<GetCurrentUserQuery, CurrentUserVm>
 {
-    public class GetCurrentUserQueryHandler : IRequestHandler<GetCurrentUserQuery, CurrentUserVm>
+    private readonly ISPADbContext _context;
+    private readonly IMapper _mapper;
+    private readonly IUserService _user;
+
+    public GetCurrentUserQueryHandler(
+        ISPADbContext context,
+        IMapper mapper,
+        IUserService user)
     {
-        private readonly ISPADbContext _context;
-        private readonly IMapper _mapper;
-        private readonly IUserService _user;
+        _context = context;
+        _mapper = mapper;
+        _user = user;
+    }
 
-        public GetCurrentUserQueryHandler(
-            ISPADbContext context,
-            IMapper mapper,
-            IUserService user)
-        {
-            _context = context;
-            _mapper = mapper;
-            _user = user;
-        }
+    public async Task<CurrentUserVm> Handle(GetCurrentUserQuery request, CancellationToken cancellationToken)
+    {
+        var uid = _user.CurrentUserId;
+        var entity = await _context.Users.FindIdAsync(uid, cancellationToken);
 
-        public async Task<CurrentUserVm> Handle(GetCurrentUserQuery request, CancellationToken cancellationToken)
-        {
-            var uid = _user.CurrentUserId;
-            var entity = await _context.Users.FindIdAsync(uid, cancellationToken);
+        if (entity == null)
+            throw new NotFoundException(nameof(Domain.Entities.User), uid);
 
-            if (entity == null)
-                throw new NotFoundException(nameof(Domain.Entities.User), uid);
-
-            return _mapper.Map<CurrentUserVm>(entity);
-        }
+        return _mapper.Map<CurrentUserVm>(entity);
     }
 }

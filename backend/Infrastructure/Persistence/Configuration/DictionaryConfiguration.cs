@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Domain.Entities;
+using IBM.EntityFrameworkCore;
 
 namespace Infrastructure.Persistence.Configuration;
 
@@ -8,19 +9,27 @@ public class RequestTypeConfiguration : IEntityTypeConfiguration<RequestType>
 {
     public void Configure(EntityTypeBuilder<RequestType> entity)
     {
-        entity.HasKey(e => e.IdType);
+        entity.HasKey(e => e.IdType)
+            .HasName("REQUEST_TYPES_PK")
+            .ForDb2IsClustered(false);
 
         entity.ToTable("REQUEST_TYPES", "DICT");
 
-        entity.Property(e => e.IdType).HasColumnName("ID_TYPE");
-
-        entity.Property(e => e.Description)
-            .HasMaxLength(255)
-            .HasColumnName("DESC");
+        entity.Property(e => e.IdType)
+            .HasColumnType("integer(4)")
+            .HasColumnName("ID_TYPE");
 
         entity.Property(e => e.Type)
             .HasMaxLength(120)
+            .HasPrecision(120)
+            .IsUnicode(false)
             .HasColumnName("TYPE");
+
+        entity.Property(e => e.Description)
+            .HasMaxLength(255)
+            .HasPrecision(255)
+            .IsUnicode(false)
+            .HasColumnName("DESC");
     }
 }
 
@@ -28,85 +37,111 @@ public class RequestStateConfiguration : IEntityTypeConfiguration<RequestState>
 {
     public void Configure(EntityTypeBuilder<RequestState> entity)
     {
-        entity.HasKey(e => e.IdState);
+        entity.HasKey(e => e.IdState)
+            .HasName("REQUEST_STATES_PK")
+            .ForDb2IsClustered(false);
 
         entity.ToTable("REQUEST_STATES", "DICT");
 
-        entity.Property(e => e.IdState).HasColumnName("ID_STATE");
-
-        entity.Property(e => e.Description)
-            .HasMaxLength(255)
-            .HasColumnName("DESC");
+        entity.Property(e => e.IdState)
+            .HasColumnType("integer(4)")
+            .HasColumnName("ID_STATE");
 
         entity.Property(e => e.State)
             .HasMaxLength(120)
+            .HasPrecision(120)
+            .IsUnicode(false)
             .HasColumnName("STATE");
-    }
-}
-
-public class EventTargetConfiguration : IEntityTypeConfiguration<EventTarget>
-{
-    public void Configure(EntityTypeBuilder<EventTarget> entity)
-    {
-        entity.HasKey(e => e.IdTarget);
-
-        entity.ToTable("EVENT_TARGETS", "DICT");
-
-        entity.Property(e => e.IdTarget)
-            .ValueGeneratedNever()
-            .HasColumnName("ID_TARGET");
 
         entity.Property(e => e.Description)
             .HasMaxLength(255)
+            .HasPrecision(255)
+            .IsUnicode(false)
             .HasColumnName("DESC");
-
-        entity.Property(e => e.Target)
-            .HasMaxLength(120)
-            .HasColumnName("TARGET");
     }
 }
 
-public class EventActionConfiguration : IEntityTypeConfiguration<EventAction>
+public class AuditDataTypeConfiguration : IEntityTypeConfiguration<AuditDataType>
 {
-    public void Configure(EntityTypeBuilder<EventAction> entity)
+    public void Configure(EntityTypeBuilder<AuditDataType> entity)
     {
-        entity.HasKey(e => e.IdAction);
+        entity.HasKey(e => e.IdType)
+            .HasName("AUDIT_DATA_TYPES_PK")
+            .ForDb2IsClustered(false);
 
-        entity.ToTable("EVENT_ACTIONS", "DICT");
+        entity.ToTable("AUDIT_DATA_TYPES", "DICT");
+
+        entity.Property(e => e.IdType)
+            .HasColumnType("integer(4)")
+            .HasColumnName("ID_TYPE");
+
+        entity.Property(e => e.Type)
+            .HasMaxLength(120)
+            .HasPrecision(120)
+            .IsUnicode(false)
+            .HasColumnName("TYPE");
+
+        entity.Property(e => e.Description)
+            .HasMaxLength(255)
+            .HasPrecision(255)
+            .IsUnicode(false)
+            .HasColumnName("DESC");
+    }
+}
+
+public class AuditActionConfiguration : IEntityTypeConfiguration<AuditAction>
+{
+    public void Configure(EntityTypeBuilder<AuditAction> entity)
+    {
+        entity.HasKey(e => e.IdAction)
+            .HasName("AUDIT_ACTIONS_PK")
+            .ForDb2IsClustered(false);
+
+        entity.ToTable("AUDIT_ACTIONS", "DICT");
 
         entity.Property(e => e.IdAction)
-            .ValueGeneratedNever()
+            .HasColumnType("integer(4)")
             .HasColumnName("ID_ACTION");
 
         entity.Property(e => e.Action)
             .HasMaxLength(120)
+            .HasPrecision(120)
+            .IsUnicode(false)
             .HasColumnName("ACTION");
 
         entity.Property(e => e.Description)
             .HasMaxLength(255)
+            .HasPrecision(255)
+            .IsUnicode(false)
             .HasColumnName("DESC");
     }
 }
 
-public class EventDataTypeConfiguration : IEntityTypeConfiguration<EventDataType>
+public class AuditTargetConfiguration : IEntityTypeConfiguration<AuditTarget>
 {
-    public void Configure(EntityTypeBuilder<EventDataType> entity)
+    public void Configure(EntityTypeBuilder<AuditTarget> entity)
     {
-        entity.HasKey(e => e.IdType);
+        entity.HasKey(e => e.IdTarget)
+            .HasName("AUDIT_TARGETS_PK")
+            .ForDb2IsClustered(false);
 
-        entity.ToTable("EVENT_DATA_TYPES", "DICT");
+        entity.ToTable("AUDIT_TARGETS", "DICT");
 
-        entity.Property(e => e.IdType)
-            .ValueGeneratedNever()
-            .HasColumnName("ID_TYPE");
+        entity.Property(e => e.IdTarget)
+            .HasColumnType("integer(4)")
+            .HasColumnName("ID_TARGET");
+
+        entity.Property(e => e.Target)
+            .HasMaxLength(120)
+            .HasPrecision(120)
+            .IsUnicode(false)
+            .HasColumnName("TARGET");
 
         entity.Property(e => e.Description)
             .HasMaxLength(255)
+            .HasPrecision(255)
+            .IsUnicode(false)
             .HasColumnName("DESC");
-
-        entity.Property(e => e.Type)
-            .HasMaxLength(120)
-            .HasColumnName("TYPE");
     }
 }
 
@@ -114,16 +149,111 @@ public class DistrictConfiguration : IEntityTypeConfiguration<District>
 {
     public void Configure(EntityTypeBuilder<District> entity)
     {
-        entity.HasKey(e => e.IdDistrict);
+        entity.HasKey(e => e.IdDistrict)
+            .HasName("DISTRICTS_PK")
+            .ForDb2IsClustered(false);
 
         entity.ToTable("DISTRICTS", "DICT");
 
         entity.Property(e => e.IdDistrict)
             .ValueGeneratedNever()
+            .HasColumnType("integer(4)")
             .HasColumnName("ID_DISTRICT");
 
         entity.Property(e => e.Name)
             .HasMaxLength(200)
+            .HasPrecision(200)
+            .IsUnicode(false)
             .HasColumnName("NAME");
+
+        entity.Ignore(e => e.Audits);
+    }
+}
+
+public class RScriptParamTypeConfiguration : IEntityTypeConfiguration<RScriptParamType>
+{
+    public void Configure(EntityTypeBuilder<RScriptParamType> entity)
+    {
+        entity.HasKey(e => e.IdType)
+            .HasName("RSCRIPT_PARAM_TYPES_PK")
+            .ForDb2IsClustered(false);
+
+        entity.ToTable("RSCRIPT_PARAM_TYPES", "DICT");
+
+        entity.Property(e => e.IdType)
+            .HasColumnType("integer(4)")
+            .HasColumnName("ID_TYPE");
+
+        entity.Property(e => e.Type)
+            .HasMaxLength(120)
+            .HasPrecision(120)
+            .IsUnicode(false)
+            .HasColumnName("TYPE");
+
+        entity.Property(e => e.Description)
+            .HasMaxLength(255)
+            .HasPrecision(255)
+            .IsUnicode(false)
+            .HasColumnName("DESC");
+    }
+}
+
+#warning This is example, remove in actual application
+public class SampleTypeConfiguration : IEntityTypeConfiguration<SampleType>
+{
+    public void Configure(EntityTypeBuilder<SampleType> entity)
+    {
+        entity.HasKey(e => e.IdType)
+                .HasName("SAMPLE_TYPES_PK")
+                .ForDb2IsClustered(false);
+
+        entity.ToTable("SAMPLE_TYPES", "DICT");
+
+        entity.Property(e => e.IdType)
+            .HasColumnType("integer(4)")
+            .HasColumnName("ID_TYPE");
+
+        entity.Property(e => e.Type)
+            .HasMaxLength(120)
+            .HasPrecision(120)
+            .IsUnicode(false)
+            .HasColumnName("TYPE");
+
+        entity.Property(e => e.Description)
+            .HasMaxLength(255)
+            .HasPrecision(255)
+            .IsUnicode(false)
+            .HasColumnName("DESC");
+    }
+}
+
+#warning This is example, remove in actual application
+public class SampleDictConfiguration : IEntityTypeConfiguration<SampleDict>
+{
+    public void Configure(EntityTypeBuilder<SampleDict> entity)
+    {
+        entity.HasKey(e => e.IdDict)
+            .HasName("SAMPLE_DICT_PK")
+            .ForDb2IsClustered(false);
+
+        entity.ToTable("SAMPLE_DICT", "DICT");
+
+        entity.Property(e => e.IdDict)
+            .HasColumnType("bigint(8)")
+            .HasColumnName("ID_DICT");
+
+        entity.Property(e => e.Dict)
+            .HasMaxLength(120)
+            .HasPrecision(120)
+            .IsUnicode(false)
+            .HasColumnName("DICT");
+
+        entity.Property(e => e.Description)
+            .HasMaxLength(255)
+            .HasPrecision(255)
+            .IsUnicode(false)
+            .HasColumnName("DESC");
+
+        entity.Ignore(e => e.Audits);
     }
 }

@@ -98,20 +98,20 @@ public class AuthService : IAuthService
         if (user.PassDate <= DateTime.Now)
         {
             user.Log(AuthAudit.Expired(user, System));
-            //add expired event
+            //add expired audit
             await _context.SaveChangesAsync(default(CancellationToken));
             throw new BadRequestException(Messages.PasswordExpired);
         }
 
 
         //timeout
-        var prev_auth = await _context.UserEvents
+        var prev_auth = await _context.UserAudits
             .Where(p => p.IdUser == user.IdUser)
-            .Where(p => p.IdTarget == (int)eEventTarget.Auth)
+            .Where(p => p.IdTarget == (int)eAuditTarget.Auth)
             .OrderByDescending(q => q.Stamp)
             .Skip(0).Take(_lock)
             .ToListAsync();
-        var cnt_wrong = prev_auth.TakeWhile(p => p.IdAction == (int)eAuthEventAction.WrongPassword).Count();
+        var cnt_wrong = prev_auth.TakeWhile(p => p.IdAction == (int)eAuthAuditAction.WrongPassword).Count();
         if (cnt_wrong >= _timeout)
         {
             var last_wrong = prev_auth.First().Stamp;

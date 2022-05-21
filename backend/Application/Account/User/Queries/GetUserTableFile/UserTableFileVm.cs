@@ -1,5 +1,3 @@
-using Shared.Application.Models;
-
 namespace Application.Account.User.Queries.GetUserTableFile;
 
 /// <summary>

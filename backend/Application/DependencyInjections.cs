@@ -18,7 +18,7 @@ public static class DependencyInjection
         services.AddTransient(typeof(IPipelineBehavior<,>), typeof(PerformanceBehaviour<,>));
         services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
         services.AddTransient<IUserService, UserService>();
-        services.AddScoped<IAppAuditService, AppAuditService>();
+        services.AddTransient<IAuditService, AuditService>();
 
         return services;
     }

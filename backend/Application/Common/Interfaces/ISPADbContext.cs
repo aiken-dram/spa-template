@@ -1,11 +1,18 @@
 using Shared.Application.Models.DB2;
-using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace Application.Common.Interfaces;
 
 public interface ISPADbContext
 {
+    /// <summary>
+    /// Audit builder
+    /// </summary>
+    /// <remarks>
+    /// For implementing manual audit
+    /// </remarks>
+    IAuditBuilder AuditBuilder { get; }
+
     #region ACCOUNT
     /// <summary>
     /// Links between access groups and access roles 
@@ -53,14 +60,26 @@ public interface ISPADbContext
     DbSet<User> Users { get; set; }
 
     /// <summary>
-    /// User audit events
+    /// User audit
     /// </summary>
-    DbSet<UserEvent> UserEvents { get; set; }
+    DbSet<UserAudit> UserAudits { get; set; }
 
     /// <summary>
-    /// User audit events data
+    /// User audit data
     /// </summary>
-    DbSet<UserEventData> UserEventData { get; set; }
+    DbSet<UserAuditData> UserAuditData { get; set; }
+
+    /* might have to change from view to MQT later when audit will become too big */
+    /* or maybe even not union them at all, if even bigger */
+    /// <summary>
+    /// View of all audit
+    /// </summary>
+    DbSet<VAudit> VAudits { get; set; }
+
+    /// <summary>
+    /// View of all audit data
+    /// </summary>
+    DbSet<VAuditData> VAuditData { get; set; }
     #endregion
 
     #region DICTIONARY
@@ -80,14 +99,37 @@ public interface ISPADbContext
     DbSet<District> Districts { get; set; }
 
     /// <summary>
-    /// Dictionary of audit event actions
+    /// Dictionary of audit actions
     /// </summary>
-    DbSet<EventAction> EventActions { get; set; }
+    DbSet<AuditAction> AuditActions { get; set; }
 
     /// <summary>
-    /// Dictionary of audit event targets
+    /// Dictionary of audit targets
     /// </summary>
-    DbSet<EventTarget> EventTargets { get; set; }
+    DbSet<AuditTarget> AuditTargets { get; set; }
+
+    /// <summary>
+    /// Dictionary of audit data types
+    /// </summary>
+    DbSet<AuditDataType> AuditDataTypes { get; set; }
+
+    /// <summary>
+    /// Dictionary of R script parameter types
+    /// </summary>
+    DbSet<RScriptParamType> RScriptParamTypes { get; set; }
+
+    /// <summary>
+    /// Sample dictionary
+    /// </summary>
+#warning This is example, remove in actual application
+    DbSet<SampleDict> SampleDicts { get; set; }
+
+
+    /// <summary>
+    /// Dictionary of sample types
+    /// </summary>
+#warning This is example, remove in actual application
+    DbSet<SampleType> SampleTypes { get; set; }
     #endregion
 
     #region MESSAGE QUERY
@@ -95,6 +137,46 @@ public interface ISPADbContext
     /// Requests in message query for processing with background service worker
     /// </summary>
     DbSet<Domain.Entities.Request> Requests { get; set; }
+    #endregion
+
+    #region R
+    /// <summary>
+    /// R scripts
+    /// </summary>
+    DbSet<Domain.Entities.RScript> RScripts { get; set; }
+
+    /// <summary>
+    /// R script parameters
+    /// </summary>
+    DbSet<Domain.Entities.RScriptParam> RScriptParams { get; set; }
+
+    /// <summary>
+    /// Statistic menu tree
+    /// </summary>
+    DbSet<Domain.Entities.RScriptTreeNode> RScriptTree { get; set; }
+    #endregion
+
+#warning This is example, remove entire region in actual application
+    #region SAMPLE
+    /// <summary>
+    /// Sample entities
+    /// </summary>
+    DbSet<Domain.Entities.Sample> Samples { get; set; }
+
+    /// <summary>
+    /// Sample children entities
+    /// </summary>
+    DbSet<SampleChild> SampleChildren { get; set; }
+
+    /// <summary>
+    /// Sample audit
+    /// </summary>
+    DbSet<SampleAudit> SampleAudits { get; set; }
+
+    /// <summary>
+    /// Sample audit data
+    /// </summary>
+    DbSet<SampleAuditData> SampleAuditData { get; set; }
     #endregion
 
     /// <summary>
