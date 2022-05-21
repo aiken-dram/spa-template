@@ -1,9 +1,9 @@
 <template>
   <div>
     <div id="circleG" v-if="$store.state.appLoad">
-      <div id="circleG_1" class="circleG"></div>
-      <div id="circleG_2" class="circleG"></div>
-      <div id="circleG_3" class="circleG"></div>
+      <div id="circleG_1" class="circleG" />
+      <div id="circleG_2" class="circleG" />
+      <div id="circleG_3" class="circleG" />
     </div>
     <router-view v-else />
   </div>

@@ -13,7 +13,7 @@
               </v-overlay>
               <v-toolbar dark flat>
                 <v-toolbar-title> {{ $t("login.pageTitle") }} </v-toolbar-title>
-                <v-spacer></v-spacer>
+                <v-spacer />
                 <v-progress-circular
                   v-if="health === null"
                   indeterminate
@@ -68,7 +68,7 @@
                   ></v-text-field>
 
                   <div>
-                    <v-spacer></v-spacer>
+                    <v-spacer />
                     <v-btn dark color="primary" block type="submit">
                       {{ $t("login.login") }}
                     </v-btn>

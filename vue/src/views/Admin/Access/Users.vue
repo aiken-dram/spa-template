@@ -15,7 +15,7 @@
           <v-btn color="primary" @click.stop="create()">
             {{ $t("common.add") }}...
           </v-btn>
-          <v-divider class="mx-4" inset vertical></v-divider>
+          <v-divider class="mx-4" inset vertical />
           <v-text-field
             v-model="search"
             append-icon="fa-search"

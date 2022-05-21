@@ -23,7 +23,7 @@
             :hint="$t('admin.access.file.fileHint')"
           >
             <template v-slot:message="{ message }">
-              <span v-html="message"></span>
+              <span v-html="message" />
             </template>
             <template v-slot:append-outer>
               <v-btn

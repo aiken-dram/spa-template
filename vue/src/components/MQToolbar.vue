@@ -46,7 +46,7 @@
           </v-list-item-avatar>
 
           <v-list-item-content>
-            <v-list-item-title v-text="item.typeDesc"></v-list-item-title>
+            <v-list-item-title v-text="item.typeDesc" />
 
             <v-list-item-subtitle>
               <span>
@@ -77,7 +77,10 @@
           </v-list-item-action>
         </v-list-item>
 
-        <v-divider v-if="i < items.length - 1" :key="i"></v-divider>
+        <v-divider
+          v-if="i < items.length - 1"
+          :key="`divider-${i}`"
+        ></v-divider>
       </template>
     </v-list>
   </v-menu>
@@ -93,6 +96,7 @@ export default {
 
   data: () => ({
     cnt: 0,
+    cntTotal: 0,
     cntInterval: "",
     loading: false,
     disabled: true,
@@ -117,13 +121,15 @@ export default {
       MQService.toolbar()
         .then(({ data }) => {
           //console.log(data);
-          this.cnt = data.count;
+          this.cnt = data.countReady;
+          this.cntTotal = data.countTotal;
           this.items = data.items;
           this.disabled = !(this.items && this.items.length > 0);
         })
         .catch(() => {
           //error while retrieving count of ready documents
           this.cnt = -1;
+          this.cntTotal = -1;
           this.items = [];
           this.disabled = true;
         })
@@ -144,7 +150,7 @@ export default {
         })
         .finally(() => {
           this.setOverlay(false);
-          this.load();
+          this.update();
         });
     },
 

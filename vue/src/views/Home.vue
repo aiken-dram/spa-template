@@ -22,10 +22,10 @@
           <v-timeline-item v-for="(v, i) in versions" :key="i" :color="v.color">
             <v-row class="pt-1">
               <v-col cols="2">
-                <strong v-text="v.date"></strong>
+                <strong v-text="v.date" />
               </v-col>
               <v-col cols="10">
-                <strong v-text="v.version"></strong>
+                <strong v-text="v.version" />
                 <div
                   class="caption"
                   v-for="(ch, j) in v.changes"

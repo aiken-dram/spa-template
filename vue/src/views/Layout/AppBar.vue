@@ -1,6 +1,6 @@
 <template>
   <v-app-bar :clipped-left="$vuetify.breakpoint.lgAndUp" app dark>
-    <v-app-bar-nav-icon @click.stop="switchDrawer()"></v-app-bar-nav-icon>
+    <v-app-bar-nav-icon @click.stop="switchDrawer()" />
 
     <v-toolbar-title class="hidden-sm-and-down font-weight-light mr-2">
       {{ $t("common.appName") }}

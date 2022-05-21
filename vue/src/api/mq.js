@@ -18,7 +18,7 @@ export default {
   delete(id) {
     return ApiService.delete(`messagequery/request/delete/${id}`);
   },
-  queue() {
-    return ApiService.get("messagequery/request/queue");
+  queueLength() {
+    return ApiService.get("messagequery/request/queuelength");
   },
 };

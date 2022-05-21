@@ -1,7 +1,13 @@
 <template>
   <v-card>
-    <confirm ref="confirm" />
-    <v-card-title>{{ $t("audit.title", { username: username }) }}</v-card-title>
+    <confirm ref="confirm"></confirm>
+    <v-card-title>
+      {{
+        hasUsername
+          ? $t("audit.titleUser", { username: username })
+          : $t("audit.title")
+      }}
+    </v-card-title>
     <base-table-api
       :headers="cHeaders"
       :data-table="dataTable"
@@ -165,11 +171,12 @@ export default {
         .then((confirm) => {
           if (confirm) {
             this.setOverlay(true);
+            if (this.id) params["id"] = this.id;
             var data = {
               type: "TABLE_EXPORT_AUDIT",
               json: JSON.stringify(params),
             };
-            console.log(data);
+            //console.log(data);
             MQService.create(data)
               .then(() => {
                 this.$root.$message(
@@ -206,6 +213,11 @@ export default {
     cHeaders() {
       if (this.id) return this.headers.filter((p) => p.value != "login");
       else return this.headers;
+    },
+
+    hasUsername() {
+      if (this.currentUser) return true;
+      else return !!this.username;
     },
   },
 

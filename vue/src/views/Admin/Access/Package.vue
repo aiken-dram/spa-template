@@ -1,7 +1,7 @@
 <template>
   <v-card>
     <v-overlay :value="overlay">
-      <v-progress-circular indeterminate size="64" />
+      <v-progress-circular indeterminate size="64"></v-progress-circular>
     </v-overlay>
     <v-card-title>
       {{ $t("admin.access.package.accessTable") }}
@@ -64,10 +64,10 @@
             fa-exclamation-triangle
           </v-icon>
         </template>
-        <span v-text="p.error"></span>
+        <span v-text="p.error" />
       </v-tooltip>
 
-      <v-toolbar-title v-show="p.result" v-text="p.result"></v-toolbar-title>
+      <v-toolbar-title v-show="p.result" v-text="p.result" />
     </v-toolbar>
     <v-card-actions>
       <v-btn class="ml-2" @click="processPackages">

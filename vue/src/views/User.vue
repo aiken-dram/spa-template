@@ -42,7 +42,7 @@
                     v-model="darkTheme"
                     @change="toggleDark"
                     :label="$t('profile.darkTheme')"
-                  />
+                  ></v-switch>
                 </v-col>
 
                 <v-col cols="12" class="text-right">
