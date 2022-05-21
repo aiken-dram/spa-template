@@ -8,6 +8,7 @@ public partial class AuditTarget
     public AuditTarget()
     {
         UserAudits = new HashSet<UserAudit>();
+        SampleAudits = new HashSet<SampleAudit>();
     }
 
     /// <summary>
@@ -29,4 +30,10 @@ public partial class AuditTarget
     /// Collection of user audit with this target
     /// </summary>
     public virtual ICollection<UserAudit> UserAudits { get; set; }
+
+#warning SAMPLE
+    /// <summary>
+    /// Collection of sample audit with this target
+    /// </summary>
+    public virtual ICollection<SampleAudit> SampleAudits { get; set; }
 }

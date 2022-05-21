@@ -25,7 +25,7 @@ public partial class SampleAuditData : IAuditData
     /// <summary>
     /// Id of sample audit
     /// </summary>
-    public long IdEvent { get; set; }
+    public long IdAudit { get; set; }
 
     /// <summary>
     /// Id of data type

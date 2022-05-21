@@ -113,37 +113,11 @@ public class RScriptTreeConfiguration : IEntityTypeConfiguration<RScriptTreeNode
             .HasName("RSCRIPT_TREE_PK")
             .ForDb2IsClustered(false);
 
-        entity.ToTable("RSCRIPT", "R");
+        entity.ToTable("RSCRIPT_TREE", "R");
 
         entity.Property(e => e.Id)
             .HasColumnType("bigint(8)")
             .HasColumnName("ID");
-
-        entity.Property(e => e.IdParent)
-            .HasColumnType("bigint(8)")
-            .HasColumnName("ID_PARENT");
-
-        entity.Property(e => e.IdRScript)
-            .HasColumnType("bigint(8)")
-            .HasColumnName("ID_RSCRIPT");
-
-        entity.Property(e => e.Name)
-            .HasMaxLength(120)
-            .HasPrecision(120)
-            .IsUnicode(false)
-            .HasColumnName("NAME");
-
-        entity.Property(e => e.Modules)
-            .HasMaxLength(255)
-            .HasPrecision(255)
-            .IsUnicode(false)
-            .HasColumnName("MODULES");
-
-        entity.Property(e => e.Icon)
-            .HasMaxLength(50)
-            .HasPrecision(50)
-            .IsUnicode(false)
-            .HasColumnName("ICON");
 
         entity.Property(e => e.Color)
             .HasMaxLength(50)
@@ -157,9 +131,36 @@ public class RScriptTreeConfiguration : IEntityTypeConfiguration<RScriptTreeNode
             .IsUnicode(false)
             .HasColumnName("DESC");
 
+        entity.Property(e => e.Icon)
+            .HasMaxLength(50)
+            .HasPrecision(50)
+            .IsUnicode(false)
+            .HasColumnName("ICON");
+
+        entity.Property(e => e.IdParent)
+            .HasColumnType("bigint(8)")
+            .HasColumnName("ID_PARENT");
+
+        entity.Property(e => e.IdRScript)
+            .HasColumnType("bigint(8)")
+            .HasColumnName("ID_RSCRIPT");
+
+        entity.Property(e => e.Modules)
+            .HasMaxLength(255)
+            .HasPrecision(255)
+            .IsUnicode(false)
+            .HasColumnName("MODULES");
+
+        entity.Property(e => e.Name)
+            .HasMaxLength(120)
+            .HasPrecision(120)
+            .IsUnicode(false)
+            .HasColumnName("NAME");
+
         entity.HasOne(d => d.IdRScriptNavigation)
             .WithMany(p => p.RScriptTree)
             .HasForeignKey(d => d.IdRScript)
+            .OnDelete(DeleteBehavior.ClientSetNull)
             .HasConstraintName("RSCRIPT_TREE_RSCRIPTS_FK");
 
         entity.Ignore(e => e.Audits);

@@ -75,7 +75,7 @@ public partial class SampleAudit : IAudit
     /// <summary>
     /// Navigation to sample
     /// </summary>
-    public virtual Sample? TargetIdNavigation { get; set; }
+    public virtual Sample? Target { get; set; }
 
     /// <summary>
     /// Collection of sample audit data

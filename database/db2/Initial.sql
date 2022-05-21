@@ -12,7 +12,7 @@ INSERT INTO DICT.REQUEST_TYPES
   ("ID_TYPE", "TYPE", "DESC") VALUES
   (1, 'TABLE_EXPORT_AUDIT',  'Export audit table'),
   (2, 'TABLE_EXPORT_SAMPLE', 'Export sample table'),
-  (3, 'RSCRIPT',             'Run R script';
+  (3, 'RSCRIPT',             'Run R script');
   
 DELETE FROM DICT.REQUEST_STATES;
 INSERT INTO DICT.REQUEST_STATES 

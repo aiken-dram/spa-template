@@ -1648,7 +1648,7 @@
       </contents>
     </eAnnotations>
   </DB2Model:DB2Schema>
-  <LUW:LUWTable xmi:id="_7HcFgLcHEeytQ41YB_TkvQ" name="USER_RAIONS" description="Table of linking users to raion dictionary" schema="_EXMg4KnnEeyFb9uua6wdJQ">
+  <LUW:LUWTable xmi:id="_7HcFgLcHEeytQ41YB_TkvQ" name="USER_DISTRICTS" description="Table of linking users to raion dictionary" schema="_EXMg4KnnEeyFb9uua6wdJQ">
     <columns xsi:type="LUW:LUWColumn" xmi:id="_GsUd8LcIEeytQ41YB_TkvQ" name="ID" description="Indentity field of a link" nullable="false">
       <containedType xsi:type="SQLDataTypes:IntegerDataType" xmi:id="_Ig3kwLcIEeytQ41YB_TkvQ" name="BIGINT" primitiveType="BIGINT"/>
       <identitySpecifier xsi:type="DB2Model:DB2IdentitySpecifier" xmi:id="_JSLs8LcIEeytQ41YB_TkvQ" startValue="1" increment="1" minimum="-9223372036854775808" maximum="9223372036854775807"/>
@@ -1656,11 +1656,11 @@
     <columns xsi:type="LUW:LUWColumn" xmi:id="_HLcC4LcIEeytQ41YB_TkvQ" name="ID_USER" description="Foreign key to user" nullable="false">
       <containedType xsi:type="SQLDataTypes:IntegerDataType" xmi:id="_IsNSELcIEeytQ41YB_TkvQ" name="BIGINT" primitiveType="BIGINT"/>
     </columns>
-    <columns xsi:type="LUW:LUWColumn" xmi:id="_HpCk4LcIEeytQ41YB_TkvQ" name="ID_RAION" description="Raion number" nullable="false">
+    <columns xsi:type="LUW:LUWColumn" xmi:id="_HpCk4LcIEeytQ41YB_TkvQ" name="ID_DISTRICT" description="Raion number" nullable="false">
       <containedType xsi:type="SQLDataTypes:IntegerDataType" xmi:id="_l1PpEL7wEeyp-pxGz3z6mw" name="INTEGER" primitiveType="INTEGER"/>
     </columns>
-    <constraints xsi:type="SQLConstraints:PrimaryKey" xmi:id="_JCTd4LcIEeytQ41YB_TkvQ" name="USER_RAIONS_PK" members="_HLcC4LcIEeytQ41YB_TkvQ _HpCk4LcIEeytQ41YB_TkvQ _GsUd8LcIEeytQ41YB_TkvQ"/>
-    <constraints xsi:type="SQLConstraints:ForeignKey" xmi:id="_KffNkLcIEeytQ41YB_TkvQ" name="USER_RAIONS_USERS_FK" members="_HLcC4LcIEeytQ41YB_TkvQ" onDelete="CASCADE" uniqueConstraint="_M88OxKnnEeyFb9uua6wdJQ" referencedTable="_M88OsKnnEeyFb9uua6wdJQ">
+    <constraints xsi:type="SQLConstraints:PrimaryKey" xmi:id="_JCTd4LcIEeytQ41YB_TkvQ" name="USER_DISTRICTS_PK" members="_HLcC4LcIEeytQ41YB_TkvQ _HpCk4LcIEeytQ41YB_TkvQ _GsUd8LcIEeytQ41YB_TkvQ"/>
+    <constraints xsi:type="SQLConstraints:ForeignKey" xmi:id="_KffNkLcIEeytQ41YB_TkvQ" name="USER_DISTRICTS_USERS_FK" members="_HLcC4LcIEeytQ41YB_TkvQ" onDelete="CASCADE" uniqueConstraint="_M88OxKnnEeyFb9uua6wdJQ" referencedTable="_M88OsKnnEeyFb9uua6wdJQ">
       <eAnnotations xmi:id="_KffNkbcIEeytQ41YB_TkvQ" source="FK_MODELING_RELATIONSHIP">
         <details xmi:id="_KffNkrcIEeytQ41YB_TkvQ" key="FK_IS_IDENTIFYING_RELATIONSHIP" value="true"/>
         <details xmi:id="_KffNk7cIEeytQ41YB_TkvQ" key="FK_CHILD_MULTIPLICITY" value=""/>
@@ -1669,7 +1669,7 @@
         <details xmi:id="_KffNlrcIEeytQ41YB_TkvQ" key="FK_PARENT_ROLE_NAME" value=""/>
       </eAnnotations>
     </constraints>
-    <constraints xsi:type="SQLConstraints:ForeignKey" xmi:id="_NHZrALcIEeytQ41YB_TkvQ" name="USER_RAIONS_RAIONS_FK" members="_HpCk4LcIEeytQ41YB_TkvQ" onDelete="CASCADE" uniqueConstraint="_FB0rALcIEeytQ41YB_TkvQ" referencedTable="_8iB0MLcHEeytQ41YB_TkvQ">
+    <constraints xsi:type="SQLConstraints:ForeignKey" xmi:id="_NHZrALcIEeytQ41YB_TkvQ" name="USER_DISTRICTS_DISTRICTS_FK" members="_HpCk4LcIEeytQ41YB_TkvQ" onDelete="CASCADE" uniqueConstraint="_FB0rALcIEeytQ41YB_TkvQ" referencedTable="_8iB0MLcHEeytQ41YB_TkvQ">
       <eAnnotations xmi:id="_NHZrAbcIEeytQ41YB_TkvQ" source="FK_MODELING_RELATIONSHIP">
         <details xmi:id="_NHZrArcIEeytQ41YB_TkvQ" key="FK_IS_IDENTIFYING_RELATIONSHIP" value="true"/>
         <details xmi:id="_NHZrA7cIEeytQ41YB_TkvQ" key="FK_CHILD_MULTIPLICITY" value=""/>
@@ -1679,14 +1679,14 @@
       </eAnnotations>
     </constraints>
   </LUW:LUWTable>
-  <LUW:LUWTable xmi:id="_8iB0MLcHEeytQ41YB_TkvQ" name="RAIONS" description="Dictionary of raions" schema="_PFFm8KnnEeyFb9uua6wdJQ" referencingForeignKeys="_NHZrALcIEeytQ41YB_TkvQ">
-    <columns xsi:type="LUW:LUWColumn" xmi:id="_97BncLcHEeytQ41YB_TkvQ" name="ID_RAION" description="Raion number" nullable="false">
+  <LUW:LUWTable xmi:id="_8iB0MLcHEeytQ41YB_TkvQ" name="DISTRICTS" description="Dictionary of raions" schema="_PFFm8KnnEeyFb9uua6wdJQ" referencingForeignKeys="_NHZrALcIEeytQ41YB_TkvQ">
+    <columns xsi:type="LUW:LUWColumn" xmi:id="_97BncLcHEeytQ41YB_TkvQ" name="ID_DISTRICT" description="Raion number" nullable="false">
       <containedType xsi:type="SQLDataTypes:IntegerDataType" xmi:id="_l1Nz4L7wEeyp-pxGz3z6mw" name="INTEGER" primitiveType="INTEGER"/>
     </columns>
     <columns xsi:type="LUW:LUWColumn" xmi:id="_-oQg4LcHEeytQ41YB_TkvQ" name="NAME" description="Raion name" nullable="false">
       <containedType xsi:type="SQLDataTypes:CharacterStringDataType" xmi:id="_AHpQALcIEeytQ41YB_TkvQ" name="VARCHAR" primitiveType="CHARACTER_VARYING" length="200"/>
     </columns>
-    <constraints xsi:type="SQLConstraints:PrimaryKey" xmi:id="_FB0rALcIEeytQ41YB_TkvQ" name="RAIONS_PK" members="_97BncLcHEeytQ41YB_TkvQ" ForeignKey="_NHZrALcIEeytQ41YB_TkvQ"/>
+    <constraints xsi:type="SQLConstraints:PrimaryKey" xmi:id="_FB0rALcIEeytQ41YB_TkvQ" name="DISTRICTS_PK" members="_97BncLcHEeytQ41YB_TkvQ" ForeignKey="_NHZrALcIEeytQ41YB_TkvQ"/>
   </LUW:LUWTable>
   <LUW:LUWTable xmi:id="_vg6rULmZEeyfT_TlYIVqrQ" name="REQUEST_TYPES" description="Dictionary of message query request types" schema="_PFFm8KnnEeyFb9uua6wdJQ" referencingForeignKeys="_YwIlsLmaEeyfT_TlYIVqrQ">
     <columns xsi:type="LUW:LUWColumn" xmi:id="_wwv7gLmZEeyfT_TlYIVqrQ" name="ID_TYPE" description="Identity of type" nullable="false">
@@ -1816,7 +1816,7 @@
     <columns xsi:type="LUW:LUWColumn" xmi:id="_trMKAMIDEeyDHL2puvhl9Q" name="MESSAGE">
       <containedType xsi:type="SQLDataTypes:CharacterStringDataType" xmi:id="_wdf5kMIDEeyDHL2puvhl9Q" name="VARCHAR" primitiveType="CHARACTER_VARYING" length="255"/>
     </columns>
-    <constraints xsi:type="SQLConstraints:PrimaryKey" xmi:id="_z6iBIMIDEeyDHL2puvhl9Q" name="USER_EVENTS_PK" members="_l1RzIMICEeyDHL2puvhl9Q" ForeignKey="_Az6R4MIFEeyDHL2puvhl9Q"/>
+    <constraints xsi:type="SQLConstraints:PrimaryKey" xmi:id="_z6iBIMIDEeyDHL2puvhl9Q" name="USER_AUDIT_PK" members="_l1RzIMICEeyDHL2puvhl9Q" ForeignKey="_Az6R4MIFEeyDHL2puvhl9Q"/>
     <constraints xsi:type="SQLConstraints:ForeignKey" xmi:id="_bgpPsMIEEeyDHL2puvhl9Q" name="USER_AUDIT_USERS_FK" members="_mVngEMICEeyDHL2puvhl9Q" onDelete="CASCADE" uniqueConstraint="_M88OxKnnEeyFb9uua6wdJQ" referencedTable="_M88OsKnnEeyFb9uua6wdJQ">
       <eAnnotations xmi:id="_bgpPscIEEeyDHL2puvhl9Q" source="FK_MODELING_RELATIONSHIP">
         <details xmi:id="_bgpPssIEEeyDHL2puvhl9Q" key="FK_IS_IDENTIFYING_RELATIONSHIP" value="false"/>
@@ -2189,7 +2189,7 @@
       <containedType xsi:type="SQLDataTypes:CharacterStringDataType" xmi:id="_r7XQ0NasEeymN-noWvijDA" name="VARCHAR" primitiveType="CHARACTER_VARYING" length="255"/>
     </columns>
     <constraints xsi:type="SQLConstraints:PrimaryKey" xmi:id="_kSOZYNalEeymN-noWvijDA" name="RSCRIPT_TREE_PK" members="_OtynkNalEeymN-noWvijDA"/>
-    <constraints xsi:type="SQLConstraints:ForeignKey" xmi:id="_FgqDANc8EeycYoh_XfHNnw" name="RSCRIPT_TREE_RSCRIPTS_FK" members="_UEQV8NalEeymN-noWvijDA" onDelete="CASCADE" uniqueConstraint="_fZmysNanEeymN-noWvijDA" referencedTable="_K_vBcNalEeymN-noWvijDA">
+    <constraints xsi:type="SQLConstraints:ForeignKey" xmi:id="_FgqDANc8EeycYoh_XfHNnw" name="RSCRIPT_TREE_RSCRIPTS_FK" members="_UEQV8NalEeymN-noWvijDA" onDelete="SET_NULL" uniqueConstraint="_fZmysNanEeymN-noWvijDA" referencedTable="_K_vBcNalEeymN-noWvijDA">
       <eAnnotations xmi:id="_FgqDAdc8EeycYoh_XfHNnw" source="FK_MODELING_RELATIONSHIP">
         <details xmi:id="_FgqqENc8EeycYoh_XfHNnw" key="FK_IS_IDENTIFYING_RELATIONSHIP" value="false"/>
         <details xmi:id="_FgqqEdc8EeycYoh_XfHNnw" key="FK_CHILD_MULTIPLICITY" value=""/>
@@ -2254,53 +2254,53 @@
   <LUW:LUWView xmi:id="_CU1NINdxEeycYoh_XfHNnw" name="V_AUDIT" description="View of all audit" schema="_EXMg4KnnEeyFb9uua6wdJQ" checkType="NONE">
     <dependencies xmi:id="_OJuXgNdxEeycYoh_XfHNnw" name="Зависимость" targetEnd="_j3uhUMICEeyDHL2puvhl9Q"/>
     <dependencies xmi:id="_OJwMsNdxEeycYoh_XfHNnw" name="Зависимость" targetEnd="_ZGI74MeFEeyU6_iz808Pnw"/>
-    <columns xsi:type="LUW:LUWColumn" xmi:id="_ONPlkNdxEeycYoh_XfHNnw" name="SRS">
-      <containedType xsi:type="SQLDataTypes:CharacterStringDataType" xmi:id="_ONPlkddxEeycYoh_XfHNnw" name="CHARACTER" length="6"/>
+    <columns xsi:type="LUW:LUWColumn" xmi:id="_siw_UNkuEey3wdZXe4i4KA" name="SOURCE">
+      <containedType xsi:type="SQLDataTypes:CharacterStringDataType" xmi:id="_siw_UdkuEey3wdZXe4i4KA" name="CHARACTER" length="6"/>
     </columns>
-    <columns xsi:type="LUW:LUWColumn" xmi:id="_ONPlktdxEeycYoh_XfHNnw" name="ID_AUDIT">
-      <containedType xsi:type="SQLDataTypes:IntegerDataType" xmi:id="_ONPlk9dxEeycYoh_XfHNnw" name="BIGINT" primitiveType="BIGINT"/>
+    <columns xsi:type="LUW:LUWColumn" xmi:id="_siw_UtkuEey3wdZXe4i4KA" name="ID_AUDIT">
+      <containedType xsi:type="SQLDataTypes:IntegerDataType" xmi:id="_siw_U9kuEey3wdZXe4i4KA" name="BIGINT" primitiveType="BIGINT"/>
     </columns>
-    <columns xsi:type="LUW:LUWColumn" xmi:id="_ONPllNdxEeycYoh_XfHNnw" name="ID_USER">
-      <containedType xsi:type="SQLDataTypes:IntegerDataType" xmi:id="_ONPllddxEeycYoh_XfHNnw" name="BIGINT" primitiveType="BIGINT"/>
+    <columns xsi:type="LUW:LUWColumn" xmi:id="_siw_VNkuEey3wdZXe4i4KA" name="ID_USER">
+      <containedType xsi:type="SQLDataTypes:IntegerDataType" xmi:id="_siw_VdkuEey3wdZXe4i4KA" name="BIGINT" primitiveType="BIGINT"/>
     </columns>
-    <columns xsi:type="LUW:LUWColumn" xmi:id="_ONPlltdxEeycYoh_XfHNnw" name="ID_TARGET">
-      <containedType xsi:type="SQLDataTypes:IntegerDataType" xmi:id="_ONPll9dxEeycYoh_XfHNnw" name="INTEGER" primitiveType="INTEGER"/>
+    <columns xsi:type="LUW:LUWColumn" xmi:id="_siw_VtkuEey3wdZXe4i4KA" name="ID_TARGET">
+      <containedType xsi:type="SQLDataTypes:IntegerDataType" xmi:id="_siw_V9kuEey3wdZXe4i4KA" name="INTEGER" primitiveType="INTEGER"/>
     </columns>
-    <columns xsi:type="LUW:LUWColumn" xmi:id="_ONPlmNdxEeycYoh_XfHNnw" name="ID_ACTION">
-      <containedType xsi:type="SQLDataTypes:IntegerDataType" xmi:id="_ONPlmddxEeycYoh_XfHNnw" name="INTEGER" primitiveType="INTEGER"/>
+    <columns xsi:type="LUW:LUWColumn" xmi:id="_siw_WNkuEey3wdZXe4i4KA" name="ID_ACTION">
+      <containedType xsi:type="SQLDataTypes:IntegerDataType" xmi:id="_siw_WdkuEey3wdZXe4i4KA" name="INTEGER" primitiveType="INTEGER"/>
     </columns>
-    <columns xsi:type="LUW:LUWColumn" xmi:id="_ONPlmtdxEeycYoh_XfHNnw" name="STAMP">
-      <containedType xsi:type="SQLDataTypes:TimeDataType" xmi:id="_ONPlm9dxEeycYoh_XfHNnw" name="TIMESTAMP" primitiveType="TIMESTAMP" fractionalSecondsPrecision="6"/>
+    <columns xsi:type="LUW:LUWColumn" xmi:id="_siw_WtkuEey3wdZXe4i4KA" name="STAMP">
+      <containedType xsi:type="SQLDataTypes:TimeDataType" xmi:id="_siw_W9kuEey3wdZXe4i4KA" name="TIMESTAMP" primitiveType="TIMESTAMP" fractionalSecondsPrecision="6"/>
     </columns>
-    <columns xsi:type="LUW:LUWColumn" xmi:id="_ONPlnNdxEeycYoh_XfHNnw" name="TARGET_ID">
-      <containedType xsi:type="SQLDataTypes:IntegerDataType" xmi:id="_ONPlnddxEeycYoh_XfHNnw" name="BIGINT" primitiveType="BIGINT"/>
+    <columns xsi:type="LUW:LUWColumn" xmi:id="_siw_XNkuEey3wdZXe4i4KA" name="TARGET_ID">
+      <containedType xsi:type="SQLDataTypes:IntegerDataType" xmi:id="_siw_XdkuEey3wdZXe4i4KA" name="BIGINT" primitiveType="BIGINT"/>
     </columns>
-    <columns xsi:type="LUW:LUWColumn" xmi:id="_ONPlntdxEeycYoh_XfHNnw" name="TARGET_NAME">
-      <containedType xsi:type="SQLDataTypes:CharacterStringDataType" xmi:id="_ONPln9dxEeycYoh_XfHNnw" name="VARCHAR" primitiveType="CHARACTER_VARYING" length="255"/>
+    <columns xsi:type="LUW:LUWColumn" xmi:id="_siw_XtkuEey3wdZXe4i4KA" name="TARGET_NAME">
+      <containedType xsi:type="SQLDataTypes:CharacterStringDataType" xmi:id="_siw_X9kuEey3wdZXe4i4KA" name="VARCHAR" primitiveType="CHARACTER_VARYING" length="255"/>
     </columns>
-    <columns xsi:type="LUW:LUWColumn" xmi:id="_ONPloNdxEeycYoh_XfHNnw" name="MESSAGE">
-      <containedType xsi:type="SQLDataTypes:CharacterStringDataType" xmi:id="_ONPloddxEeycYoh_XfHNnw" name="VARCHAR" primitiveType="CHARACTER_VARYING" length="255"/>
+    <columns xsi:type="LUW:LUWColumn" xmi:id="_siw_YNkuEey3wdZXe4i4KA" name="MESSAGE">
+      <containedType xsi:type="SQLDataTypes:CharacterStringDataType" xmi:id="_siw_YdkuEey3wdZXe4i4KA" name="VARCHAR" primitiveType="CHARACTER_VARYING" length="255"/>
     </columns>
-    <queryExpression xsi:type="SQLExpressions:QueryExpressionDefault" xmi:id="_ONO-gNdxEeycYoh_XfHNnw" SQL="SELECT&#xD;&#xA; 'USER' as SRS,&#xD;&#xA; U.* &#xD;&#xA;FROM ACCOUNT.USER_AUDIT U&#xD;&#xA;UNION ALL&#xD;&#xA;SELECT&#xD;&#xA; 'SAMPLE' as SRS,&#xD;&#xA; S.* &#xD;&#xA;FROM SAMPLE.SAMPLE_AUDIT S"/>
+    <queryExpression xsi:type="SQLExpressions:QueryExpressionDefault" xmi:id="_siwYQNkuEey3wdZXe4i4KA" SQL="SELECT&#xD;&#xA; 'USER' as SOURCE,&#xD;&#xA; U.* &#xD;&#xA;FROM ACCOUNT.USER_AUDIT U&#xD;&#xA;UNION ALL&#xD;&#xA;SELECT&#xD;&#xA; 'SAMPLE' as SOURCE,&#xD;&#xA; S.* &#xD;&#xA;FROM SAMPLE.SAMPLE_AUDIT S"/>
   </LUW:LUWView>
   <LUW:LUWView xmi:id="_pMBgMNdxEeycYoh_XfHNnw" name="V_AUDIT_DATA" description="View of all audit data" schema="_EXMg4KnnEeyFb9uua6wdJQ" checkType="NONE">
     <dependencies xmi:id="_rY_uENdxEeycYoh_XfHNnw" name="Зависимость" targetEnd="_niwzMMIDEeyDHL2puvhl9Q"/>
     <dependencies xmi:id="_rZCKUNdxEeycYoh_XfHNnw" name="Зависимость" targetEnd="_aKjmQMeFEeyU6_iz808Pnw"/>
-    <columns xsi:type="LUW:LUWColumn" xmi:id="_rbav8NdxEeycYoh_XfHNnw" name="SRS">
-      <containedType xsi:type="SQLDataTypes:CharacterStringDataType" xmi:id="_rbav8ddxEeycYoh_XfHNnw" name="CHARACTER" length="6"/>
+    <columns xsi:type="LUW:LUWColumn" xmi:id="_uBZggdkuEey3wdZXe4i4KA" name="SOURCE">
+      <containedType xsi:type="SQLDataTypes:CharacterStringDataType" xmi:id="_uBZggtkuEey3wdZXe4i4KA" name="CHARACTER" length="6"/>
     </columns>
-    <columns xsi:type="LUW:LUWColumn" xmi:id="_rbav8tdxEeycYoh_XfHNnw" name="ID">
-      <containedType xsi:type="SQLDataTypes:IntegerDataType" xmi:id="_rbav89dxEeycYoh_XfHNnw" name="BIGINT" primitiveType="BIGINT"/>
+    <columns xsi:type="LUW:LUWColumn" xmi:id="_uBZgg9kuEey3wdZXe4i4KA" name="ID">
+      <containedType xsi:type="SQLDataTypes:IntegerDataType" xmi:id="_uBZghNkuEey3wdZXe4i4KA" name="BIGINT" primitiveType="BIGINT"/>
     </columns>
-    <columns xsi:type="LUW:LUWColumn" xmi:id="_rbav9NdxEeycYoh_XfHNnw" name="ID_AUDIT">
-      <containedType xsi:type="SQLDataTypes:IntegerDataType" xmi:id="_rbav9ddxEeycYoh_XfHNnw" name="BIGINT" primitiveType="BIGINT"/>
+    <columns xsi:type="LUW:LUWColumn" xmi:id="_uBZghdkuEey3wdZXe4i4KA" name="ID_AUDIT">
+      <containedType xsi:type="SQLDataTypes:IntegerDataType" xmi:id="_uBZghtkuEey3wdZXe4i4KA" name="BIGINT" primitiveType="BIGINT"/>
     </columns>
-    <columns xsi:type="LUW:LUWColumn" xmi:id="_rbav9tdxEeycYoh_XfHNnw" name="ID_TYPE">
-      <containedType xsi:type="SQLDataTypes:IntegerDataType" xmi:id="_rbav99dxEeycYoh_XfHNnw" name="INTEGER" primitiveType="INTEGER"/>
+    <columns xsi:type="LUW:LUWColumn" xmi:id="_uBZgh9kuEey3wdZXe4i4KA" name="ID_TYPE">
+      <containedType xsi:type="SQLDataTypes:IntegerDataType" xmi:id="_uBZgiNkuEey3wdZXe4i4KA" name="INTEGER" primitiveType="INTEGER"/>
     </columns>
-    <columns xsi:type="LUW:LUWColumn" xmi:id="_rbav-NdxEeycYoh_XfHNnw" name="JSON">
-      <containedType xsi:type="SQLDataTypes:CharacterStringDataType" xmi:id="_rbav-ddxEeycYoh_XfHNnw" name="VARCHAR" primitiveType="CHARACTER_VARYING" length="255"/>
+    <columns xsi:type="LUW:LUWColumn" xmi:id="_uBZgidkuEey3wdZXe4i4KA" name="JSON">
+      <containedType xsi:type="SQLDataTypes:CharacterStringDataType" xmi:id="_uBZgitkuEey3wdZXe4i4KA" name="VARCHAR" primitiveType="CHARACTER_VARYING" length="255"/>
     </columns>
-    <queryExpression xsi:type="SQLExpressions:QueryExpressionDefault" xmi:id="_rbaI4NdxEeycYoh_XfHNnw" SQL="SELECT&#xD;&#xA; 'USER' as SRS,&#xD;&#xA; U.* &#xD;&#xA;FROM ACCOUNT.USER_AUDIT_DATA U&#xD;&#xA;UNION ALL&#xD;&#xA;SELECT&#xD;&#xA; 'SAMPLE' as SRS,&#xD;&#xA; S.* &#xD;&#xA;FROM SAMPLE.SAMPLE_AUDIT_DATA S"/>
+    <queryExpression xsi:type="SQLExpressions:QueryExpressionDefault" xmi:id="_uBZggNkuEey3wdZXe4i4KA" SQL="SELECT&#xD;&#xA; 'USER' as SOURCE,&#xD;&#xA; U.* &#xD;&#xA;FROM ACCOUNT.USER_AUDIT_DATA U&#xD;&#xA;UNION ALL&#xD;&#xA;SELECT&#xD;&#xA; 'SAMPLE' as SOURCE,&#xD;&#xA; S.* &#xD;&#xA;FROM SAMPLE.SAMPLE_AUDIT_DATA S"/>
   </LUW:LUWView>
 </xmi:XMI>

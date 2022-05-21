@@ -8,6 +8,7 @@ public partial class AuditDataType
     public AuditDataType()
     {
         UserAuditData = new HashSet<UserAuditData>();
+        SampleAuditData = new HashSet<SampleAuditData>();
     }
 
     /// <summary>
@@ -29,4 +30,10 @@ public partial class AuditDataType
     /// Collection of user audit data with this type
     /// </summary>
     public virtual ICollection<UserAuditData> UserAuditData { get; set; }
+
+#warning SAMPLE
+    /// <summary>
+    /// Collection of sample audit data with this type
+    /// </summary>
+    public virtual ICollection<SampleAuditData> SampleAuditData { get; set; }
 }
