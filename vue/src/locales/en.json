@@ -6,12 +6,16 @@
     "phone": "phone",
     "search": "Search",
     "add": "Add",
-    "actions": "Actions",
     "edit": "Edit",
+    "actions": "Actions",
     "delete": "Delete",
     "deleted": "Entry deleted",
     "editSaved": "Changes saved",
     "download": "File added to browser downloads",
+    "requestCreated": "Request created",
+    "requestProcessed": "Request processed",
+    "exportPage": "Export current page to file",
+    "exportAll": "Export all data to file",
     "exportCsv": "Export to CSV",
     "exportCsvConfirm": "Are you sure you want to export {count} rows into CSV?",
     "noRecordSelected": "No record selected",
@@ -41,10 +45,19 @@
     "profile": "Profile",
     "logOff": "Log off"
   },
+  "signalr": {
+    "connectingToServer": "Connecting to server...",
+    "connectionEstablished": "Connection to server established",
+    "disabled": "SignalR was disabled in user's settings",
+    "error": "Error while processing request",
+    "result": "Processing request is completed"
+  },
   "flags": {
-    "activitySource": {
-      "auth": "Authorization event",
-      "history": "Application activity"
+    "auditTarget": {
+      "auth": "Authorization",
+      "accountUsers": "User's table",
+      "mqRequests": "Requests",
+      "dictDistricts": "Districts dictionary"
     }
   },
   "route": {},
@@ -52,13 +65,22 @@
     "login": "Login",
     "userName": "User name",
     "desc": "Description",
-    "update": "Update profile"
+    "update": "Update profile",
+    "settings": "Local settings",
+    "disableSignalR": "Disable SignalR",
+    "darkTheme": "Dark theme"
   },
   "nav": {
     "home": "Home",
+    "sample": "Sample",
+    "sampleWork": "Manage",
+    "sampleWorkAvatar": "SA",
+    "mq": "Requests",
     "admin": "Admin",
     "adminAccess": "User access",
     "adminAccessAvatar": "UA",
+    "adminAudit": "Audit",
+    "adminAuditAvatar": "AU",
     "adminDict": "Dictionaries",
     "adminDictAvatar": "DT",
     "doc": "Documentation",
@@ -90,6 +112,7 @@
           "userName": "User name",
           "userNameFilter": "Search in user name field",
           "groups": "Groups",
+          "districts": "Districts",
           "desc": "Description",
           "descFilter": "Search in description field"
         },
@@ -117,24 +140,55 @@
     },
     "dict": {
       "districts": {
-        "title": "Districts"
+        "title": "Districts",
+        "table": {
+          "idDistrict": "District's number",
+          "name": "Name"
+        },
+        "deleteDistrict": "Delete district?"
+      }
+    }
+  },
+  "audit": {
+    "title": "{username} activity history",
+    "table": {
+      "user": "Login",
+      "userFilter": "Login search",
+      "type": "Type",
+      "stamp": "Date and time",
+      "stampFilter": "Date and time search",
+      "target": "Target",
+      "targetFilter": "Target search",
+      "action": "Action",
+      "actionFilter": "Action search",
+      "targetName": "Subject",
+      "targetNameFilter": "Subject search",
+      "data": "Data"
+    },
+    "data": {
+      "remoteSystem": "Remote system",
+      "history": {
+        "replacedWith": "changed to",
+        "field": "Field",
+        "updated": "updated"
       }
     },
-    "activity": {
-      "title": "{username} activity history",
-      "table": {
-        "type": "Type",
-        "stamp": "Date and time",
-        "stampFilter": "Date and time search",
-        "action": "Action",
-        "actionFilter": "Action search",
-        "subject": "Subject",
-        "subjectFilter": "Subject search",
-        "message": "Message",
-        "messageFilter": "Message search"
+    "fields": {
+      "ACCOUNT": {
+        "USERS": {
+          "Name": "Name of user",
+          "Description": "Description",
+          "Login": "Login",
+          "Pass": "Password",
+          "IsActive": "Is active",
+          "PassDate": "Password expiration date"
+        }
       },
-      "login": "Logging in",
-      "wrongPass": "Wrong password"
+      "DICT": {
+        "DISTRICTS": {
+          "Name": "Name"
+        }
+      }
     }
   },
   "forms": {
@@ -154,7 +208,15 @@
       "desc": "Description",
       "groups": "Groups",
       "roles": "Roles",
-      "rolesHint": "Select roles in additon to group roles"
+      "rolesHint": "Select roles in additon to group roles",
+      "districts": "Districts",
+      "districtsHint": "Leave field empty for user to have access to all districts"
+    },
+    "district": {
+      "newDistrict": "New district",
+      "editDistrict": "Edit district",
+      "idDistrict": "District's number",
+      "name": "Name"
     }
   },
   "versions": {

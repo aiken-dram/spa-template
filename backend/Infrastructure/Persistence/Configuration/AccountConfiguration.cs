@@ -396,7 +396,7 @@ public class UserAuditDataConfiguration : IEntityTypeConfiguration<UserAuditData
 
         entity.Property(e => e.IdType)
             .HasColumnType("integer(4)")
-            .HasColumnName("ID_AUDIT");
+            .HasColumnName("ID_TYPE");
 
         entity.Property(e => e.Json)
             .HasMaxLength(255)

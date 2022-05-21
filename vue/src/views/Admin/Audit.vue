@@ -28,7 +28,7 @@
       </template>-->
       <template v-slot:item.data-table-expand="{ item, expand, isExpanded }">
         <v-icon
-          v-show="item.eventData.length > 0"
+          v-show="item.eventData && item.eventData.length > 0"
           small
           @click="expand(!isExpanded)"
         >
@@ -54,7 +54,6 @@ import MQService from "@/api/mq";
 
 import BaseTableApi from "@/components/base/Table/TableAPI";
 import Confirm from "@/components/base/Dialog/Confirm";
-//import BaseTableFlag from "@/components/base/TableFlag";
 
 import AuditDataDisplay from "@/components/Display/AuditData";
 
@@ -92,22 +91,6 @@ export default {
             type: "date",
           },
         },
-        /*{
-          text: this.$i18n.t("audit.table.target"),
-          value: "target",
-          width: 120,
-          sortable: false,
-          filter: {
-            type: "flags",
-            flags: [
-              {
-                title: this.$i18n.t("audit.table.target"),
-                field: "target",
-                name: "auditTarget",
-              },
-            ],
-          },
-        },*/
         {
           text: this.$i18n.t("audit.table.target"),
           value: "targetDesc",
@@ -223,7 +206,6 @@ export default {
 
   components: {
     BaseTableApi,
-    //BaseTableFlag,
     AuditDataDisplay,
     Confirm,
   },
