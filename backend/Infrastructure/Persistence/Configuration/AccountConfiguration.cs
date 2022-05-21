@@ -392,11 +392,11 @@ public class UserAuditDataConfiguration : IEntityTypeConfiguration<UserAuditData
 
         entity.Property(e => e.IdAudit)
             .HasColumnType("bigint(8)")
-            .HasColumnName("ID_EVENT");
+            .HasColumnName("ID_AUDIT");
 
         entity.Property(e => e.IdType)
             .HasColumnType("integer(4)")
-            .HasColumnName("ID_TYPE");
+            .HasColumnName("ID_AUDIT");
 
         entity.Property(e => e.Json)
             .HasMaxLength(255)
@@ -487,7 +487,7 @@ public class VAuditDataConfiguration : IEntityTypeConfiguration<VAuditData>
 
         entity.Property(e => e.IdAudit)
             .HasColumnType("bigint(8)")
-            .HasColumnName("ID_EVENT");
+            .HasColumnName("ID_AUDIT");
 
         entity.Property(e => e.IdType)
             .HasColumnType("integer(4)")
