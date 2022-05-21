@@ -2286,21 +2286,21 @@
   <LUW:LUWView xmi:id="_pMBgMNdxEeycYoh_XfHNnw" name="V_AUDIT_DATA" description="View of all audit data" schema="_EXMg4KnnEeyFb9uua6wdJQ" checkType="NONE">
     <dependencies xmi:id="_rY_uENdxEeycYoh_XfHNnw" name="Зависимость" targetEnd="_niwzMMIDEeyDHL2puvhl9Q"/>
     <dependencies xmi:id="_rZCKUNdxEeycYoh_XfHNnw" name="Зависимость" targetEnd="_aKjmQMeFEeyU6_iz808Pnw"/>
-    <columns xsi:type="LUW:LUWColumn" xmi:id="_uBZggdkuEey3wdZXe4i4KA" name="SOURCE">
-      <containedType xsi:type="SQLDataTypes:CharacterStringDataType" xmi:id="_uBZggtkuEey3wdZXe4i4KA" name="CHARACTER" length="6"/>
+    <columns xsi:type="LUW:LUWColumn" xmi:id="_uOjywNkuEey3wdZXe4i4KA" name="SOURCE">
+      <containedType xsi:type="SQLDataTypes:CharacterStringDataType" xmi:id="_uOjywdkuEey3wdZXe4i4KA" name="CHARACTER" length="6"/>
     </columns>
-    <columns xsi:type="LUW:LUWColumn" xmi:id="_uBZgg9kuEey3wdZXe4i4KA" name="ID">
-      <containedType xsi:type="SQLDataTypes:IntegerDataType" xmi:id="_uBZghNkuEey3wdZXe4i4KA" name="BIGINT" primitiveType="BIGINT"/>
+    <columns xsi:type="LUW:LUWColumn" xmi:id="_uOjywtkuEey3wdZXe4i4KA" name="ID">
+      <containedType xsi:type="SQLDataTypes:IntegerDataType" xmi:id="_uOjyw9kuEey3wdZXe4i4KA" name="BIGINT" primitiveType="BIGINT"/>
     </columns>
-    <columns xsi:type="LUW:LUWColumn" xmi:id="_uBZghdkuEey3wdZXe4i4KA" name="ID_AUDIT">
-      <containedType xsi:type="SQLDataTypes:IntegerDataType" xmi:id="_uBZghtkuEey3wdZXe4i4KA" name="BIGINT" primitiveType="BIGINT"/>
+    <columns xsi:type="LUW:LUWColumn" xmi:id="_uOjyxNkuEey3wdZXe4i4KA" name="ID_AUDIT">
+      <containedType xsi:type="SQLDataTypes:IntegerDataType" xmi:id="_uOjyxdkuEey3wdZXe4i4KA" name="BIGINT" primitiveType="BIGINT"/>
     </columns>
-    <columns xsi:type="LUW:LUWColumn" xmi:id="_uBZgh9kuEey3wdZXe4i4KA" name="ID_TYPE">
-      <containedType xsi:type="SQLDataTypes:IntegerDataType" xmi:id="_uBZgiNkuEey3wdZXe4i4KA" name="INTEGER" primitiveType="INTEGER"/>
+    <columns xsi:type="LUW:LUWColumn" xmi:id="_uOjyxtkuEey3wdZXe4i4KA" name="ID_TYPE">
+      <containedType xsi:type="SQLDataTypes:IntegerDataType" xmi:id="_uOjyx9kuEey3wdZXe4i4KA" name="INTEGER" primitiveType="INTEGER"/>
     </columns>
-    <columns xsi:type="LUW:LUWColumn" xmi:id="_uBZgidkuEey3wdZXe4i4KA" name="JSON">
-      <containedType xsi:type="SQLDataTypes:CharacterStringDataType" xmi:id="_uBZgitkuEey3wdZXe4i4KA" name="VARCHAR" primitiveType="CHARACTER_VARYING" length="255"/>
+    <columns xsi:type="LUW:LUWColumn" xmi:id="_uOjyyNkuEey3wdZXe4i4KA" name="JSON">
+      <containedType xsi:type="SQLDataTypes:CharacterStringDataType" xmi:id="_uOjyydkuEey3wdZXe4i4KA" name="VARCHAR" primitiveType="CHARACTER_VARYING" length="255"/>
     </columns>
-    <queryExpression xsi:type="SQLExpressions:QueryExpressionDefault" xmi:id="_uBZggNkuEey3wdZXe4i4KA" SQL="SELECT&#xD;&#xA; 'USER' as SOURCE,&#xD;&#xA; U.* &#xD;&#xA;FROM ACCOUNT.USER_AUDIT_DATA U&#xD;&#xA;UNION ALL&#xD;&#xA;SELECT&#xD;&#xA; 'SAMPLE' as SOURCE,&#xD;&#xA; S.* &#xD;&#xA;FROM SAMPLE.SAMPLE_AUDIT_DATA S"/>
+    <queryExpression xsi:type="SQLExpressions:QueryExpressionDefault" xmi:id="_uOjLsNkuEey3wdZXe4i4KA" SQL="SELECT&#xD;&#xA; 'USER' as SOURCE,&#xD;&#xA; U.* &#xD;&#xA;FROM ACCOUNT.USER_AUDIT_DATA U&#xD;&#xA;UNION ALL&#xD;&#xA;SELECT&#xD;&#xA; 'SAMPLE' as SOURCE,&#xD;&#xA; S.* &#xD;&#xA;FROM SAMPLE.SAMPLE_AUDIT_DATA S"/>
   </LUW:LUWView>
 </xmi:XMI>

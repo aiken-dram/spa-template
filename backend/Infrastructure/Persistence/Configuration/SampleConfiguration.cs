@@ -60,6 +60,9 @@ public class SampleConfiguration : IEntityTypeConfiguration<Sample>
             .WithMany(p => p.Samples)
             .HasForeignKey(d => d.IdType)
             .HasConstraintName("SAMPLE_SAMPLE_TYPES_FK");
+
+        entity.Ignore(e => e.Audits);
+        entity.Ignore(e => e.DomainEvents);
     }
 }
 
@@ -161,6 +164,8 @@ public class SampleAuditConfiguration : IEntityTypeConfiguration<SampleAudit>
             .HasForeignKey(d => d.TargetId)
             .OnDelete(DeleteBehavior.Cascade)
             .HasConstraintName("SAMPLE_AUDIT_SAMPLE_FK");
+
+        entity.Ignore(e => e.AuditData);
     }
 }
 
