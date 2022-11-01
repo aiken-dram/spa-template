@@ -11,7 +11,7 @@
 
 <script>
 export default {
-  name: "SPA",
+  name: "MainApplication",
 
   mounted() {
     const theme = localStorage.getItem("darkTheme");

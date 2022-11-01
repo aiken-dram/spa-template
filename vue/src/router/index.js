@@ -69,12 +69,40 @@ const routes = [
               },
             ],
           },
-          // admin/access
+          // admin/dict
           {
-            name: "Dictionaries",
             path: "dict",
             component: () =>
               import(/* webpackChunkName: "admin.dict" */ "@/views/Admin/Dict"),
+            children: [
+              // admin/dict
+              {
+                name: "Districts",
+                path: "",
+                alias: "districts",
+                component: () =>
+                  import(
+                    /* webpackChunkName: "admin.dict.districts" */ "@/views/Admin/Dict/Districts"
+                  ),
+              },
+              // admin/access/package
+              {
+                name: "Sample",
+                path: "sample",
+                component: () =>
+                  import(
+                    /* webpackChunkName: "admin.access.package" */ "@/views/Admin/Dict/Sample"
+                  ),
+              },
+            ],
+          },
+          // admin/stat
+          {
+            name: "Stat",
+            path: "stat",
+            component: () =>
+              import(/* webpackChunkName: "admin.stat" */ "@/views/Admin/Stat"),
+            meta: { roles: [MODULES.ConfigurationAdmin] },
           },
           // admin/audit
           {
@@ -95,7 +123,7 @@ const routes = [
                 /* webpackChunkName: "admin.audit" */ "@/views/Admin/Audit"
               ),
             meta: { roles: [MODULES.SecurityAdmin] },
-            props: (route) => ({ id: Number(route.params.id) }),
+            props: (route) => ({ idUser: Number(route.params.id) }),
           },
         ],
       },
@@ -131,7 +159,13 @@ const routes = [
         name: "Message query",
         path: "mq",
         component: () =>
-          import(/* webpackChunkName: "contacts" */ "@/views/MessageQuery"),
+          import(/* webpackChunkName: "messagequery" */ "@/views/MessageQuery"),
+      },
+      // statistics
+      {
+        name: "Statistics",
+        path: "stat",
+        component: () => import(/* webpackChunkName: "stat" */ "@/views/Stat"),
       },
       // contact
       {

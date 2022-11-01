@@ -4,7 +4,7 @@
     <!-- Provides the application the proper gutter -->
     <v-container fluid>
       <v-overlay :value="overlay">
-        <v-progress-circular indeterminate size="64"></v-progress-circular>
+        <v-progress-circular indeterminate size="64" />
       </v-overlay>
       <v-progress-linear v-if="loading" indeterminate absolute top>
       </v-progress-linear>

@@ -57,11 +57,11 @@
       </v-col>
 
       <v-col cols="12" md="8">
-        <audit-card
+        <audit-view
           v-if="user.idUser"
-          :id="user.idUser"
+          :idUser="user.idUser"
           current-user
-        ></audit-card>
+        ></audit-view>
       </v-col>
     </v-row>
   </v-container>
@@ -74,7 +74,7 @@ import UserService from "@/api/user";
 import BaseModelstate from "@/components/base/Modelstate";
 import CurrentUserForm from "@/components/Form/CurrentUser";
 
-import AuditCard from "./Admin/Audit";
+import AuditView from "@/components/Display/Audit";
 
 export default {
   name: "UserProfile",
@@ -137,7 +137,7 @@ export default {
   components: {
     BaseModelstate,
     CurrentUserForm,
-    AuditCard,
+    AuditView,
   },
 };
 </script>

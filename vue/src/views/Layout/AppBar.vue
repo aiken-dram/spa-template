@@ -53,7 +53,7 @@ import { mapState, mapMutations, mapGetters } from "vuex";
 import { LOGOUT } from "@/store/actions.type";
 import { HELP } from "@/common/config";
 
-import MqToolbar from "@/components/MQToolbar";
+import MqToolbar from "@/components/MessageQuery/Toolbar";
 
 export default {
   name: "LayoutAppBar",

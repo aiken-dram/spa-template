@@ -3,26 +3,20 @@
     <v-row>
       <v-col cols="12">
         <base-text-field
-          :label="$t('profile.userName')"
           v-model="user.name"
-          :rules="[
-            (v) =>
-              (v || '').length <= 120 ||
-              $t('forms.common.maxLength', { length: '120' }),
-          ]"
+          t-label="profile.userName"
+          rule-preset
+          :rule-max="120"
           counter="120"
         ></base-text-field>
       </v-col>
 
       <v-col cols="12">
         <base-text-field
-          :label="$t('profile.desc')"
           v-model="user.description"
-          :rules="[
-            (v) =>
-              (v || '').length <= 255 ||
-              $t('forms.common.maxLength', { length: '255' }),
-          ]"
+          t-label="profile.desc"
+          rule-preset
+          :rule-max="255"
           counter="255"
         ></base-text-field>
       </v-col>
@@ -35,6 +29,7 @@
 <script>
 import BaseTextField from "@/components/base/TextField";
 
+/** Current user form in user's profile */
 export default {
   name: "CurrentUserForm",
 

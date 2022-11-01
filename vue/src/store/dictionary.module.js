@@ -10,10 +10,13 @@ const initialState = {
   dict: {
     [DICT.AccessGroups]: [],
     [DICT.AccessRoles]: [],
-    [DICT.EventActions]: [],
-    [DICT.EventTargets]: [],
+    [DICT.AuditActions]: [],
+    [DICT.AuditTargets]: [],
+    [DICT.RScriptParamTypes]: [],
     [DICT.Districts]: [],
     [DICT.UserDistricts]: [],
+    [DICT.SampleTypes]: [],
+    [DICT.SampleDicts]: [],
   },
 };
 

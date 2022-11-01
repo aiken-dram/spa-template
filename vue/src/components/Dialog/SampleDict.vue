@@ -1,8 +1,8 @@
 <template>
   <base-dialog v-model="show" :title="formTitle">
-    <user-form
+    <sample-dict-form
       v-model="valid"
-      :id="id"
+      :item="item"
       @close="close"
       @refresh="onRefresh"
       ref="Form"
@@ -20,19 +20,18 @@
 </template>
 
 <script>
-import UserService from "@/api/user";
+import { SampleDictService } from "@/api/dictionary";
 
 import BaseDialog from "@/components/base/Dialog/Dialog";
-import UserForm from "@/components/Form/User";
+import SampleDictForm from "@/components/Form/SampleDict";
 
-/** Dialog for editing user in account admin */
+/** Dialog for editing sample dictionary */
 export default {
-  name: "UserDialog",
+  name: "SampleDictDialog",
 
   data() {
     return {
-      id: null,
-
+      item: {},
       show: false,
       valid: true,
     };
@@ -44,13 +43,13 @@ export default {
     },
 
     create() {
-      this.id = null;
+      this.item = {};
       this.show = true;
       if (this.$refs.Form) this.$refs.Form.create();
     },
 
-    open(id) {
-      this.id = id;
+    open(item) {
+      this.item = item;
       this.show = true;
       if (this.$refs.Form) this.$refs.Form.open();
     },
@@ -59,8 +58,8 @@ export default {
       this.$refs.Form.save();
     },
 
-    del(idUser) {
-      return UserService.delete(idUser)
+    del(id) {
+      return SampleDictService.delete(id)
         .then(() => {
           this.$root.$message(this.$i18n.t("common.deleted"), "success");
           this.$emit("refresh");
@@ -77,14 +76,15 @@ export default {
 
   computed: {
     formTitle() {
-      if (this.id == null) return this.$i18n.t("forms.user.newUser");
-      else return this.$i18n.t("forms.user.editUser");
+      if (Object.keys(this.item).length === 0)
+        return this.$i18n.t("forms.common.new");
+      else return this.$i18n.t("forms.common.edit");
     },
   },
 
   components: {
     BaseDialog,
-    UserForm,
+    SampleDictForm,
   },
 };
 </script>

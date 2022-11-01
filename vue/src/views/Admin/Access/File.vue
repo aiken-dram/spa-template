@@ -9,9 +9,6 @@
         <v-overlay :value="overlay">
           <v-progress-circular indeterminate size="64" />
         </v-overlay>
-        <v-alert type="error" v-show="modelstate['Error']">
-          {{ modelstate["Error"] }}
-        </v-alert>
         <v-form ref="formUpload" v-model="valid" class="ml-2">
           <v-file-input
             ref="fileUpload"
@@ -45,11 +42,13 @@
     <v-stepper-content step="2">
       <base-signal-r
         :api="uploadFileApi"
-        :subject="SUBJECTS.ProcessFile"
+        :subject="SUBJECTS.UserProcessFile"
         ref="UploadFileSignalR"
       >
         <template v-slot:finished>
-          <v-btn color="primary" @click="reset()">Закрыть</v-btn>
+          <v-btn color="primary" @click="reset()">
+            {{ $t("common.close") }}
+          </v-btn>
         </template>
       </base-signal-r>
     </v-stepper-content>
@@ -67,7 +66,6 @@ export default {
   data: () => ({
     step: 1,
     valid: false,
-    modelstate: {},
     overlay: false,
     file: null,
 

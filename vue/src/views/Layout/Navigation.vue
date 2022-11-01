@@ -97,6 +97,11 @@ export default {
           ],
         },
         {
+          name: this.$t("nav.stat"),
+          route: "/stat",
+          icon: "fa-chart-bar",
+        },
+        {
           name: this.$t("nav.mq"),
           route: "/mq",
           icon: "fa-mail-bulk",
@@ -121,6 +126,12 @@ export default {
               name: this.$i18n.t("nav.adminDict"),
               route: "/admin/dict",
               avatar: this.$i18n.t("nav.adminDictAvatar"),
+            },
+            {
+              name: this.$i18n.t("nav.adminStat"),
+              route: "/admin/stat",
+              avatar: this.$i18n.t("nav.adminStatAvatar"),
+              role: MODULES.ConfigurationAdmin,
             },
           ],
         },

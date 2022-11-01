@@ -1,27 +1,39 @@
 <template>
   <div>
     <v-tabs v-model="tab">
-      <v-tab :key="1">{{ $t("admin.dict.districts.title") }}</v-tab>
+      <v-tab v-for="t of tabs" :key="t.id" :to="t.route" exact ripple>
+        {{ t.name }}
+      </v-tab>
     </v-tabs>
+
     <v-tabs-items v-model="tab">
-      <v-tab-item :key="1"> <dict-districts /> </v-tab-item>
+      <v-tab-item v-for="t of tabs" :key="t.id" :value="t.route">
+        <router-view v-if="tab == t.route" />
+      </v-tab-item>
     </v-tabs-items>
   </div>
 </template>
 
 <script>
-import DictDistricts from "./Dict/Districts";
-
 export default {
   name: "DictPage",
+
   data() {
     return {
-      tab: null,
+      tab: "/admin/dict",
+      tabs: [
+        {
+          id: 1,
+          name: this.$i18n.t("admin.dict.districts.title"),
+          route: "/admin/dict/districts",
+        },
+        {
+          id: 2,
+          name: this.$i18n.t("admin.dict.sample.title"),
+          route: "/admin/dict/sample",
+        },
+      ],
     };
-  },
-
-  components: {
-    DictDistricts,
   },
 };
 </script>

@@ -4,22 +4,22 @@
     <base-modelstate v-model="modelstate" />
     <v-row>
       <v-col>
-        <base-number-field
-          v-model.number="district.idDistrict"
-          t-label="$t('forms.district.idDistrict')"
+        <base-text-field
+          v-model="dict.dict"
           required
+          t-label="forms.sampleDict.dict"
           rule-preset
           rule-required
-        ></base-number-field>
+          :rule-max="120"
+          counter="120"
+        ></base-text-field>
 
         <base-text-field
-          v-model="district.name"
-          t-label="forms.district.name"
-          required
+          v-model="dict.description"
+          t-label="forms.sampleDict.description"
           rule-preset
-          rule-required
-          :rule-max="200"
-          counter="200"
+          :rule-max="255"
+          counter="255"
         ></base-text-field>
       </v-col>
     </v-row>
@@ -27,27 +27,26 @@
 </template>
 
 <script>
-import { DistrictService } from "@/api/dictionary";
+import { SampleDictService } from "@/api/dictionary";
 
 import BaseOverlay from "@/components/base/Overlay";
 import BaseModelstate from "@/components/base/Modelstate";
-import BaseNumberField from "@/components/base/NumberField";
 import BaseTextField from "@/components/base/TextField";
 
-/** district form in dictionary */
+/** Form for sample dictionary */
 export default {
-  name: "DistrictForm",
+  name: "SampleDictForm",
 
   props: {
     value: Boolean,
-    id: Number,
+    item: Object,
   },
 
   data: () => ({
     overlay: false,
     modelstate: {},
 
-    district: {},
+    dict: {},
   }),
 
   methods: {
@@ -56,27 +55,19 @@ export default {
     },
 
     create() {
-      this.district = {};
+      this.dict = {};
       this.modelstate = {};
     },
 
     open() {
-      this.overlay = true;
-      return DistrictService.get(this.id)
-        .then(({ data }) => {
-          this.district = data;
-          this.modelstate = {};
-          this.overlay = false;
-        })
-        .catch((error) => {
-          this.$root.$error(error);
-          this.$emit("close");
-        });
+      //direct open, no api calls
+      this.dict = this.item;
+      this.modelstate = {};
     },
 
     save() {
       this.overlay = true;
-      DistrictService.upsert(this.district)
+      SampleDictService.upsert(this.dict)
         .then(() => {
           this.modelstate = {};
           this.$emit("refresh");
@@ -97,8 +88,7 @@ export default {
   },
 
   mounted() {
-    if (this.id != null) this.open();
-    else this.create();
+    this.open();
   },
 
   computed: {
@@ -114,10 +104,9 @@ export default {
   },
 
   components: {
+    BaseTextField,
     BaseOverlay,
     BaseModelstate,
-    BaseNumberField,
-    BaseTextField,
   },
 };
 </script>

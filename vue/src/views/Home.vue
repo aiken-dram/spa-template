@@ -1,9 +1,29 @@
 <template>
   <v-container fluid>
+    <base-dialog v-model="show" :title="$t('home.newVersion')">
+      <v-row class="pt-1">
+        <v-col cols="2">
+          <strong v-text="versions[0].date"></strong>
+        </v-col>
+        <v-col cols="10">
+          <strong v-text="versions[0].version"></strong>
+          <div
+            class="caption"
+            v-for="(ch, j) in versions[0].changes"
+            :key="j"
+            v-text="ch"
+          ></div>
+        </v-col>
+      </v-row>
+      <template v-slot:buttons>
+        <v-btn color="blue darken-1" text @click.stop="show = false">ОK</v-btn>
+      </template>
+    </base-dialog>
+
     <v-alert border="top" colored-border type="warning" elevation="2">
       <p>
         {{ $t("home.recommendedBrowser") }}:
-        <a href="https://www.google.com/chrome/"> Google Chrome </a>
+        <a href="/Software/ChromeStandaloneSetup.exe"> Google Chrome </a>
       </p>
     </v-alert>
 
@@ -42,19 +62,40 @@
 </template>
 
 <script>
-import { JsonService } from "@/api";
+import VersionService from "@/plugins/version";
+import BaseDialog from "@/components/base/Dialog/Dialog";
 
 export default {
   name: "HomePage",
 
   data: () => ({
-    versions: [],
+    show: false,
+    versions: [
+      {
+        color: "teal lighten-3",
+        date: "??.??.2022",
+        version: "v0.1-beta",
+        changes: ["new version"],
+      },
+    ],
   }),
 
   mounted() {
-    JsonService.versions().then((response) => {
-      this.versions = response.data;
-    });
+    //check last version and if hasnt been notified, open dialog box with version information
+    var version = VersionService.getVersion();
+    var current = this.versions[0].version;
+    if (version == null) {
+      VersionService.saveVersion(current);
+    } else {
+      if (version != current) {
+        this.show = true;
+        VersionService.saveVersion(current);
+      }
+    }
+  },
+
+  components: {
+    BaseDialog,
   },
 };
 </script>

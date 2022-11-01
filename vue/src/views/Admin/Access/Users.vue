@@ -1,14 +1,15 @@
 <template>
   <v-card>
     <confirm ref="confirm" />
-    <user-dialog ref="UserDialog" :refresh-table="load" />
+    <user-dialog ref="Dialog" @refresh="load" />
     <base-table-api
       :headers="headers"
       :search="search"
       :data-table="dataTable"
       export-page-icon="fa-file-csv"
       @export-page="exportPageCSV"
-      ref="UserTable"
+      @click:row="edit"
+      ref="Table"
     >
       <v-card flat>
         <v-toolbar flat>
@@ -29,11 +30,6 @@
       </v-card>
 
       <template v-slot:item.idUser="{ item }">
-        <base-table-action
-          icon="fa-edit"
-          :tooltip="$t('common.edit')"
-          @click="edit(item)"
-        ></base-table-action>
         <base-table-action
           icon="fa-trash"
           :tooltip="$t('common.delete')"
@@ -60,9 +56,9 @@
       </template>
 
       <template v-slot:item.districts="{ item }">
-        <v-chip v-for="(i, index) in item.districts" :key="index">
-          {{ i }}
-        </v-chip>
+        <v-chip v-for="(i, index) in item.districts" :key="index">{{
+          i
+        }}</v-chip>
       </template>
     </base-table-api>
   </v-card>
@@ -149,25 +145,24 @@ export default {
       setOverlay: "SET_OVERLAY",
     }),
 
+    /** Table */
     dataTable(params) {
       params["FullSearch"] = this.search;
       return UserService.table(params);
     },
     load(resetPage = false) {
       //need to refresh table from here
-      this.$refs.UserTable.load(resetPage);
+      this.$refs.Table.load(resetPage);
     },
 
+    /** CRUD */
     create() {
       //new user form
-      this.$refs.UserDialog.create();
+      this.$refs.Dialog.create();
     },
     edit(item) {
       //edit user form
-      this.setOverlay(true);
-      this.$refs.UserDialog.open(item.idUser).finally(() => {
-        this.setOverlay(false);
-      });
+      this.$refs.Dialog.open(item.idUser);
     },
     del(item) {
       //deleting user
@@ -179,14 +174,17 @@ export default {
         )
         .then((confirm) => {
           if (confirm) {
+            this.setOverlay(true);
             //console.log("users.del");
-            this.$refs.UserDialog.del(item.idUser);
+            this.$refs.Dialog.del(item.idUser).finally(() => {
+              this.setOverlay(false);
+            });
           }
         });
     },
 
     exportPageCSV(params) {
-      //this is just exporting current page
+      //exporting current page
       this.setOverlay(true);
       UserService.tablecsv(params)
         .then((response) => {

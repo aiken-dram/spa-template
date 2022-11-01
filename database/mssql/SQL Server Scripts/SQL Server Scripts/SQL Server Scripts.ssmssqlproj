@@ -1,9 +1,40 @@
-<?xml version="1.0" encoding="utf-8"?>
-<SqlWorkbenchSqlProject xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Name="SqlWorkbenchSqlProject">
+<?xml version="1.0"?>
+<SqlWorkbenchSqlProject xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Name="SQL Server Scripts">
   <Items>
-    <LogicalFolder Name="Connections" Type="2" />
-    <LogicalFolder Name="Queries" Type="0" />
-    <LogicalFolder Name="Miscellaneous" Type="3" />
-
+    <LogicalFolder Name="Connections" Type="2" Sorted="true">
+      <Items>
+        <ConnectionNode Name="NOTEBOOK\SQLEXPRESS:NOTEBOOK\eiken">
+          <Created>2022-11-01T09:52:12.1756544+03:00</Created>
+          <Type>SQL</Type>
+          <Server>NOTEBOOK\SQLEXPRESS</Server>
+          <UserName />
+          <Authentication>Windows Authentication</Authentication>
+          <InitialDB>SPA</InitialDB>
+          <LoginTimeout>30</LoginTimeout>
+          <ExecutionTimeout>0</ExecutionTimeout>
+          <ConnectionProtocol>NotSpecified</ConnectionProtocol>
+          <ApplicationName>Microsoft SQL Server Management Studio - Query</ApplicationName>
+        </ConnectionNode>
+      </Items>
+    </LogicalFolder>
+    <LogicalFolder Name="Queries" Type="0" Sorted="true">
+      <Items>
+        <FileNode Name="SQLQueryCreate.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:NOTEBOOK\SQLEXPRESS:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>NOTEBOOK\SQLEXPRESS</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>SQLQueryCreate.sql</FullPath>
+        </FileNode>
+        <FileNode Name="SQLQueryInitial.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:NOTEBOOK\SQLEXPRESS:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>NOTEBOOK\SQLEXPRESS</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>SQLQueryInitial.sql</FullPath>
+        </FileNode>
+      </Items>
+    </LogicalFolder>
+    <LogicalFolder Name="Miscellaneous" Type="3" Sorted="true">
+      <Items />
+    </LogicalFolder>
   </Items>
 </SqlWorkbenchSqlProject>

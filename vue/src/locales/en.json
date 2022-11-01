@@ -8,23 +8,26 @@
     "add": "Add",
     "edit": "Edit",
     "actions": "Actions",
+    "massOperations": "Batch operations",
     "delete": "Delete",
     "deleted": "Entry deleted",
     "editSaved": "Changes saved",
     "download": "File added to browser downloads",
     "requestCreated": "Request created",
     "requestProcessed": "Request processed",
-    "exportPage": "Export current page to file",
-    "exportAll": "Export all data to file",
+    "exportPage": "Export current page",
+    "exportAll": "Export all data",
     "exportCsv": "Export to CSV",
     "exportCsvConfirm": "Are you sure you want to export {count} rows into CSV?",
     "noRecordSelected": "No record selected",
     "process": "Process",
     "cancel": "Cancel",
+    "close": "Close",
     "save": "Save",
     "yes": "Yes",
     "ok": "Ok",
     "error": "Error",
+    "chooseFieldFromList": "Select field from list",
     "table": {
       "loading": "Data is loading...",
       "noData": "No data",
@@ -47,17 +50,31 @@
   },
   "signalr": {
     "connectingToServer": "Connecting to server...",
-    "connectionEstablished": "Connection to server established",
-    "disabled": "SignalR was disabled in user's settings",
+    "connectionEstablished": "Connected to server",
+    "disabled": "SignalR has been disabled in user's settings",
     "error": "Error while processing request",
-    "result": "Processing request is completed"
+    "result": "Request has been processed"
+  },
+  "messagequery": {
+    "title": "Requests",
+    "signalrDisabled": "SignalR has been disabled in user's settings, result will be available in menu 'Queries'",
+    "queue": "Waiting in queue...",
+    "processing": "Processing request...",
+    "ready": "Request processed",
+    "request": {
+      "stateQUEUE": "In queue for processing",
+      "statePROCESSING": "Processing request...",
+      "stateREADY": "Request processed",
+      "stateERROR": "Error while processing request:",
+      "stateDELIVERED": "Request result has been delivered"
+    },
+    "inbox": "Requests",
+    "delivered": "Delivered"
   },
   "flags": {
-    "auditTarget": {
-      "auth": "Authorization",
-      "accountUsers": "User's table",
-      "mqRequests": "Requests",
-      "dictDistricts": "Districts dictionary"
+    "auditSource": {
+      "user": "User",
+      "sample": "Sample"
     }
   },
   "route": {},
@@ -73,23 +90,27 @@
   "nav": {
     "home": "Home",
     "sample": "Sample",
-    "sampleWork": "Manage",
-    "sampleWorkAvatar": "SA",
-    "mq": "Requests",
+    "sampleWork": "Work",
+    "sampleWorkAvatar": "WK",
+    "stat": "Statistics",
+    "mq": "Queries",
     "admin": "Admin",
     "adminAccess": "User access",
     "adminAccessAvatar": "UA",
     "adminAudit": "Audit",
-    "adminAuditAvatar": "AU",
+    "adminAuditAvatar": "AD",
     "adminDict": "Dictionaries",
     "adminDictAvatar": "DT",
+    "adminStat": "Statistics configuration",
+    "adminStatAvatar": "SC",
     "doc": "Documentation",
     "contacts": "Contacts"
   },
   "home": {
     "recommendedBrowser": "Recommended browser",
     "documentationLink": "Documentation is located here",
-    "versionHistory": "Version history"
+    "versionHistory": "Version history",
+    "newVersion": "New version"
   },
   "login": {
     "pageTitle": "Log into SPA",
@@ -142,51 +163,122 @@
       "districts": {
         "title": "Districts",
         "table": {
-          "idDistrict": "District's number",
+          "idDistrict": "District number",
           "name": "Name"
         },
         "deleteDistrict": "Delete district?"
+      },
+      "sample": {
+        "title": "Sample",
+        "table": {
+          "dict": "Name",
+          "description": "Description"
+        },
+        "deleteDict": "Delete sample?"
       }
     }
   },
-  "audit": {
-    "title": "{username} activity history",
+  "sample": {
+    "title": "Sample",
+    "typeA": "Type A",
+    "typeB": "Type B",
     "table": {
-      "user": "Login",
-      "userFilter": "Login search",
+      "district": "District",
+      "text": "Text",
+      "number": "Number",
+      "date": "Date"
+    },
+    "toolbar": {
+      "district": "District",
       "type": "Type",
-      "stamp": "Date and time",
-      "stampFilter": "Date and time search",
+      "sample": "Sample",
+      "dictionary": "Dictionary",
+      "children": "Children",
+      "text": "Text"
+    },
+    "deleteSample": "Delete sample?"
+  },
+  "mq": {
+    "deleteRequest": "Delete request?"
+  },
+  "stat": {
+    "creatingRequest": "Creating request",
+    "createRequest": "Create request",
+    "processingRequest": "Processing request",
+    "requestResult": "Result"
+  },
+  "audit": {
+    "title": "Audit user's activity",
+    "titleUser": "Audit {username} activity",
+    "table": {
+      "source": "Source",
+      "user": "User",
+      "userFilter": "Search by login",
+      "type": "Type",
+      "stamp": "Time stamp",
+      "stampFilter": "Search by time stamp",
       "target": "Target",
-      "targetFilter": "Target search",
+      "targetFilter": "Search by target",
       "action": "Action",
-      "actionFilter": "Action search",
+      "actionFilter": "Search by action",
       "targetName": "Subject",
-      "targetNameFilter": "Subject search",
+      "targetNameFilter": "Search by subject",
       "data": "Data"
     },
     "data": {
       "remoteSystem": "Remote system",
+      "requestParams": "Request parameters",
       "history": {
-        "replacedWith": "changed to",
-        "field": "Field",
+        "replacedWith": "replaced with",
+        "field": "field",
         "updated": "updated"
       }
+    },
+    "operations": {
+      "AddList": "added",
+      "RemoveList": "removed"
     },
     "fields": {
       "ACCOUNT": {
         "USERS": {
-          "Name": "Name of user",
+          "Name": "User's name",
           "Description": "Description",
           "Login": "Login",
           "Pass": "Password",
           "IsActive": "Is active",
-          "PassDate": "Password expiration date"
+          "PassDate": "Password valid date",
+          "UserGroups": "Groups",
+          "UserRoles": "Roles",
+          "UserDistricts": "Districts"
         }
       },
       "DICT": {
         "DISTRICTS": {
-          "Name": "Name"
+          "Name": "Nane"
+        },
+        "SAMPLE_DICT": {
+          "Dict": "Name",
+          "Description": "Description"
+        }
+      },
+      "R": {
+        "RSCRIPTS": {
+          "ScriptFile": "Script's file name",
+          "Name": "Name",
+          "ContentType": "Content type",
+          "ResultFile": "Result file",
+          "Description": "Description"
+        }
+      },
+      "SAMPLE": {
+        "SAMPLE": {
+          "IdType": "Type",
+          "IdDict": "Dictionary",
+          "Text": "Text",
+          "Number": "Number",
+          "Date": "Date",
+          "Timestamp": "Time stamp",
+          "Sum": "Currency"
         }
       }
     }
@@ -194,7 +286,9 @@
   "forms": {
     "common": {
       "maxLength": "Maximum length is {length} characters",
-      "mustNotBeEmpty": "{field} must not be empty"
+      "mustNotBeEmpty": "{field} must not be empty",
+      "new": "New",
+      "edit": "Edit"
     },
     "user": {
       "newUser": "New user",
@@ -205,18 +299,62 @@
       "isActive": "Is active?",
       "passwordExpirationDate": "Password expiration date",
       "userName": "User name",
-      "desc": "Description",
+      "description": "Description",
       "groups": "Groups",
       "roles": "Roles",
       "rolesHint": "Select roles in additon to group roles",
       "districts": "Districts",
-      "districtsHint": "Leave field empty for user to have access to all districts"
+      "districtsHint": "Leave field empty to give access to all districts"
     },
     "district": {
-      "newDistrict": "New district",
-      "editDistrict": "Edit district",
-      "idDistrict": "District's number",
+      "idDistrict": "District number",
       "name": "Name"
+    },
+    "rscripttree": {
+      "name": "Name",
+      "modules": "Modules",
+      "icon": "Icon",
+      "color": "Color",
+      "description": "Description",
+      "rscript": "R script"
+    },
+    "rscript": {
+      "dialog": "R script",
+      "name": "Name",
+      "scriptFile": "Script file",
+      "contentType": "Content type",
+      "resultFile": "Result file",
+      "description": "Description",
+      "scriptContent": "Script content"
+    },
+    "rscriptparam": {
+      "param": "Parameter",
+      "name": "Name",
+      "description": "Description",
+      "hint": "Hint",
+      "type": "Type"
+    },
+    "sampleDict": {
+      "dict": "Name",
+      "description": "Description"
+    },
+    "sample": {
+      "newSample": "New sample",
+      "editSample": "Edit sample",
+      "viewSample": "View sample",
+      "dataTab": "Content",
+      "historyTab": "History",
+      "type": "Type",
+      "dict": "Dictionary",
+      "district": "District",
+      "text": "Text",
+      "number": "Number",
+      "date": "Date",
+      "timestamp": "Time stamp",
+      "sum": "Currency",
+      "children": "Children",
+      "child": "Child",
+      "noHistory": "No changes"
     }
   },
   "versions": {

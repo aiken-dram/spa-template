@@ -112,6 +112,7 @@ export default {
       modelstate: {},
       adminContact: {},
       accessContact: {},
+      old_version: {},
 
       login: null,
       password: null,
@@ -122,6 +123,7 @@ export default {
     JsonService.contacts().then((response) => {
       this.adminContact = response.data.admin;
       this.accessContact = response.data.access;
+      this.old_version = response.data.old_version;
     });
     HealthService.health()
       .then(() => (this.health = true))

@@ -14,10 +14,13 @@ export const MODULES = {
 export const DICT = {
   AccessGroups: "AccessGroups",
   AccessRoles: "AccessRoles",
-  EventTargets: "EventTargets",
-  EventActions: "EventActions",
+  AuditTargets: "AuditTargets",
+  AuditActions: "AuditActions",
+  RScriptParamTypes: "RScriptParamTypes",
   Districts: "Districts",
   UserDistricts: "UserDistricts",
+  SampleTypes: "SampleTypes",
+  SampleDicts: "SampleDicts",
 };
 
 /** Documentation links */
@@ -36,5 +39,17 @@ export const HELP = {
  * SignalR hub subjects for notifications
  */
 export const SUBJECTS = {
-  ProcessFile: "Account.User.Commands.ProcessFile",
+  UserProcessFile: "Account.User.Commands.ProcessFile",
+  MessageQuery: "MessageQuery",
+  BatchProcessRequest: "MessageQuery.Commands.BatchProcessRequest",
+  BatchUpdateSample: "Sample.Commands.BatchUpdateSample",
+};
+
+/**
+ * Message query types
+ */
+export const MQ = {
+  TableExportAudit: "TABLE_EXPORT_AUDIT",
+  TableExportSample: "TABLE_EXPORT_SAMPLE",
+  RScript: "RSCRIPT",
 };

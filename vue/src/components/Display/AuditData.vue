@@ -1,27 +1,35 @@
 <template>
   <div>
     <div v-if="item.idTarget == TARGETS.Auth">
-      <!-- Authorization audit events -->
+      <!-- Authorization audit -->
       {{ $t("audit.data.remoteSystem") }}: <kbd>{{ item.message }}</kbd>
     </div>
 
     <div v-else-if="item.idTarget == TARGETS.MessageQueryRequest">
-      <!-- Message query audit events -->
+      <!-- Message query audit -->
+      <strong>{{ $t("audit.data.requestParams") }}:</strong>&nbsp;
+      <kbd>{{ parse(item.auditData)[0].json.Value }}</kbd>
     </div>
 
     <div v-else>
       <!-- Creating and Editing -->
 
-      <div v-for="(d, i) in parse(item.eventData)" :key="i">
+      <div v-for="(d, i) in parse(item.auditData)" :key="i">
+        <div v-if="d.idType == DATATYPES.FieldOperationValue">
+          <strong>{{ $t(translateField(d.json.Field)) }}:</strong>&nbsp;
+          <kbd>{{ $t(translateOperation(d.json.Operation)) }}</kbd> &nbsp;
+          <kbd>{{ d.json.Value }}</kbd>
+        </div>
+
         <div v-if="d.idType == DATATYPES.FieldOldNew">
-          <strong>{{ $t(translateField(d.json.Field)) }}:</strong>
-          <kbd>{{ d.json.Old }}</kbd>
-          {{ $t("audit.data.history.replacedWith") }}
+          <strong>{{ $t(translateField(d.json.Field)) }}:</strong>&nbsp;
+          <kbd>{{ d.json.Old }}</kbd> &nbsp;
+          {{ $t("audit.data.history.replacedWith") }}&nbsp;
           <kbd>{{ d.json.New }}</kbd>
         </div>
 
         <div v-if="d.idType == DATATYPES.FieldValue">
-          <strong>{{ $t(translateField(d.json.Field)) }}:</strong>
+          <strong>{{ $t(translateField(d.json.Field)) }}:</strong>&nbsp;
           <kbd>{{ d.json.Value }}</kbd>
         </div>
 
@@ -41,6 +49,7 @@
 
 <script>
 /**
+ * Display for audit data
  * this would be perfect opportunity to use js vue component generation
  * or not, no idea how complex this will become, maybe i'll use a v-list or something?
  * */
@@ -76,6 +85,7 @@ export default {
       Value: 1,
       FieldValue: 2,
       FieldOldNew: 3,
+      FieldOperationValue: 4,
     },
   }),
 
@@ -91,6 +101,9 @@ export default {
 
     translateField(field) {
       return `audit.fields.${this.item.target}.${field}`;
+    },
+    translateOperation(operation) {
+      return `audit.operations.${operation}`;
     },
   },
 };

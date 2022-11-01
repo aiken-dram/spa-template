@@ -8,6 +8,7 @@
     "add": "Новый",
     "edit": "Редактировать",
     "actions": "Действия",
+    "massOperations": "Массовые операции",
     "delete": "Удалить",
     "deleted": "Запись удалена",
     "editSaved": "Изменения сохранены",
@@ -21,10 +22,12 @@
     "noRecordSelected": "Не выбрано ни одной записи",
     "process": "Обработать",
     "cancel": "Отмена",
+    "close": "Закрыть",
     "save": "Сохранить",
     "yes": "Да",
     "ok": "Ok",
     "error": "Ошибка",
+    "chooseFieldFromList": "Выберите поле из списка",
     "table": {
       "loading": "Идет загрузка данных...",
       "noData": "Нет данных",
@@ -52,12 +55,26 @@
     "error": "Ошибка при выполнении запроса",
     "result": "Выполнение запроса завершено"
   },
+  "messagequery": {
+    "title": "Запросы",
+    "signalrDisabled": "SignalR был отключен в настройках пользователя, результат запроса будет доступен в разделе 'Запросы'",
+    "queue": "Ожидание очереди на обработку...",
+    "processing": "Обработка запроса...",
+    "ready": "Обработка завершена",
+    "request": {
+      "stateQUEUE": "Ожидание очереди на обработку",
+      "statePROCESSING": "Выполнение запроса...",
+      "stateREADY": "Обработка завершена",
+      "stateERROR": "Ошибка при обработке запроса:",
+      "stateDELIVERED": "Результат запроса был доставлен"
+    },
+    "inbox": "Запросы",
+    "delivered": "Доставленные"
+  },
   "flags": {
-    "auditTarget": {
-      "auth": "Авторизация",
-      "accountUsers": "Таблица пользователей",
-      "mqRequests": "Запросы",
-      "dictRaions": "Справочник районов"
+    "auditSource": {
+      "user": "Пользователь",
+      "sample": "Пример"
     }
   },
   "route": {},
@@ -75,6 +92,7 @@
     "sample": "Пример",
     "sampleWork": "Обработка",
     "sampleWorkAvatar": "РА",
+    "stat": "Статистика",
     "mq": "Запросы",
     "admin": "Администрирование",
     "adminAccess": "Управление доступом",
@@ -83,13 +101,16 @@
     "adminAuditAvatar": "АУ",
     "adminDict": "Справочники",
     "adminDictAvatar": "СП",
+    "adminStat": "Конфигурация статистики",
+    "adminStatAvatar": "КС",
     "doc": "Справка",
     "contacts": "Контакты"
   },
   "home": {
     "recommendedBrowser": "Рекоммендуемый браузер",
     "documentationLink": "Документация доступна по этой ссылке",
-    "versionHistory": "История изменений"
+    "versionHistory": "История изменений",
+    "newVersion": "Новая версия"
   },
   "login": {
     "pageTitle": "Вход в ПК",
@@ -112,7 +133,7 @@
           "userName": "Имя пользователя",
           "userNameFilter": "Поиск по имени пользователя",
           "groups": "Группы",
-          "raions": "Районы",
+          "districts": "Районы",
           "desc": "Описание",
           "descFilter": "Поиск по описанию"
         },
@@ -139,19 +160,58 @@
       }
     },
     "dict": {
-      "raions": {
+      "districts": {
         "title": "Районы",
         "table": {
-          "idRaion": "Номер района",
+          "idDistrict": "Номер района",
           "name": "Наименование"
         },
-        "deleteRaion": "Удалить район?"
+        "deleteDistrict": "Удалить район?"
+      },
+      "sample": {
+        "title": "Пример",
+        "table": {
+          "dict": "Наименование",
+          "description": "Описание"
+        },
+        "deleteDict": "Удалить пример?"
       }
     }
   },
-  "audit": {
-    "title": "Аудит действий пользователя {username}",
+  "sample": {
+    "title": "Пример",
+    "typeA": "Тип А",
+    "typeB": "Тип Б",
     "table": {
+      "district": "Район",
+      "text": "Текст",
+      "number": "Число",
+      "date": "Дата"
+    },
+    "toolbar": {
+      "district": "Район",
+      "type": "Тип",
+      "sample": "Пример",
+      "dictionary": "Справочник",
+      "children": "Связанные",
+      "text": "Текст"
+    },
+    "deleteSample": "Удалить пример?"
+  },
+  "mq": {
+    "deleteRequest": "Удалить запрос?"
+  },
+  "stat": {
+    "creatingRequest": "Создание запроса",
+    "createRequest": "Создать запрос",
+    "processingRequest": "Выполнение запроса",
+    "requestResult": "Результат"
+  },
+  "audit": {
+    "title": "Аудит действий пользователей",
+    "titleUser": "Аудит действий пользователя {username}",
+    "table": {
+      "source": "Источник",
       "user": "Пользователь",
       "userFilter": "Поиск по логину",
       "type": "Тип",
@@ -167,11 +227,16 @@
     },
     "data": {
       "remoteSystem": "Удаленная система",
+      "requestParams": "Параметры запроса",
       "history": {
         "replacedWith": "изменено на",
         "field": "Поле",
         "updated": "изменено"
       }
+    },
+    "operations": {
+      "AddList": "добавление",
+      "RemoveList": "удаление"
     },
     "fields": {
       "ACCOUNT": {
@@ -181,12 +246,39 @@
           "Login": "Логин",
           "Pass": "Пароль",
           "IsActive": "Активен",
-          "PassDate": "Срок действия пароля"
+          "PassDate": "Срок действия пароля",
+          "UserGroups": "Группы",
+          "UserRoles": "Роли",
+          "UserDistricts": "Районы"
         }
       },
       "DICT": {
-        "RAIONS": {
+        "DISTRICTS": {
           "Name": "Наименование"
+        },
+        "SAMPLE_DICT": {
+          "Dict": "Наименование",
+          "Description": "Описание"
+        }
+      },
+      "R": {
+        "RSCRIPTS": {
+          "ScriptFile": "Имя скрипта",
+          "Name": "Наименование",
+          "ContentType": "Тип контента",
+          "ResultFile": "Имя файла",
+          "Description": "Описание"
+        }
+      },
+      "SAMPLE": {
+        "SAMPLE": {
+          "IdType": "Тип",
+          "IdDict": "Справочник",
+          "Text": "Текст",
+          "Number": "Число",
+          "Date": "Дата",
+          "Timestamp": "Дата и время",
+          "Sum": "Сумма"
         }
       }
     }
@@ -194,7 +286,9 @@
   "forms": {
     "common": {
       "maxLength": "Максимальная длина {length} символов",
-      "mustNotBeEmpty": "{field} не может быть пустым"
+      "mustNotBeEmpty": "{field} не может быть пустым",
+      "new": "Новая запись",
+      "edit": "Редактирование"
     },
     "user": {
       "newUser": "Новый пользователь",
@@ -205,18 +299,62 @@
       "isActive": "Активен?",
       "passwordExpirationDate": "Срок действия пароля",
       "userName": "Имя пользователя",
-      "desc": "Описание",
+      "description": "Описание",
       "groups": "Группы",
       "roles": "Роли",
       "rolesHint": "Выберите роли в дополнение к группам",
-      "raions": "Районы",
-      "raionsHint": "Оставьте поле пустым для доступа ко всем районам"
+      "districts": "Районы",
+      "districtsHint": "Оставьте поле пустым для доступа ко всем районам"
     },
-    "raion": {
-      "newRaion": "Новый район",
-      "editRaion": "Редактирование района",
-      "idRaion": "Номер района",
+    "district": {
+      "idDistrict": "Номер района",
       "name": "Наименование"
+    },
+    "rscripttree": {
+      "name": "Наименование",
+      "modules": "Модули",
+      "icon": "Иконка",
+      "color": "Цвет",
+      "description": "Описание",
+      "rscript": "Скрипт R"
+    },
+    "rscript": {
+      "dialog": "Скрипт R",
+      "name": "Наименование",
+      "scriptFile": "Имя скрипта",
+      "contentType": "Тип контента",
+      "resultFile": "Имя файла",
+      "description": "Описание",
+      "scriptContent": "Содержимое скрипта"
+    },
+    "rscriptparam": {
+      "param": "Параметр скрипта",
+      "name": "Наименование",
+      "description": "Описание",
+      "hint": "Подсказка",
+      "type": "Тип"
+    },
+    "sampleDict": {
+      "dict": "Наименование",
+      "description": "Описание"
+    },
+    "sample": {
+      "newSample": "Новый пример",
+      "editSample": "Редактирование примера",
+      "viewSample": "Просмотр примера",
+      "dataTab": "Сведения",
+      "historyTab": "История изменений",
+      "type": "Тип",
+      "dict": "Справочник",
+      "district": "Район",
+      "text": "Текст",
+      "number": "Число",
+      "date": "Дата",
+      "timestamp": "Дата и время",
+      "sum": "Сумма",
+      "children": "Связанные",
+      "child": "Элемент",
+      "noHistory": "Отсутствует история изменений"
     }
   },
   "versions": {

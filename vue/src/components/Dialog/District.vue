@@ -1,10 +1,12 @@
 <template>
   <base-dialog v-model="show" :title="formTitle">
-    <base-overlay v-model="overlay" />
-    <v-form v-model="valid">
-      <base-modelstate v-model="modelstate" />
-      <district-form v-model="district" />
-    </v-form>
+    <district-form
+      v-model="valid"
+      :id="id"
+      @close="close"
+      @refresh="onRefresh"
+      ref="Form"
+    />
 
     <template v-slot:buttons>
       <v-btn color="blue darken-1" text @click.stop="close">
@@ -18,104 +20,70 @@
 </template>
 
 <script>
-import DistrictService from "@/api/district";
+import { DistrictService } from "@/api/dictionary";
 
 import BaseDialog from "@/components/base/Dialog/Dialog";
-import BaseOverlay from "@/components/base/Overlay";
-import BaseModelstate from "@/components/base/Modelstate";
 import DistrictForm from "@/components/Form/District";
 
+/** Dialog for editing district */
 export default {
   name: "DistrictDialog",
 
-  props: {
-    refreshTable: Function,
-  },
-
   data() {
     return {
-      show: false,
-      overlay: false,
-      valid: true,
-      modelstate: {},
+      id: null,
 
-      district: {
-        idDistrict: null,
-        name: null,
-      },
+      show: false,
+      valid: true,
     };
   },
 
   methods: {
     close() {
       this.show = false;
-      this.modelstate = {};
     },
 
     create() {
-      this.district = {};
-      this.modelstate = {};
+      this.id = null;
       this.show = true;
+      if (this.$refs.Form) this.$refs.Form.create();
     },
 
     open(id) {
-      return DistrictService.get(id)
-        .then(({ data }) => {
-          this.district = data;
-          this.modelstate = {};
-          this.show = true;
-        })
-        .catch((error) => {
-          this.$root.$error(error);
-        });
+      this.id = id;
+      this.show = true;
+      if (this.$refs.Form) this.$refs.Form.open();
     },
 
     save() {
-      this.overlay = true;
-      DistrictService.upsert(this.district)
-        .then(() => {
-          this.close();
-          this.refreshTable();
-          this.$root.$message(this.$i18n.t("common.editSaved"), "success");
-        })
-        .catch((error) => {
-          console.log(error);
-          this.modelstate = error;
-        })
-        .finally(() => {
-          this.overlay = false;
-        });
+      this.$refs.Form.save();
     },
 
     del(id) {
-      DistrictService.delete(id)
+      return DistrictService.delete(id)
         .then(() => {
           this.$root.$message(this.$i18n.t("common.deleted"), "success");
+          this.$emit("refresh");
         })
         .catch((error) => {
           this.$root.$error(error);
-        })
-        .finally(() => {
-          this.refreshTable();
         });
+    },
+
+    onRefresh() {
+      this.$emit("refresh");
     },
   },
 
   computed: {
     formTitle() {
-      if (!this.district.idDistrict)
-        return this.$i18n.t("forms.district.newDistrict");
-      else return this.$i18n.t("forms.district.editDistrict");
-    },
-    isNew() {
-      return !this.district.idDistrict;
+      if (this.id == null) return this.$i18n.t("forms.common.new");
+      else return this.$i18n.t("forms.common.edit");
     },
   },
 
   components: {
     BaseDialog,
-    BaseOverlay,
-    BaseModelstate,
     DistrictForm,
   },
 };

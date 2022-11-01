@@ -31,18 +31,7 @@
       <template v-for="(item, i) in items">
         <v-list-item :key="i">
           <v-list-item-avatar>
-            <v-icon v-if="item.state == 'QUEUE'" color="info">
-              fa-hourglass-start
-            </v-icon>
-            <v-icon v-if="item.state == 'PROCESSING'" color="success">
-              fa-cog fa-spin
-            </v-icon>
-            <v-icon v-if="item.state == 'READY'" color="amber">
-              fa-envelope
-            </v-icon>
-            <v-icon v-if="item.state == 'ERROR'" color="error">
-              fa-exclamation-circle
-            </v-icon>
+            <request-icon v-model="item.state"></request-icon>
           </v-list-item-avatar>
 
           <v-list-item-content>
@@ -91,6 +80,9 @@ import { mapMutations } from "vuex";
 import { download } from "@/common/file";
 import MQService from "@/api/mq";
 
+import RequestIcon from "./RequestIcon.vue";
+
+/** Toolbar for monitoring message query requests */
 export default {
   name: "MQToolbar",
 
@@ -173,6 +165,10 @@ export default {
 
   beforeDestroy() {
     clearInterval(this.cntInterval);
+  },
+
+  components: {
+    RequestIcon,
   },
 };
 </script>

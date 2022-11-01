@@ -20,7 +20,7 @@ export default {
   current() {
     return ApiService.get("admin/user/current");
   },
-  edit(data) {
+  upsert(data) {
     return ApiService.post(`admin/user/upsert`, data);
   },
   update(data) {

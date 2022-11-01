@@ -1,4 +1,4 @@
-const ID_TOKEN_KEY = "spa_token";
+const ID_TOKEN_KEY = process.env.APP_ID + "_token";
 
 export const getToken = () => {
   return window.localStorage.getItem(ID_TOKEN_KEY);

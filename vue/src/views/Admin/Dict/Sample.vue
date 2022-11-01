@@ -1,7 +1,7 @@
 <template>
   <v-card>
     <confirm ref="confirm" />
-    <district-dialog ref="Dialog" @refresh="load" />
+    <sample-dict-dialog ref="Dialog" @refresh="load" />
     <base-table
       :headers="headers"
       :search="search"
@@ -41,16 +41,16 @@
 
 <script>
 import { mapMutations } from "vuex";
-import { DistrictService } from "@/api/dictionary";
+import { SampleDictService } from "@/api/dictionary";
 
 import BaseTable from "@/components/base/Table/Table";
 import Confirm from "@/components/base/Dialog/Confirm";
 import BaseTableAction from "@/components/base/Table/Action";
 
-import DistrictDialog from "@/components/Dialog/District";
+import SampleDictDialog from "@/components/Dialog/SampleDict";
 
 export default {
-  name: "DictDistricts",
+  name: "DictSample",
 
   data() {
     return {
@@ -65,13 +65,12 @@ export default {
           width: 120,
         },
         {
-          text: this.$i18n.t("admin.dict.districts.table.idDistrict"),
-          value: "idDistrict",
-          width: 160,
+          text: this.$i18n.t("admin.dict.sample.table.dict"),
+          value: "dict",
         },
         {
-          text: this.$i18n.t("admin.dict.districts.table.name"),
-          value: "name",
+          text: this.$i18n.t("admin.dict.sample.table.description"),
+          value: "description",
         },
       ],
     };
@@ -84,7 +83,7 @@ export default {
 
     /** Table */
     dataTable() {
-      return DistrictService.list();
+      return SampleDictService.list();
     },
     load() {
       this.$refs.Table.load();
@@ -97,20 +96,20 @@ export default {
     },
     edit(item) {
       //edit form
-      this.$refs.Dialog.open(item.idDistrict);
+      this.$refs.Dialog.open(item);
     },
     del(item) {
       //deleting user
       this.$refs.confirm
         .open(
           this.$i18n.t("common.delete"),
-          this.$i18n.t("admin.dict.districts.deleteDistrict"),
+          this.$i18n.t("admin.dict.sample.deleteDict"),
           { color: "red" }
         )
         .then((confirm) => {
           if (confirm) {
             this.setOverlay(true);
-            this.$refs.Dialog.del(item.idDistrict).finally(() => {
+            this.$refs.Dialog.del(item.idDict).finally(() => {
               this.setOverlay(false);
             });
           }
@@ -122,7 +121,7 @@ export default {
     Confirm,
     BaseTable,
     BaseTableAction,
-    DistrictDialog,
+    SampleDictDialog,
   },
 };
 </script>
