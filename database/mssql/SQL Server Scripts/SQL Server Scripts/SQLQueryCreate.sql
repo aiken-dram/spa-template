@@ -54,7 +54,7 @@ CREATE TABLE [DICT].[AUDIT_ACTIONS]
 (
   [IdAction] INT NOT NULL,
   [Action] VARCHAR(120) NOT NULL,
-  [Desc] VARCHAR(255),
+  [Description] VARCHAR(255),
 
   CONSTRAINT [PK_DICT_AUDIT_ACTIONS] PRIMARY KEY ([IdAction] ASC)
 ) 
@@ -63,7 +63,7 @@ CREATE TABLE [DICT].[AUDIT_DATA_TYPES]
 (
   [IdType] INT NOT NULL,
   [Type] VARCHAR(120) NOT NULL,
-  [Desc] VARCHAR(255),
+  [Description] VARCHAR(255),
 
   CONSTRAINT [PK_DICT_AUDIT_DATA_TYPES] PRIMARY KEY ([IdType] ASC)
 ) 
@@ -72,7 +72,7 @@ CREATE TABLE [DICT].[AUDIT_TARGETS]
 (
   [IdTarget] INT NOT NULL,
   [Target] VARCHAR(120) NOT NULL,
-  [Desc] VARCHAR(255),
+  [Description] VARCHAR(255),
 
   CONSTRAINT [PK_DICT_AUDIT_TARGETS] PRIMARY KEY ([IdTarget] ASC)
 ) 
@@ -89,7 +89,7 @@ CREATE TABLE [DICT].[REQUEST_STATES]
 (
   [IdState] INT NOT NULL,
   [State] VARCHAR(120) NOT NULL,
-  [Desc] VARCHAR(255),
+  [Description] VARCHAR(255),
 
   CONSTRAINT [PK_DICT_REQUEST_STATES] PRIMARY KEY ([IdState] ASC)
 ) 
@@ -98,7 +98,7 @@ CREATE TABLE [DICT].[REQUEST_TYPES]
 (
   [IdType] INT NOT NULL,
   [Type] VARCHAR(120) NOT NULL,
-  [Desc] VARCHAR(255),
+  [Description] VARCHAR(255),
 
   CONSTRAINT [PK_DICT_REQUEST_TYPES] PRIMARY KEY ([IdType] ASC)
 ) 
@@ -107,7 +107,7 @@ CREATE TABLE [DICT].[RSCRIPT_PARAM_TYPES]
 (
   [IdType] INT NOT NULL,
   [Type] VARCHAR(120) NOT NULL,
-  [Desc] VARCHAR(255),
+  [Description] VARCHAR(255),
 
   CONSTRAINT [PK_DICT_RSCRIPT_PARAM_TYPES] PRIMARY KEY ([IdType] ASC)
 ) 
@@ -116,7 +116,7 @@ CREATE TABLE [DICT].[SAMPLE_DICTS]
 (
   [IdDict] INT NOT NULL IDENTITY(1,1),
   [Dict] VARCHAR(120) NOT NULL,
-  [Desc] VARCHAR(255),
+  [Description] VARCHAR(255),
 
   CONSTRAINT [PK_DICT_SAMPLE_DICTS] PRIMARY KEY ([IdDict] ASC)
 ) 
@@ -125,7 +125,7 @@ CREATE TABLE [DICT].[SAMPLE_TYPES]
 (
   [IdType] INT NOT NULL,
   [Type] VARCHAR(120) NOT NULL,
-  [Desc] VARCHAR(255),
+  [Description] VARCHAR(255),
 
   CONSTRAINT [PK_DICT_SAMPLE_TYPES] PRIMARY KEY ([IdType] ASC)
 ) 
@@ -138,7 +138,7 @@ CREATE TABLE [ACCOUNT].[USERS]
   [Pass] VARCHAR(32) NOT NULL,
   [IsActive] CHAR(1) NOT NULL,
   [Name] VARCHAR(120) NOT NULL,
-  [Desc] VARCHAR(255),
+  [Description] VARCHAR(255),
   [PassDate] DATE,
 
   CONSTRAINT [PK_ACCOUNT_USERS] PRIMARY KEY ([IdUser] ASC)
@@ -148,7 +148,7 @@ CREATE TABLE [ACCOUNT].[GROUPS]
 (
   [IdGroup] BIGINT NOT NULL IDENTITY(1,1),
   [Name] VARCHAR(120) NOT NULL,
-  [Desc] VARCHAR(255),
+  [Description] VARCHAR(255),
 
   CONSTRAINT [PK_ACCOUNT_GROUPS] PRIMARY KEY ([IdGroup] ASC)
 ) 
@@ -157,7 +157,7 @@ CREATE TABLE [ACCOUNT].[MODULES]
 (
   [IdModule] BIGINT NOT NULL IDENTITY(1,1),
   [Name] VARCHAR(120) NOT NULL,
-  [Desc] VARCHAR(255),
+  [Description] VARCHAR(255),
 
   CONSTRAINT [PK_ACCOUNT_MODULES] PRIMARY KEY ([IdModule] ASC)
 ) 
@@ -166,7 +166,7 @@ CREATE TABLE [ACCOUNT].[ROLES]
 (
   [IdRole] BIGINT NOT NULL IDENTITY(1,1),
   [Name] VARCHAR(120) NOT NULL,
-  [Desc] VARCHAR(255),
+  [Description] VARCHAR(255),
 
   CONSTRAINT [PK_ACCOUNT_ROLES] PRIMARY KEY ([IdRole] ASC)
 ) 
@@ -282,7 +282,7 @@ CREATE TABLE [R].[RSCRIPTS]
   [Name] VARCHAR(120) NOT NULL,
   [ContentType] VARCHAR(50) NOT NULL,
   [ResultFile] VARCHAR(200) NOT NULL,
-  [Desc] VARCHAR(255),
+  [Description] VARCHAR(255),
 
   CONSTRAINT [PK_R_RSCRIPTS] PRIMARY KEY ([IdRScript] ASC)
 ) 
@@ -294,7 +294,7 @@ CREATE TABLE [R].[RSCRIPT_PARAMS]
   [IdType] INT NOT NULL,
   [Name] VARCHAR(120) NOT NULL,
   [Hint] VARCHAR(255),
-  [Desc] VARCHAR(255),
+  [Description] VARCHAR(255),
 
   CONSTRAINT [PK_R_RSCRIPT_PARAMS] PRIMARY KEY ([Id] ASC),
   CONSTRAINT [FK_R_RSCRIPT_PARAMS_RSCRIPTS] FOREIGN KEY ([IdRScript]) REFERENCES [R].[RSCRIPTS] ON DELETE CASCADE ON UPDATE CASCADE,
@@ -310,7 +310,7 @@ CREATE TABLE [R].[RSCRIPT_TREE]
   [Modules] VARCHAR(255),
   [Icon] VARCHAR(50),
   [Color] VARCHAR(50),
-  [Desc] VARCHAR(255),
+  [Description] VARCHAR(255),
 
   CONSTRAINT [PK_R_RSCRIPT_TREE] PRIMARY KEY ([Id] ASC),
   CONSTRAINT [FK_R_RSCRIPT_TREE_RSCRIPTS] FOREIGN KEY ([IdRScript]) REFERENCES [R].[RSCRIPTS] ON DELETE CASCADE ON UPDATE CASCADE
@@ -385,9 +385,9 @@ CREATE VIEW [ACCOUNT].[V_AUDIT]
       UU.[Login],
       U.[IdTarget],
       UAT.[Target],
-      UAT.[Desc] AS [TargetDesc],
+      UAT.[Description] AS [TargetDesc],
       U.[IdAction],
-      UAA.[Desc] AS [Action],
+      UAA.[Description] AS [Action],
       U.[Stamp],
       U.[TargetId],
       U.[TargetName],
@@ -404,9 +404,9 @@ CREATE VIEW [ACCOUNT].[V_AUDIT]
       SU.[Login],
       S.[IdTarget],
       SAT.[Target],
-      SAT.[Desc] AS [TargetDesc],
+      SAT.[Description] AS [TargetDesc],
       S.[IdAction],
-      SAA.[Desc] AS [Action],
+      SAA.[Description] AS [Action],
       S.[Stamp],
       S.[TargetId],
       S.[TargetName],

@@ -8,14 +8,14 @@ INSERT INTO [DICT].[DISTRICTS]
   
 DELETE FROM [DICT].[REQUEST_TYPES];
 INSERT INTO [DICT].[REQUEST_TYPES] 
-  ([IdType], [Type], [Desc]) VALUES
+  ([IdType], [Type], [Description]) VALUES
   (1, 'TABLE_EXPORT_AUDIT',  'Export audit table'),
   (2, 'TABLE_EXPORT_SAMPLE', 'Export sample table'),
   (3, 'RSCRIPT',             'Execute R script');
   
 DELETE FROM [DICT].[REQUEST_STATES];
 INSERT INTO [DICT].[REQUEST_STATES] 
-  ([IdState], [State], [Desc]) VALUES
+  ([IdState], [State], [Description]) VALUES
   (1, 'QUEUE'     , 'In queue'),
   (2, 'PROCESSING', 'Processing'),
   (3, 'READY'     , 'Ready'),
@@ -24,7 +24,7 @@ INSERT INTO [DICT].[REQUEST_STATES]
 
 DELETE FROM [DICT].[AUDIT_ACTIONS];
 INSERT INTO [DICT].[AUDIT_ACTIONS] 
-  ([IdAction], [Action], [Desc]) VALUES
+  ([IdAction], [Action], [Description]) VALUES
   (1, 'CREATE'            ,'Create'),
   (2, 'EDIT'              ,'Edit'),
   (3, 'DELETE'            ,'Delete'),
@@ -40,7 +40,7 @@ INSERT INTO [DICT].[AUDIT_ACTIONS]
   
 DELETE FROM [DICT].[AUDIT_TARGETS];
 INSERT INTO [DICT].[AUDIT_TARGETS] 
-  ([IdTarget], [Target], [Desc]) VALUES
+  ([IdTarget], [Target], [Description]) VALUES
   (1, 'AUTH'          ,'Authorization'),
   (2, 'ACCOUNT.USERS' ,'Access management'),
   (3, 'MQ.REQUESTS'   ,'Requests'),
@@ -50,7 +50,7 @@ INSERT INTO [DICT].[AUDIT_TARGETS]
 
 DELETE FROM [DICT].[AUDIT_DATA_TYPES];
 INSERT INTO [DICT].[AUDIT_DATA_TYPES] 
-  ([IdType], [Type], [Desc]) VALUES
+  ([IdType], [Type], [Description]) VALUES
   (1, 'VALUE'         ,'Value'),
   (2, 'FIELD_VALUE'   ,'Field and value'),
   (3, 'FIELD_OLD_NEW' ,'Field, old and new value'),
@@ -58,14 +58,14 @@ INSERT INTO [DICT].[AUDIT_DATA_TYPES]
   
 DELETE FROM [DICT].[RSCRIPT_PARAM_TYPES];
 INSERT INTO [DICT].[RSCRIPT_PARAM_TYPES]
-  ([IdType], [Type], [Desc]) VALUES
+  ([IdType], [Type], [Description]) VALUES
   (1, 'DICT.DISTRICTS', 'District dictionary');
   
 --//ACCOUNT//--
 DELETE FROM [ACCOUNT].[USERS];
 --DBCC CHECKIDENT('ACCOUNT.USERS', RESEED, 0);
 INSERT INTO [ACCOUNT].[USERS]
-  ([Login]     ,[Pass]                            ,[IsActive],[PassDate]   ,[Name]               ,[Desc]) VALUES
+  ([Login]     ,[Pass]                            ,[IsActive],[PassDate]   ,[Name]               ,[Description]) VALUES
   ('admin'     ,'21232f297a57a5a743894a0e4a801fc3','T'       ,'01.01.2050' ,'Application admin'  ,'Application admin'),
   ('secadm'    ,'21232f297a57a5a743894a0e4a801fc3','T'       ,'01.01.2050' ,'Access admin'       ,'Access admin'),
   ('test-super','098f6bcd4621d373cade4e832627b4f6','T'       ,'01.01.2050' ,'Supervisor'         ,'Supervisor'),
@@ -75,7 +75,7 @@ INSERT INTO [ACCOUNT].[USERS]
 DELETE FROM [ACCOUNT].[GROUPS];
 --DBCC CHECKIDENT('ACCOUNT.GROUPS', RESEED, 0);
 INSERT INTO [ACCOUNT].[GROUPS]
-  ([Name], [Desc]) VALUES
+  ([Name], [Description]) VALUES
   ('Application admins' ,'Application admins'),
   ('Access admins'      ,'Access admins'),
   ('Supervisors'        ,'Supervisors'),
@@ -85,7 +85,7 @@ INSERT INTO [ACCOUNT].[GROUPS]
 DELETE FROM [ACCOUNT].[ROLES];
 --DBCC CHECKIDENT('ACCOUNT.ROLES', RESEED, 0);
 INSERT INTO [ACCOUNT].[ROLES]
-  ([Name], [Desc]) VALUES
+  ([Name], [Description]) VALUES
   ('Application admin' ,'Application admin'),
   ('Access admin'      ,'Роль администратора доступа к приложению'),
   ('Supervisor'        ,'Extended access to application'),
@@ -94,7 +94,7 @@ INSERT INTO [ACCOUNT].[ROLES]
 DELETE FROM [ACCOUNT].[MODULES];
 --DBCC CHECKIDENT('ACCOUNT.MODULES', RESEED, 0);
 INSERT INTO [ACCOUNT].[MODULES]
-  ([Name], [Desc]) VALUES
+  ([Name], [Description]) VALUES
   ('DICTADM'   ,'Dictionaries admin'),
   ('CFGADM'    ,'Configuration admin'),
   ('SECADM'    ,'Access admin'),
@@ -139,30 +139,30 @@ INSERT INTO [ACCOUNT].[USER_DISTRICTS]
 
 -- SAMPLE --
 INSERT INTO [DICT].[AUDIT_ACTIONS] 
-  ([IdAction], [Action], [Desc]) VALUES
+  ([IdAction], [Action], [Description]) VALUES
   (13, 'SAMPLE_BATCH_UPDATE', 'Batch update samples');
 
 INSERT INTO [DICT].[AUDIT_TARGETS] 
-  ([IdTarget], [Target], [Desc]) VALUES
+  ([IdTarget], [Target], [Description]) VALUES
   (7, 'DICT.SAMPLE_DICTS' ,'Sample dictionary'),
   (8, 'SAMPLE.SAMPLE'     ,'Sample');
   
 DELETE FROM [R].[RSCRIPTS];
 --
 INSERT INTO [R].[RSCRIPTS]
-  ([ScriptFile], [Name], [ContentType], [ResultFile], [Desc]) VALUES
+  ([ScriptFile], [Name], [ContentType], [ResultFile], [Description]) VALUES
   ('test1.r', 'Sample 1', 'csv', 'Sample table for district {0}', 'Sample R statistics in table form'),
   ('test2.r', 'Sample 2', 'image', 'Sample plot', 'Sample R statistics in plot form');
   
 DELETE FROM [R].[RSCRIPT_PARAMS];
 INSERT INTO [R].[RSCRIPT_PARAMS]
-  ([IdRScript], [IdType], [Name], [Hint], [Desc]) VALUES
+  ([IdRScript], [IdType], [Name], [Hint], [Description]) VALUES
   (1, 1, 'District', 'Choose district from list', 'District from dictionary');
   
 DELETE FROM [R].[RSCRIPT_TREE];
 --DBCC CHECKIDENT('R.RSCRIPT_TREE', RESEED, 0);
 INSERT INTO [R].[RSCRIPT_TREE]
-  ([IdParent], [IdRScript], [Name], [Modules], [Icon], [Color], [Desc]) VALUES
+  ([IdParent], [IdRScript], [Name], [Modules], [Icon], [Color], [Description]) VALUES
   (NULL, NULL, 'Tables', NULL, 'fa-table', 'primary', 'Catalog'),
   (NULL, NULL, 'Plots', NULL, 'fa-bar-chart', 'primary', 'Catalog'),
   (1, NULL, 'Samples', NULL, NULL, '', 'Subcatalog'),
@@ -172,12 +172,12 @@ INSERT INTO [R].[RSCRIPT_TREE]
 DELETE FROM [DICT].[SAMPLE_DICTS];
 --DBCC CHECKIDENT('DICT.SAMPLE_DICTS', RESEED, 0);
 INSERT INTO [DICT].[SAMPLE_DICTS]
-  ([Dict], [Desc]) VALUES
+  ([Dict], [Description]) VALUES
   ('DICT_1','Sample dictionary 1');
   
 DELETE FROM [DICT].[SAMPLE_TYPES];
 INSERT INTO [DICT].[SAMPLE_TYPES]
-  ([IdType], [Type], [Desc]) VALUES
+  ([IdType], [Type], [Description]) VALUES
   (1, 'TYPE_A', 'Sample type A'),
   (2, 'TYPE_B', 'Sample type B');
   
