@@ -81,6 +81,12 @@ For MySQL database:
 dotnet ef dbcontext scaffold "server=127.0.0.1;uid=root;pwd=db2admin;database=mq" MySql.EntityFrameworkCore -o Context -f
 ```
 
+For MS SQL database:
+
+```sh
+dotnet ef dbcontext scaffold "Persist Security Info=False;Integrated Security=true;Initial Catalog=SPA;Server=NOTEBOOK\SQLEXPRESS" Microsoft.EntityFrameworkCore.SqlServer -o Context -f
+```
+
 ## Workload
 
 Enabling configuration `Logging.SafeToFile` will create logs in `Logs\` folder of application
