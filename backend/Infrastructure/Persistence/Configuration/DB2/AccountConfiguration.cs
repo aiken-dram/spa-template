@@ -1,5 +1,4 @@
-/*using Domain.Entities;
-using IBM.EntityFrameworkCore;
+/*using IBM.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -345,6 +344,7 @@ public class UserAuditConfiguration : IEntityTypeConfiguration<UserAudit>
         entity.Property(e => e.Stamp)
             .HasMaxLength(10)
             .HasPrecision(10)
+            .HasColumnType("timestamp(10)")
             .HasColumnName("STAMP");
 
         entity.Property(e => e.TargetId)
@@ -436,13 +436,37 @@ public class VAuditConfiguration : IEntityTypeConfiguration<VAudit>
             .HasColumnType("integer(4)")
             .HasColumnName("ID_ACTION");
 
+        entity.Property(e => e.Action)
+            .HasMaxLength(255)
+            .HasPrecision(255)
+            .IsUnicode(false)
+            .HasColumnName("ACTION");
+
         entity.Property(e => e.IdTarget)
             .HasColumnType("integer(4)")
             .HasColumnName("ID_TARGET");
 
+        entity.Property(e => e.Target)
+            .HasMaxLength(120)
+            .HasPrecision(255)
+            .IsUnicode(false)
+            .HasColumnName("TARGET");
+
+        entity.Property(e => e.TargetDesc)
+            .HasMaxLength(255)
+            .HasPrecision(255)
+            .IsUnicode(false)
+            .HasColumnName("TARGET_DESC");
+
         entity.Property(e => e.IdUser)
             .HasColumnType("bigint(8)")
             .HasColumnName("ID_USER");
+
+        entity.Property(e => e.Login)
+            .HasMaxLength(20)
+            .HasPrecision(20)
+            .IsUnicode(false)
+            .HasColumnName("LOGIN");
 
         entity.Property(e => e.Message)
             .HasMaxLength(255)
@@ -453,6 +477,7 @@ public class VAuditConfiguration : IEntityTypeConfiguration<VAudit>
         entity.Property(e => e.Stamp)
             .HasMaxLength(10)
             .HasPrecision(10)
+            .HasColumnType("timestamp(10)")
             .HasColumnName("STAMP");
 
         entity.Property(e => e.TargetId)
@@ -464,8 +489,6 @@ public class VAuditConfiguration : IEntityTypeConfiguration<VAudit>
             .HasPrecision(255)
             .IsUnicode(false)
             .HasColumnName("TARGET_NAME");
-
-        entity.ToView("V_AUDITS", "ACCOUNT");
     }
 }
 
@@ -473,7 +496,7 @@ public class VAuditDataConfiguration : IEntityTypeConfiguration<VAuditData>
 {
     public void Configure(EntityTypeBuilder<VAuditData> entity)
     {
-        entity.HasKey(p => new { p.Source, p.IdAudit });
+        entity.HasKey(p => new { p.Source, p.Id });
 
         entity.ToView("V_AUDIT_DATA", "ACCOUNT");
 
@@ -493,11 +516,20 @@ public class VAuditDataConfiguration : IEntityTypeConfiguration<VAuditData>
             .HasColumnType("integer(4)")
             .HasColumnName("ID_TYPE");
 
+        entity.Property(e => e.Type)
+            .HasMaxLength(120)
+            .HasPrecision(120)
+            .IsUnicode(false)
+            .HasColumnName("TYPE");
+
         entity.Property(e => e.Json)
             .HasMaxLength(255)
             .HasPrecision(255)
             .IsUnicode(false)
             .HasColumnName("JSON");
+
+        entity.HasOne(d => d.VAuditNavigation)
+            .WithMany(p => p.AuditData)
+            .HasForeignKey(p => new { p.Source, p.IdAudit });
     }
-}
-*/
+}*/

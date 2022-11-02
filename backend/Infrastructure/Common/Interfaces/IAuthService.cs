@@ -1,5 +1,3 @@
-using Infrastructure.Common.Models;
-
 namespace Infrastructure.Common.Interfaces;
 
 public interface IAuthService

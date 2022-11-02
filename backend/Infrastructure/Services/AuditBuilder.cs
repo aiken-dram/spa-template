@@ -15,21 +15,27 @@ public class AppAuditBuilder : AuditBuilder
         _context = context;
     }
 
-    public override async Task<Dictionary<object, string?>> GetDictionary(string dictionary)
+    public override async Task<Dictionary<long, string?>> GetDictionaryAsync(string dictionary)
     {
         //return dictionary from dictionary name
         switch (dictionary)
         {
             case "RequestTypes":
-                var d = await _context.RequestTypes.ToListAsync();
-                return d.ToDictionary(k => (object)k.IdType, t => t.Description);
+                return (await _context.RequestTypes.ToListAsync())
+                    .ToDictionary(k => (long)(k.IdType), t => t.Description);
+            case "SampleTypes":
+                return (await _context.SampleTypes.ToListAsync())
+                    .ToDictionary(k => (long)(k.IdType), t => t.Description);
+            case "SampleDicts":
+                return (await _context.SampleDicts.ToListAsync())
+                    .ToDictionary(k => (long)k.IdDict, t => t.Description);
         }
-        return new Dictionary<object, string?>();
+        return new Dictionary<long, string?>();
     }
 
-    public override async Task<string> PropertyToString(object? val, AuditAttribute attr)
+    public override async Task<string> PropertyToStringAsync(object? val, AuditAttribute attr)
     {
         //place custom property conversions to string here, if any
-        return await base.PropertyToString(val, attr);
+        return await base.PropertyToStringAsync(val, attr);
     }
 }

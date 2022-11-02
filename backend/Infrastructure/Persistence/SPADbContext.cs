@@ -1,10 +1,7 @@
 using Microsoft.EntityFrameworkCore;
-using Domain.Entities;
 using Application.Common.Interfaces;
 using Shared.Application.Models.DB2;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Domain.Enums;
-using Shared.Domain.Models;
 using Shared.Domain.Attributes;
 using Shared.Application.Interfaces;
 using Infrastructure.Services;
@@ -105,7 +102,7 @@ public partial class SPADbContext : DbContext, ISPADbContext
     public virtual DbSet<AuditDataType> AuditDataTypes { get; set; } = null!;
     public virtual DbSet<RScriptParamType> RScriptParamTypes { get; set; } = null!;
 
-#warning This is example, remove next 2 lines in actual application
+#warning SAMPLE, remove next 2 lines in actual application
     public DbSet<SampleDict> SampleDicts { get; set; } = null!;
     public DbSet<SampleType> SampleTypes { get; set; } = null!;
     #endregion
@@ -120,7 +117,7 @@ public partial class SPADbContext : DbContext, ISPADbContext
     public DbSet<RScriptTreeNode> RScriptTree { get; set; } = null!;
     #endregion
 
-#warning This is example, remove entire region in actual application
+#warning SAMPLE, remove entire region in actual application
     #region SAMPLE
     public virtual DbSet<Sample> Samples { get; set; } = null!;
     public DbSet<SampleChild> SampleChildren { get; set; } = null!;
@@ -148,9 +145,9 @@ public partial class SPADbContext : DbContext, ISPADbContext
         return res;
     }
 
-    public async Task<ExportResult> ExportSQLAsync(string sql, string file, CancellationToken cancellationToken)
+    public async Task<ExportResult> ExportSQLAsync(string sql, string file, CancellationToken cancellationToken, string timestampFormat)
     {
-        string SQL = $"CALL SYSPROC.ADMIN_CMD('EXPORT TO \"{file}\" OF DEL MODIFIED BY COLDEL; CODEPAGE=1251 TIMESTAMPFORMAT=\"DD.MM.YYYY\" {sql}')";
+        string SQL = $"CALL SYSPROC.ADMIN_CMD('EXPORT TO \"{file}\" OF DEL MODIFIED BY COLDEL; CODEPAGE=1251 TIMESTAMPFORMAT=\"{timestampFormat}\" {sql}')";
         var res = await this.ExportResult.FromSqlRaw(SQL).ToListAsync(cancellationToken);
         return res.First();
     }
@@ -173,11 +170,11 @@ public partial class SPADbContext : DbContext, ISPADbContext
                 switch (entry.State)
                 {
                     case EntityState.Added:
-                        entry.Entity.Audits.Add(await _audit.Create(entry));
+                        entry.Entity.Audits.Add(await _audit.CreateAsync(entry));
                         break;
 
                     case EntityState.Modified:
-                        entry.Entity.Audits.Add(await _audit.Edit(entry));
+                        entry.Entity.Audits.Add(await _audit.EditAsync(entry));
                         break;
 
                     case EntityState.Deleted:
@@ -239,10 +236,12 @@ public partial class SPADbContext : DbContext, ISPADbContext
                 audit.IdUser = uid;
             switch (audit.IdTarget)
             {
+#warning SAMPLE, remove in actual application
                 case (int)eAuditTarget.Sample:
                     //add audit for sample to SampleAudit table
                     SampleAudits.Add(new SampleAudit(audit));
                     break;
+
                 default:
                     //default is adding audit to UserAudits table
                     UserAudits.Add(new UserAudit(audit));

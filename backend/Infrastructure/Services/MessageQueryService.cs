@@ -1,53 +1,84 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
+using Application.Common.Enums;
 using Application.Common.Interfaces;
+using Application.Common.Models;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 using RabbitMQ.Client;
 
-namespace Infrastructure.Service
+namespace Infrastructure.Services;
+
+public class MessageQueryService : IMessageQueryService
 {
-    public class MessageQueryService : IMessageQueryService
+    private ConnectionFactory _factory;
+    private ILogger _logger;
+
+    public MessageQueryService(ILogger<MessageQueryService> logger)
     {
-        private ConnectionFactory _factory;
-        private ILogger _logger;
+        this._factory = new ConnectionFactory() { HostName = "localhost" };
+        _logger = logger;
+    }
 
-        public MessageQueryService(ILogger<MessageQueryService> logger)
+    public int QueueLength(string queue)
+    {
+        using (var connection = _factory.CreateConnection())
+        using (var channel = connection.CreateModel())
         {
-            this._factory = new ConnectionFactory() { HostName = "localhost" };
-            _logger = logger;
+            return Convert.ToInt32(channel.MessageCount(queue));
         }
+    }
 
-        public int QueueLength(string queue)
+    public void SendRequest(Request request)
+    => Send(request.IdType switch
+    {
+        eRequestType.RScript => eQueue.RQueryService,
+        _ => eQueue.QueryService
+    }, request.IdRequest.ToString(), "");
+
+    private SignalRMessageDto RequestSignalR(Domain.Entities.Request request)
+    => new SignalRMessageDto
+    {
+        From = "server",
+        To = "",
+        Subject = eSignalRSubject.MessageQuery,
+        Id = request.IdRequest,
+        IdUser = request.IdUser,
+        Body = JsonConvert.SerializeObject(new
         {
-            using (var connection = _factory.CreateConnection())
-            using (var channel = connection.CreateModel())
-            {
-                return Convert.ToInt32(channel.MessageCount(queue));
-            }
-        }
+            idState = request.IdState,
+            state = request.IdState.ToString().ToUpper(), //so i dont have to include navigation property
+            created = request.Created,
+            processed = request.Processed,
+        })
+    };
 
-        public void Send(string queue, string message, string routingKey)
+    public void SendRequestSignalR(Domain.Entities.Request request)
+    => Send(eQueue.SignalR, JsonConvert.SerializeObject(RequestSignalR(request)), "");
+
+    /// <summary>
+    /// Send message into queue service for processing by worker service
+    /// </summary>
+    /// <param name="queue">Name of queue</param>
+    /// <param name="message">Message</param>
+    /// <param name="routingKey">Routing key</param>
+    private void Send(string queue, string message, string routingKey)
+    {
+        using (var connection = _factory.CreateConnection())
+        using (var channel = connection.CreateModel())
         {
-            using (var connection = _factory.CreateConnection())
-            using (var channel = connection.CreateModel())
-            {
-                channel.QueueDeclare(queue: queue,
-                                     durable: true,
-                                     exclusive: false,
-                                     autoDelete: false,
-                                     arguments: null);
+            channel.QueueDeclare(queue: queue,
+                                 durable: true,
+                                 exclusive: false,
+                                 autoDelete: false,
+                                 arguments: null);
 
-                var body = Encoding.UTF8.GetBytes(message);
+            var body = Encoding.UTF8.GetBytes(message);
 
-                channel.BasicPublish(exchange: "",
-                                     routingKey: queue,
-                                     basicProperties: null,
-                                     body: body);
-                _logger.LogDebug("Message sent: {0}", message);
-            }
+            channel.BasicPublish(exchange: "",
+                                 routingKey: queue,
+                                 basicProperties: null,
+                                 body: body);
+            _logger.LogDebug("Message sent: {0}", message);
         }
     }
 }

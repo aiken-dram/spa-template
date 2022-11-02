@@ -1,15 +1,8 @@
 using Microsoft.EntityFrameworkCore;
 using Application.Common.Interfaces;
-using Domain.Entities;
 using Shared.Application.Exceptions;
 using Microsoft.Extensions.Logging;
-using Shared.Application.Helpers;
-using Microsoft.Extensions.Configuration;
-using Infrastructure.Common;
-using Domain.Enums;
-using Infrastructure.Common.Interfaces;
-using Infrastructure.Common.Models;
-using Shared.Domain.Enums;
+using Shared.Application.Extensions;
 
 namespace Infrastructure.Identity;
 
@@ -17,21 +10,16 @@ public class AuthService : IAuthService
 {
     private readonly ISPADbContext _context;
     private readonly ILogger<AuthService> _logger;
-
-    private readonly int _lock;
-    private readonly int _timeout;
+    private readonly Infrastructure.Common.Interfaces.IConfigurationService _configuration;
 
     public AuthService(
         ISPADbContext context,
         ILogger<AuthService> logger,
-        IConfiguration configuration)
+        Infrastructure.Common.Interfaces.IConfigurationService configuration)
     {
         _logger = logger;
         _context = context;
-        //_configuration = configuration;
-
-        _lock = Convert.ToInt32(configuration["AuthSettings:Lock"]);
-        _timeout = Convert.ToInt32(configuration["AuthSettings:Timeout"]);
+        _configuration = configuration;
     }
 
     private async Task<AuthUserVm> GetUserVm(User user)
@@ -82,7 +70,7 @@ public class AuthService : IAuthService
     public async Task<AuthResponse> LoginAsync(AuthRequest request, string? System)
     {
         //need to convert password to hash
-        var hashpass = EncryptorHelper.MD5Hash(request.Password) ?? string.Empty;
+        var hashpass = request.Password.MD5Hash() ?? string.Empty;
 
         var user = await _context.Users.FirstOrDefaultAsync(x => x.Login == request.Login);
 
@@ -105,18 +93,20 @@ public class AuthService : IAuthService
 
 
         //timeout
+        var period = DateTime.Now.AddMinutes(-_configuration.AuthPeriod);
         var prev_auth = await _context.UserAudits
             .Where(p => p.IdUser == user.IdUser)
             .Where(p => p.IdTarget == (int)eAuditTarget.Auth)
+            .Where(p => p.Stamp >= period)
             .OrderByDescending(q => q.Stamp)
-            .Skip(0).Take(_lock)
+            .Skip(0).Take(_configuration.AuthLock)
             .ToListAsync();
         var cnt_wrong = prev_auth.TakeWhile(p => p.IdAction == (int)eAuthAuditAction.WrongPassword).Count();
-        if (cnt_wrong >= _timeout)
+        if (cnt_wrong >= _configuration.AuthTimeout)
         {
             var last_wrong = prev_auth.First().Stamp;
             var now = DateTime.Now;
-            var timeout = 1; //minutes of timeout for one failed login 2D: convert to configuration
+            var timeout = _configuration.AuthBaseTimeout;
             var cur_timeout = (cnt_wrong - 2) * timeout;
             var d_timeout = last_wrong.AddMinutes(timeout);
             if (d_timeout >= now)
@@ -130,17 +120,17 @@ public class AuthService : IAuthService
             await _context.SaveChangesAsync(default(CancellationToken));
             //check if password lock now
 
-            if (cnt_wrong + 1 >= _lock)
+            if (cnt_wrong + 1 >= _configuration.AuthLock)
             {
                 //lock user
                 user.IsActive = CharBoolean.False;
                 //add lock event
                 user.Log(AuthAudit.Lock(user, System));
                 await _context.SaveChangesAsync(default(CancellationToken));
-                throw new BadRequestException(Messages.WrongPassLock(_lock));
+                throw new BadRequestException(Messages.WrongPassLock(_configuration.AuthLock));
             }
-            else if (cnt_wrong + 1 >= _timeout)
-                throw new BadRequestException(Messages.WrongPassTimeout(_timeout));
+            else if (cnt_wrong + 1 >= _configuration.AuthTimeout)
+                throw new BadRequestException(Messages.WrongPassTimeout(_configuration.AuthTimeout));
             else
                 throw new BadRequestException(Messages.WrongPass);
         }

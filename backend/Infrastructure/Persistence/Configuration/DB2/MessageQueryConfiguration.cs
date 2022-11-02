@@ -21,11 +21,13 @@ public class RequestConfiguration : IEntityTypeConfiguration<Domain.Entities.Req
         entity.Property(e => e.Created)
             .HasMaxLength(10)
             .HasPrecision(10)
+            .HasColumnType("timestamp(10)")
             .HasColumnName("CREATED");
 
         entity.Property(e => e.Delivered)
             .HasMaxLength(10)
             .HasPrecision(10)
+            .HasColumnType("timestamp(10)")
             .HasColumnName("DELIVERED");
 
         entity.Property(e => e.Guid)
@@ -61,6 +63,7 @@ public class RequestConfiguration : IEntityTypeConfiguration<Domain.Entities.Req
         entity.Property(e => e.Processed)
             .HasMaxLength(10)
             .HasPrecision(10)
+            .HasColumnType("timestamp(10)")
             .HasColumnName("PROCESSED");
 
         entity.HasOne(d => d.IdStateNavigation)
@@ -78,7 +81,6 @@ public class RequestConfiguration : IEntityTypeConfiguration<Domain.Entities.Req
             .HasForeignKey(d => d.IdUser)
             .HasConstraintName("REQUESTS_USERS_FK");
 
-        entity.Ignore(e => e.DomainEvents);
         entity.Ignore(e => e.Audits);
     }
 }

@@ -2,9 +2,8 @@ using Application.Common.Interfaces;
 using Application.Common.Models;
 using MediatR;
 using Microsoft.Extensions.Logging;
-using Shared.Domain.Models;
 
-namespace Infrastructure.Service;
+namespace Infrastructure.Services;
 
 public class DomainEventService : IDomainEventService
 {
