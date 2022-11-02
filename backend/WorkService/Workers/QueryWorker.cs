@@ -8,7 +8,7 @@ namespace WorkService;
 
 public class QueryWorker : BackgroundService
 {
-    private readonly ILogger<QueryWorker> _logger;
+    private readonly ILogger _logger;
     private IConnection _connection;
     private IModel _channel;
     private readonly IServiceProvider _serviceProvider;
@@ -46,19 +46,26 @@ public class QueryWorker : BackgroundService
 
     private async Task HandleMessage(string content)
     {
-        _logger.LogInformation($"Request received: {content}");
+        _logger.LogInformation($"[QUERY] Request received: {content}");
         long id;
         if (Int64.TryParse(content, out id))
         {
             using (IServiceScope scope = _serviceProvider.CreateScope())
             {
                 var _builder = scope.ServiceProvider.GetRequiredService<IQueryResponseBuilder>();
-                await _builder.ProcessRequestAsync(id, CancellationToken.None);
+                try
+                {
+                    await _builder.ProcessRequestAsync(id, CancellationToken.None);
+                }
+                catch (Exception err)
+                {
+                    _logger.LogError($"[QUERY] Error while processing request: {err.Message}");
+                }
             }
         }
         else
-            _logger.LogError("Could not read request id from queue!");
-        _logger.LogInformation($"Document processed: {content}");
+            _logger.LogError("[QUERY] Could not read request id from queue!");
+        _logger.LogInformation($"[QUERY] Request processed: {content}");
     }
 
     protected override Task ExecuteAsync(CancellationToken stoppingToken)

@@ -46,19 +46,19 @@ public class RScriptWorker : BackgroundService
 
     private async Task HandleMessage(string content)
     {
-        _logger.LogInformation($"R script request received: {content}");
+        _logger.LogInformation($"[R SCRIPT] Request received: {content}");
         long id;
         if (Int64.TryParse(content, out id))
         {
             using (IServiceScope scope = _serviceProvider.CreateScope())
             {
-                var _builder = scope.ServiceProvider.GetRequiredService<IRScriptBuilder>();
-                await _builder.ProcessRScriptRequestAsync(id, CancellationToken.None);
+                var _service = scope.ServiceProvider.GetRequiredService<IRScriptService>();
+                await _service.ProcessRequestAsync(id, CancellationToken.None);
             }
         }
         else
-            _logger.LogError("Could not read request id from queue!");
-        _logger.LogInformation($"R script processed: {content}");
+            _logger.LogError("[R SCRIPT] Could not read request id from queue!");
+        _logger.LogInformation($"[R SCRIPT] Request processed: {content}");
     }
 
     protected override Task ExecuteAsync(CancellationToken stoppingToken)
@@ -77,7 +77,7 @@ public class RScriptWorker : BackgroundService
         };
 
         _channel.BasicConsume(
-            queue: eQueue.QueryService,
+            queue: eQueue.RQueryService,
             autoAck: false,
             consumer: consumer);
 
