@@ -4,12 +4,15 @@
 /// District dictionary
 /// </summary>
 [AutoAudit]
+[DisplayName("District")]
 public partial class District : AuditableEntity
 {
     #region ENTITY
     public District()
     {
         UserDistricts = new HashSet<UserDistrict>();
+#warning SAMPLE
+        Samples = new HashSet<Sample>();
     }
 
     /// <summary>
@@ -29,6 +32,12 @@ public partial class District : AuditableEntity
     /// Collection of links between access users and this district
     /// </summary>
     public virtual ICollection<UserDistrict> UserDistricts { get; set; }
+
+#warning SAMPLE
+    /// <summary>
+    /// Collection of links between sample and this district
+    /// </summary>
+    public virtual ICollection<Sample> Samples { get; set; }
     #endregion
 
     #region AUDIT

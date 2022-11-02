@@ -3,6 +3,7 @@
 /// <summary>
 /// Application user
 /// </summary>
+[DisplayName("User")]
 public partial class User : AuditableEntity
 {
     #region ENTITY
@@ -33,6 +34,7 @@ public partial class User : AuditableEntity
     /// <summary>
     /// Hash of user password
     /// </summary>
+    [Audit(hideValue: true)]
     public string Pass { get; set; } = null!;
 
     /// <summary>
@@ -72,7 +74,7 @@ public partial class User : AuditableEntity
     public virtual ICollection<UserRole> UserRoles { get; set; }
 
     /// <summary>
-    /// Collection of user district
+    /// Collection of user districts
     /// </summary>
     public virtual ICollection<UserDistrict> UserDistricts { get; set; }
 
@@ -90,7 +92,7 @@ public partial class User : AuditableEntity
     /// <summary>
     /// Collection of audit for sample
     /// </summary>
-#warning This is example, remove in actual application
+#warning SAMPLE, remove in actual application
     public virtual ICollection<SampleAudit> SampleAudits { get; set; }
     #endregion
 

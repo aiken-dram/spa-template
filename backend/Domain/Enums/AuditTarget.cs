@@ -41,14 +41,14 @@ public enum eAuditTarget : int
     [Dictionary("R.RSCRIPT_TREE")]
     RScriptTree = 6,
 
-#warning This is example, remove in actual application
+#warning SAMPLE, remove in actual application
     /// <summary>
     /// Domain/Account/User entity
     /// </summary>
     [Dictionary("DICT.SAMPLE_DICTS")]
     DictionarySample = 7,
 
-#warning This is example, remove in actual application    
+#warning SAMPLE, remove in actual application    
     /// <summary>
     /// Domain/Sample/Sample entity
     /// </summary>

@@ -3,6 +3,7 @@
 /// <summary>
 /// Access role
 /// </summary>
+[DisplayName("Role")]
 public partial class Role
 {
     public Role()

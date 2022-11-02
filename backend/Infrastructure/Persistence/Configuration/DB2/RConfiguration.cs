@@ -1,4 +1,4 @@
-using Domain.Entities;
+/*using Domain.Entities;
 using IBM.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
@@ -166,3 +166,4 @@ public class RScriptTreeConfiguration : IEntityTypeConfiguration<RScriptTreeNode
         entity.Ignore(e => e.Audits);
     }
 }
+*/

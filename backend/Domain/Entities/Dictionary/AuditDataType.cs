@@ -8,6 +8,8 @@ public partial class AuditDataType
     public AuditDataType()
     {
         UserAuditData = new HashSet<UserAuditData>();
+
+#warning SAMPLE, remove in actual application
         SampleAuditData = new HashSet<SampleAuditData>();
     }
 
@@ -31,7 +33,7 @@ public partial class AuditDataType
     /// </summary>
     public virtual ICollection<UserAuditData> UserAuditData { get; set; }
 
-#warning SAMPLE
+#warning SAMPLE, remove in actual application
     /// <summary>
     /// Collection of sample audit data with this type
     /// </summary>

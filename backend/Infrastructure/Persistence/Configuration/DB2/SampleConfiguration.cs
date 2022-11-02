@@ -1,4 +1,4 @@
-using Domain.Entities;
+/*using Domain.Entities;
 using IBM.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
@@ -207,4 +207,4 @@ public class SampleAuditDataConfiguration : IEntityTypeConfiguration<SampleAudit
             .HasForeignKey(d => d.IdType)
             .HasConstraintName("SAMPLE_AUDIT_DATA_AUDIT_DATA_TYPES_FK");
     }
-}
+}*/

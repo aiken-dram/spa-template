@@ -3,7 +3,8 @@ namespace Domain.Entities;
 /// <summary>
 /// Request for message query processing service
 /// </summary>
-public partial class Request : AuditableEntity, IHasDomainEvent
+[DisplayName("Request")]
+public partial class Request : AuditableEntity
 {
     #region ENTITY
     /// <summary>
@@ -72,18 +73,58 @@ public partial class Request : AuditableEntity, IHasDomainEvent
     public virtual RequestState IdStateNavigation { get; set; } = null!;
     #endregion
 
-    #region DOMAIN EVENTS
-    /// <summary>
-    /// Domain events
-    /// </summary>
-    public List<DomainEvent> DomainEvents { get; set; } = new List<DomainEvent>();
-    #endregion
-
     #region AUDIT
     public override int AuditIdTarget => (int)eAuditTarget.MessageQueryRequest;
 
     public override long? AuditTargetId => this.IdRequest;
 
-    public override string AuditTargetName => $"{this.IdRequest}";
+    public override string AuditTargetName => this.IdType switch
+    {
+        eRequestType.TableExportAudit => Messages.RequestAuditExport,
+        eRequestType.RScript => Messages.RequestRScript,
+
+#warning SAMPLE
+        eRequestType.TableExportSample => Messages.RequestSampleExport,
+
+        _ => String.Empty
+    };
+    #endregion
+
+    #region DOMAIN LOGIC
+    /// <summary>
+    /// Start processing request
+    /// </summary>
+    /// <returns>Generated GUID</returns>
+    public string Start()
+    {
+        //generate guid
+        Guid = System.Guid.NewGuid().ToString();
+
+        //set state of request to processing
+        IdState = eRequestState.Processing;
+
+        return Guid;
+    }
+
+    /// <summary>
+    /// Error while processing request
+    /// </summary>
+    /// <param name="err">Thrown Exception</param>
+    public void Error(Exception err)
+    {
+        //set request state as error
+        Message = err.Message.Truncate(500);
+        IdState = eRequestState.Error;
+    }
+
+    /// <summary>
+    /// Finish processing request
+    /// </summary>
+    public void Success()
+    {
+        //set request state as ready
+        Processed = DateTime.Now;
+        IdState = eRequestState.Ready;
+    }
     #endregion
 }

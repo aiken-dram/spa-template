@@ -1,6 +1,6 @@
 namespace Domain.Events;
 
-#warning This is example, remove entire file in actual application
+#warning SAMPLE, remove entire file in actual application
 public class SampleCreatedEvent : DomainEvent
 {
 

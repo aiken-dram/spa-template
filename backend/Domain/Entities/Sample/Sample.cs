@@ -1,9 +1,10 @@
 namespace Domain.Entities;
 
-#warning This is example, remove entire file in actual application
+#warning SAMPLE, remove entire file in actual application
 /// <summary>
 /// Sample main table
 /// </summary>
+[DisplayName("Sample")]
 public partial class Sample : AuditableEntity, IHasDomainEvent
 {
     #region ENTITY
@@ -22,39 +23,57 @@ public partial class Sample : AuditableEntity, IHasDomainEvent
     public long IdSample { get; set; }
 
     /// <summary>
+    /// Id of district
+    /// </summary>
+    [Audit]
+    public int? IdDistrict { get; set; }
+
+    /// <summary>
     /// Id of sample type
     /// </summary>
+    [Audit(dictionary: "SampleTypes")]
     public eSampleType IdType { get; set; }
 
     /// <summary>
     /// Id of sample dictionary
     /// </summary>
+    [Audit(dictionary: "SampleDicts")]
     public long IdDict { get; set; }
 
     /// <summary>
     /// Text field
     /// </summary>
+    [Audit]
     public string? Text { get; set; }
 
     /// <summary>
     /// Number field
     /// </summary>
+    [Audit]
     public long? Number { get; set; }
 
     /// <summary>
     /// Date field
     /// </summary>
+    [Audit]
     public DateTime? Date { get; set; }
 
     /// <summary>
     /// Time stamp field
     /// </summary>
-    public DateTime? TimeStamp { get; set; }
+    [Audit]
+    public DateTime? Timestamp { get; set; }
 
     /// <summary>
     /// Decimal field
     /// </summary>
+    [Audit]
     public decimal? Sum { get; set; }
+
+    /// <summary>
+    /// Navigation to district
+    /// </summary>
+    public virtual District? IdDistrictNavigation { get; set; }
 
     /// <summary>
     /// Navigation to sample type

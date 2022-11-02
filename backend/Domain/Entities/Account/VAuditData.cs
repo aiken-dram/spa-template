@@ -3,6 +3,7 @@ namespace Domain.Entities;
 /// <summary>
 /// View of audit data union
 /// </summary>
+[DisplayName("VAuditData")]
 public class VAuditData
 {
     /// <summary>
@@ -26,7 +27,17 @@ public class VAuditData
     public int IdType { get; set; }
 
     /// <summary>
+    /// Name of data type from dictionary
+    /// </summary>
+    public string Type { get; set; } = null!;
+
+    /// <summary>
     /// Json with data
     /// </summary>
     public string? Json { get; set; }
+
+    /// <summary>
+    /// Navigation to VAudit
+    /// </summary>
+    public virtual VAudit VAuditNavigation { get; set; } = null!;
 }

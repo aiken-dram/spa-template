@@ -3,6 +3,7 @@
 /// <summary>
 /// Access group
 /// </summary>
+[DisplayName("Group")]
 public partial class Group
 {
     public Group()

@@ -4,6 +4,7 @@ namespace Domain.Entities;
 /// R script
 /// </summary>
 [AutoAudit]
+[DisplayName("RScript")]
 public partial class RScript : AuditableEntity
 {
     #region ENTITY

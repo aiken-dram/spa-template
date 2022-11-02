@@ -3,6 +3,7 @@ namespace Domain.Entities;
 /// <summary>
 /// View of audit union
 /// </summary>
+[DisplayName("VAudit")]
 public partial class VAudit
 {
     /// <summary>
@@ -29,14 +30,34 @@ public partial class VAudit
     public long IdUser { get; set; }
 
     /// <summary>
+    /// User login
+    /// </summary>
+    public string Login { get; set; } = null!;
+
+    /// <summary>
     /// Id of target
     /// </summary>
     public int IdTarget { get; set; }
 
     /// <summary>
+    /// Name of target from dictionary
+    /// </summary>
+    public string Target { get; set; } = null!;
+
+    /// <summary>
+    /// Description of target from dictionary
+    /// </summary>
+    public string? TargetDesc { get; set; }
+
+    /// <summary>
     /// Id of action
     /// </summary>
     public int IdAction { get; set; }
+
+    /// <summary>
+    /// Description of action
+    /// </summary>
+    public string? Action { get; set; }
 
     /// <summary>
     /// Date and time of user audit

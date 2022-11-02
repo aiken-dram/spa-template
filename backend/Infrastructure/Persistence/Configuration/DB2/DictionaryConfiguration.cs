@@ -1,4 +1,4 @@
-using Microsoft.EntityFrameworkCore;
+/*using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Domain.Entities;
 using IBM.EntityFrameworkCore;
@@ -264,3 +264,4 @@ public class SampleDictConfiguration : IEntityTypeConfiguration<SampleDict>
         entity.Ignore(e => e.Audits);
     }
 }
+*/

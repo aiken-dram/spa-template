@@ -1,4 +1,4 @@
-using Domain.Entities;
+/*using Domain.Entities;
 using IBM.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
@@ -500,3 +500,4 @@ public class VAuditDataConfiguration : IEntityTypeConfiguration<VAuditData>
             .HasColumnName("JSON");
     }
 }
+*/

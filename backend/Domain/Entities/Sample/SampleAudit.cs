@@ -2,7 +2,7 @@ using Shared.Domain.Interfaces;
 
 namespace Domain.Entities;
 
-#warning This is example, remove entire file in actual application
+#warning SAMPLE, remove entire file in actual application
 /// <summary>
 /// Sample audit log
 /// </summary>
@@ -75,7 +75,7 @@ public partial class SampleAudit : IAudit
     /// <summary>
     /// Navigation to sample
     /// </summary>
-    public virtual Sample? Target { get; set; }
+    public virtual Sample? TargetIdNavigation { get; set; }
 
     /// <summary>
     /// Collection of sample audit data

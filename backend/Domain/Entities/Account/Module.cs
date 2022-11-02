@@ -3,6 +3,7 @@
 /// <summary>
 /// Access module
 /// </summary>
+[DisplayName("Module")]
 public partial class Module
 {
     public Module()

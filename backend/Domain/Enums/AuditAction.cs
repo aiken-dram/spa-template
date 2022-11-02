@@ -65,3 +65,43 @@ public enum eUserAuditAction : int
     [Dictionary("USER_UPDATE_PASS")]
     UpdatePassword = 8
 }
+
+/// <summary>
+/// Message query audit action in application
+/// </summary>
+public enum eMessageQueryAuditAction : int
+{
+    /// <summary>
+    /// Create new request to message query
+    /// </summary>
+    [Dictionary("MQ_REQUEST")]
+    Request = 9,
+
+    /// <summary>
+    /// Error while processing request from message query
+    /// </summary>
+    [Dictionary("MQ_ERROR")]
+    Error = 10,
+
+    /// <summary>
+    /// Request from message query was processed
+    /// </summary>
+    [Dictionary("MQ_READY")]
+    Ready = 11,
+
+    /// <summary>
+    /// Downloaded request from message query
+    /// </summary>
+    [Dictionary("MQ_RECEIVED")]
+    Receive = 12
+}
+
+#warning SAMPLE, remove in actual application
+public enum eSampleAuditAction : int
+{
+    /// <summary>
+    /// Batch update sample entities
+    /// </summary>
+    [Dictionary("SAMPLE_BATCH_UPDATE")]
+    BatchUpdate = 13
+}
