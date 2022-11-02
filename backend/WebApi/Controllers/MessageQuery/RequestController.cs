@@ -1,12 +1,14 @@
 using Application.Common.Enums;
 using Application.Common.Interfaces;
 using Application.MessageQuery.Queries.GetRequestToolbar;
-using Application.Request.Commands.CreateRequest;
-using Application.Request.Commands.DeleteRequest;
-using Application.Request.Queries.GetRequestFile;
-using Application.Request.Queries.GetRequestTable;
+using Application.MessageQuery.Commands.CreateRequest;
+using Application.MessageQuery.Commands.DeleteRequest;
+using Application.MessageQuery.Queries.GetRequestFile;
+using Application.MessageQuery.Queries.GetRequestTable;
+using Application.MessageQuery.Queries.GetRequestPreview;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Application.MessageQuery.Commands.BatchProcessRequest;
 
 namespace WebApi.Controllers.MessageQuery;
 
@@ -15,11 +17,11 @@ namespace WebApi.Controllers.MessageQuery;
 [ApiController]
 public class RequestController : ApiController
 {
-    private IConfiguration _configuration;
+    private Infrastructure.Common.Interfaces.IConfigurationService _configuration;
     private IMessageQueryService _mq;
 
     public RequestController(
-        IConfiguration configuration,
+        Infrastructure.Common.Interfaces.IConfigurationService configuration,
         IMessageQueryService mq)
     {
         this._configuration = configuration;
@@ -50,10 +52,32 @@ public class RequestController : ApiController
     public async Task<FileResult> Download(long id)
     {
         var vm = await Mediator.Send(new GetRequestFileQuery() { Id = id });
-        string fname = _configuration.GetValue<string>("SiteSettings:RequestStoragePath");
+        string fname = _configuration.RequestStoragePath;
         fname += vm.Guid;
-        var content = await System.IO.File.ReadAllBytesAsync(fname);
-        return File(content, vm.ContentType, vm.FileName);
+        FileStream stream = System.IO.File.Open(fname, FileMode.Open);
+        return File(stream, vm.ContentType, vm.FileName);
+    }
+
+    /// <summary>
+    /// Preview file of request result
+    /// </summary>
+    /// <param name="id">Id of request</param>
+    [HttpGet]
+    public async Task<IActionResult> Preview(long id)
+    {
+        var vm = await Mediator.Send(new GetRequestPreviewQuery() { Id = id });
+        switch (vm.Type)
+        {
+            case eRequestPreviewType.File:
+                var file = (Shared.Application.Models.FileVm)vm.Content;
+                string fname = _configuration.RequestStoragePath;
+                //fname += vm.Guid;
+                //2D: e nani? or is it finished already?
+                FileStream stream = System.IO.File.Open(fname, FileMode.Open);
+                return File(stream, file.ContentType, file.FileName);
+            default:
+                return base.Ok(vm);
+        }
     }
 
     /// <summary>
@@ -68,7 +92,6 @@ public class RequestController : ApiController
     public async Task<IActionResult> Delete(long id)
     {
         await Mediator.Send(new DeleteRequestCommand { Id = id });
-        //2D: delete document here????
 
         return NoContent();
     }
@@ -80,9 +103,9 @@ public class RequestController : ApiController
     [HttpPost]
     public async Task<IActionResult> Create(CreateRequestCommand command)
     {
-        await Mediator.Send(command);
+        var vm = await Mediator.Send(command);
 
-        return NoContent();
+        return base.Ok(vm);
     }
 
     /// <summary>
@@ -104,6 +127,23 @@ public class RequestController : ApiController
     public async Task<ActionResult<RequestToolbarVm>> Toolbar()
     {
         var vm = await Mediator.Send(new GetRequestToolbarQuery());
+
+        return base.Ok(vm);
+    }
+
+    /// <summary>
+    /// Processes requests in batch
+    /// </summary>
+    /// <param name="command">Request data</param>
+    /// <response code="204">Requests processed</response>
+    /// <response code="403">User doesnt have access to process requests</response>
+    [HttpPost]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status403Forbidden)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<ActionResult<BatchProcessRequestVm>> Batch(BatchProcessRequestCommand command)
+    {
+        var vm = await Mediator.Send(command);
 
         return base.Ok(vm);
     }

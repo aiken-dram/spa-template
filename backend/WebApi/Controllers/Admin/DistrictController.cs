@@ -2,7 +2,6 @@ using Application.Dictionary.District.Commands.DeleteDistrict;
 using Application.Dictionary.District.Commands.UpsertDistrict;
 using Application.Dictionary.District.Queries.GetDistrict;
 using Application.Dictionary.District.Queries.GetDistrictList;
-using Domain.Enums;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -31,9 +30,8 @@ public class DistrictController : ApiController
     /// </summary>
     /// <param name="id" example="1">Id of district</param>
     /// <response code="200">District info</response>
-    /// <response code="403">District doesnt have dictionary admin role</response>
+    /// <response code="403">User doesnt have dictionary admin role</response>
     /// <response code="404">District with requested id was not found</response>
-    [Authorize(Roles = eAccountModule.DictionaryAdmin)]
     [HttpGet("{id}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
@@ -50,9 +48,8 @@ public class DistrictController : ApiController
     /// </summary>
     /// <param name="command">District data</param>
     /// <response code="204">District created or updated with new data</response>
-    /// <response code="403">District doesnt have dictionary admin role</response>
+    /// <response code="403">User doesnt have dictionary admin role</response>
     /// <response code="404">District was not found</response>
-    [Authorize(Roles = eAccountModule.DictionaryAdmin)]
     [HttpPost]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
@@ -69,9 +66,8 @@ public class DistrictController : ApiController
     /// </summary>
     /// <param name="id" example="1">Id of district to delete</param>
     /// <response code="204">District was deleted</response>
-    /// <response code="403">District doesnt have dictionary admin role</response>
+    /// <response code="403">User doesnt have dictionary admin role</response>
     /// <response code="404">District with provided id was not found</response>
-    [Authorize(Roles = eAccountModule.DictionaryAdmin)]
     [HttpDelete("{id}")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status403Forbidden)]

@@ -50,10 +50,10 @@ public class UserController : ApiController
     }
 
     /// <summary>
-    /// Get table of user authorization events
+    /// Get table of audit activity
     /// </summary>
     /// <param name="query">Request parameters</param>
-    /// <response code="200">List of user activity</response>
+    /// <response code="200">List of audit activity</response>
     /// <response code="403">User doesnt have access to audit selected user</response>
     [HttpGet]
     [ProducesResponseType(StatusCodes.Status200OK)]

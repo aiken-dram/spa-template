@@ -12,6 +12,7 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using WebApi.Common;
 using WebApi.Services;
+using Workers;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Host.ConfigureLogging(logging =>
@@ -21,6 +22,9 @@ builder.Host.ConfigureLogging(logging =>
 });
 
 // Add services to the container.
+
+//configuration
+builder.Services.AddConfiguration(builder.Configuration);
 
 //application DI
 builder.Services.AddApplication();
@@ -109,7 +113,7 @@ builder.Services.AddSignalR(options =>
     options.EnableDetailedErrors = true;
 });
 
-builder.Services.AddSingleton<IConfiguration>(builder.Configuration);
+builder.Services.AddHostedService<SignalRWorker>();
 
 var app = builder.Build();
 
