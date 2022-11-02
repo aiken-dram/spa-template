@@ -19,18 +19,34 @@ public class ProcessFileCommandHandler : SignalRCommandHandler, IRequestHandler<
 {
     private readonly ISPADbContext _context;
     private readonly ILogger _logger;
-    private readonly IAuditService _audit;
+    private IAuditBuilder _audit => _context.AuditBuilder;
 
     public ProcessFileCommandHandler(
         IMediator mediator,
         ISPADbContext context,
-        ILogger<ProcessFileCommand> logger,
-        IAuditService audit)
-        : base(mediator, "Account.User.Commands.ProcessFile")
+        ILogger<ProcessFileCommand> logger)
+        : base(mediator, eSignalRSubject.UserProcessFile)
     {
         _context = context;
         _logger = logger;
-        _audit = audit;
+    }
+
+    /// <summary>
+    /// Audit for updating password from file
+    /// </summary>
+    /// <param name="entity">User entity</param>
+    /// <returns>Audit</returns>
+    public async Task<Audit> Audit(Domain.Entities.User entity)
+    {
+        var res = new Audit(
+            entity,
+            (int)eUserAuditAction.UpdatePassword,
+            null);
+
+        // AuditData
+        res.Add(await _audit.PropertyValueAsync(entity, p => p.PassDate));
+
+        return res;
     }
 
     /// <summary>
@@ -39,33 +55,30 @@ public class ProcessFileCommandHandler : SignalRCommandHandler, IRequestHandler<
     /// <param name="line">Line from file</param>
     /// <param name="cancellationToken">Cancellation token</param>
     /// <returns>Message for processing line</returns>
-    private async Task<Message> ProcessLine(string line, CancellationToken cancellationToken)
+    private async Task<(Message, long?)> ProcessLine(string line, CancellationToken cancellationToken)
     {
         //already have roles declared on api controller
         //no further access restriction necessary
 
         var a = line.Split(' ');
-        if (a.Length == 2)
-        {
-            var login = a[0];
-            var pass = a[1];
+        if (a.Length != 2)
+            return (Message.Error(Messages.InvalidFormatLine(line)), null);
 
-            var cnt = await _context.Users.CountAsync(p => p.Login == login, cancellationToken);
-            if (cnt == 1)
-            {
-                var entity = await _context.Users.SingleAsync(p => p.Login == login, cancellationToken);
-                entity.UpdatePassword(EncryptorHelper.MD5Hash(pass));
+        var login = a[0];
+        var pass = a[1];
 
-                //log audit event for password update
-                entity.Log(await _audit.UserUpdatePassword(entity));
 
-                return Message.Success(Messages.UserPasswordUpdated(login));
-            }
-            else
-                return Message.Error(Messages.FoundMultipleUsersWithLogin(login, cnt));
-        }
-        else
-            return Message.Error(Messages.InvalidFormatLine(line));
+        int cnt;
+        if ((cnt = await _context.Users.CountAsync(p => p.Login == login, cancellationToken)) != 1)
+            return (Message.Error(Messages.FoundMultipleUsersWithLogin(login, cnt)), null);
+
+        var entity = await _context.Users.SingleAsync(p => p.Login == login, cancellationToken);
+        entity.UpdatePassword(pass.MD5Hash());
+
+        //log audit event for password update
+        entity.Log(await Audit(entity));
+
+        return (Message.Success(Messages.UserPasswordUpdated(login)), entity.IdUser);
     }
 
     public async Task<ProcessFileVm> Handle(ProcessFileCommand request, CancellationToken cancellationToken)
@@ -83,8 +96,8 @@ public class ProcessFileCommandHandler : SignalRCommandHandler, IRequestHandler<
             SetIteration(lines.Count());
             foreach (var l in lines)
             {
-                var m = await ProcessLine(l!, cancellationToken);
-                await ReportNext(m);
+                (var m, var i) = await ProcessLine(l!, cancellationToken);
+                await ReportNext(m, i);
                 res.Add(m);
 
                 //Thread.Sleep(TimeSpan.FromSeconds(1)); //was checking animation
@@ -93,11 +106,7 @@ public class ProcessFileCommandHandler : SignalRCommandHandler, IRequestHandler<
             await _context.SaveChangesAsync(cancellationToken);
         }
 
-        var vm = new ProcessFileVm()
-        {
-            Items = res
-        };
-        return vm;
+        return new ProcessFileVm(res);
     }
 }
 

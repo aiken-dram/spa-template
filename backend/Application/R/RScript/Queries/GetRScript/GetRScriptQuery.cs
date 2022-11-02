@@ -1,4 +1,5 @@
 using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 
 namespace Application.R.RScript.Queries.GetRScript;
 
@@ -30,17 +31,14 @@ public class GetRScriptQueryHandler : IRequestHandler<GetRScriptQuery, RScriptVm
     public async Task<RScriptVm> Handle(GetRScriptQuery request, CancellationToken cancellationToken)
     {
         //check access
-
         var entity = await _context.RScripts
-            .FindIdAsync(request.Id, cancellationToken);
-
-        if (entity == null)
-            throw new NotFoundException(nameof(Domain.Entities.RScript), request.Id);
+            .Include(p => p.RScriptParams)
+            .GetAsync(p => p.IdRScript == request.Id, cancellationToken);
 
         var vm = _mapper.Map<RScriptVm>(entity);
 
         //R script file content
-        vm.scriptContent = _file.ReadRScriptFile(entity.ScriptFile);
+        vm.scriptContent = await _file.ReadRScriptFileAsync(entity.ScriptFile, cancellationToken);
 
         return vm;
     }

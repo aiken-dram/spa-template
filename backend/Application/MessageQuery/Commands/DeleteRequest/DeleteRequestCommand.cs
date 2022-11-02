@@ -1,4 +1,4 @@
-namespace Application.Request.Commands.DeleteRequest;
+namespace Application.MessageQuery.Commands.DeleteRequest;
 
 public class DeleteRequestCommand : IRequest
 {
@@ -17,18 +17,19 @@ public class DeleteRequestCommandHandler : IRequestHandler<DeleteRequestCommand>
 
     public DeleteRequestCommandHandler(
         ISPADbContext context,
-        IUserService user)
+        IUserService user,
+        IFileService file)
     {
         _context = context;
         _user = user;
+        _file = file;
     }
 
     public async Task<Unit> Handle(DeleteRequestCommand request, CancellationToken cancellationToken)
     {
         //check access                
-        var entity = await _context.Requests.FindIdAsync(request.Id, cancellationToken);
-        if (entity == null)
-            throw new NotFoundException(nameof(Domain.Entities.Request), request.Id);
+        var entity = await _context.Requests
+            .GetAsync(request.Id, cancellationToken);
 
         //only supervisors or users who created request can delete it
         var user = await _user.GetCurrentUserAsync(cancellationToken);
@@ -36,13 +37,14 @@ public class DeleteRequestCommandHandler : IRequestHandler<DeleteRequestCommand>
             if (entity.IdUser != user.IdUser)
                 throw new AccessDeniedException(Messages.NoAccessToDeleteRequest);
 
-        //delete request file
-        _file.DeleteRequestFile(entity.Guid);
         //delete request
         _context.Requests.Remove(entity);
+
+        //delete request file
+        if (entity.Guid != null)
+            _file.DeleteRequestResponseFile(entity.Guid);
+
         await _context.SaveChangesAsync(cancellationToken);
-
-
 
         return Unit.Value;
     }

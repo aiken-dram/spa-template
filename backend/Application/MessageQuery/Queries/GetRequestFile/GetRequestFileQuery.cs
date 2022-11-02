@@ -1,6 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 
-namespace Application.Request.Queries.GetRequestFile;
+namespace Application.MessageQuery.Queries.GetRequestFile;
 
 public class GetRequestFileQuery : IRequest<RequestFileVm>
 {
@@ -25,10 +25,7 @@ public class GetRequestFileQueryHandler : IRequestHandler<GetRequestFileQuery, R
         //check access
         var entity = await _context.Requests
             .Include(p => p.IdTypeNavigation)
-            .FirstOrDefaultAsync(p => p.IdRequest == request.Id, cancellationToken);
-
-        if (entity == null)
-            throw new NotFoundException(nameof(Domain.Entities.Request), request.Id);
+            .GetAsync(p => p.IdRequest == request.Id, cancellationToken);
 
         if (entity.IdState != eRequestState.Ready &&
             entity.IdState != eRequestState.Delivered)
@@ -53,12 +50,20 @@ public class GetRequestFileQueryHandler : IRequestHandler<GetRequestFileQuery, R
                 vm.FileName = Messages.AuditTableFileName(entity.Processed);
                 vm.ContentType = "text/csv";
                 break;
+
+#warning SAMPLE, remove in actual application
             case eRequestType.TableExportSample:
                 vm.FileName = Messages.SampleTableFileName(entity.Processed);
                 vm.ContentType = "text/csv";
                 break;
+
             case eRequestType.RScript:
-                //alright, here i need a content type and file name from RScript
+                var id = JsonHelper.GetId(entity.Json);
+
+                var rscript = await _context.RScripts.GetAsync(id, cancellationToken);
+
+                vm.FileName = string.Format(rscript.ResultFile, entity.Processed);
+                vm.ContentType = rscript.ContentType;
                 break;
         };
 

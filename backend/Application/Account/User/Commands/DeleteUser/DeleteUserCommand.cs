@@ -26,14 +26,10 @@ public class DeleteUserCommandHandler : IRequestHandler<DeleteUserCommand>
 
     public async Task<Unit> Handle(DeleteUserCommand request, CancellationToken cancellationToken)
     {
-        //already have roles declared on api controller
-        //no further restrictions necessary
+        //access check
 
         var entity = await _context.Users
-            .FindAsync(request.Id);
-
-        if (entity == null)
-            throw new NotFoundException(nameof(Domain.Entities.User), request.Id);
+            .GetAsync(request.Id, cancellationToken);
 
         //add delete to audit log
         entity.Log(_audit.Delete(entity));

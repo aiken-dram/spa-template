@@ -1,8 +1,6 @@
 using System.Reflection;
 using Application.Common.Behaviours;
-using Application.Common.Interfaces;
 using Application.Services;
-using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using FluentValidation;
 
@@ -17,8 +15,15 @@ public static class DependencyInjection
         services.AddMediatR(Assembly.GetExecutingAssembly());
         services.AddTransient(typeof(IPipelineBehavior<,>), typeof(PerformanceBehaviour<,>));
         services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
-        services.AddTransient<IUserService, UserService>();
-        services.AddTransient<IAuditService, AuditService>();
+        services.AddScoped<IUserService, UserService>();
+        services.AddScoped<IAuditService, AuditService>();
+
+        return services;
+    }
+
+    public static IServiceCollection AddServiceApplication(this IServiceCollection services)
+    {
+        services.AddAutoMapper(Assembly.GetExecutingAssembly());
 
         return services;
     }

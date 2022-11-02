@@ -1,4 +1,6 @@
 using AutoMapper;
+using AutoMapper.QueryableExtensions;
+using Microsoft.EntityFrameworkCore;
 
 namespace Application.R.RScript.Queries.GetRScriptList;
 
@@ -23,7 +25,13 @@ public class GetRScriptListQueryHandler : IRequestHandler<GetRScriptListQuery, R
     {
         //check access
 
-        var vm = new RScriptListVm();
+        var items = await _context.RScripts
+            .ProjectTo<RScriptListDto>(_mapper.ConfigurationProvider)
+            .OrderBy(p => p.idRScript)
+            .ToListAsync(cancellationToken);
+
+        var vm = new RScriptListVm { Items = items };
+
         return vm;
     }
 }

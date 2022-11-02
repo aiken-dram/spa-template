@@ -26,10 +26,7 @@ public class DeleteRScriptTreeNodeCommandHandler : IRequestHandler<DeleteRScript
         //check access
 
         var entity = await _context.RScriptTree
-            .FindIdAsync(request.Id, cancellationToken);
-
-        if (entity == null)
-            throw new NotFoundException(nameof(RScriptTreeNode), request.Id);
+            .GetAsync(request.Id, cancellationToken);
 
         //only delete empty branches
         var hasChildren = await _context.RScriptTree.AnyAsync(p => p.IdParent == entity.Id, cancellationToken);

@@ -47,15 +47,16 @@ public class SignalRCommandHandler
     /// Publishes SignalR notification event
     /// </summary>
     /// <param name="msg">Message body</param>
+    /// <param name="id">Identity</param>
     /// <param name="bar">Progress bar value</param>
-    protected async Task Report(object msg, int? bar = null)
+    protected async Task Report(object msg, long? id = null, int? bar = null)
     {
         //wait should i wrap async method as another async?
         if (!DisableSignalR)
         {
             if (IdConnection == null)
-                throw new Exception("IdConnection has not been set");
-            await _mediator.Publish(new SignalRNotification(IdConnection, _subject, msg, bar));
+                throw new Exception(Messages.ConnectionHasNotBeenSet);
+            await _mediator.Publish(new SignalRNotification(IdConnection, _subject, id, msg, bar));
         }
     }
 
@@ -103,10 +104,11 @@ public class SignalRCommandHandler
     /// Moves iterator to next element and publishes SignalR notification event
     /// </summary>
     /// <param name="msg">Message body</param>
-    protected async Task ReportNext(object msg)
+    /// <param name="id">Identity</param>
+    protected async Task ReportNext(object msg, long? id = null)
     {
         Next();
 
-        await Report(msg, _bar);
+        await Report(msg, id, _bar);
     }
 }

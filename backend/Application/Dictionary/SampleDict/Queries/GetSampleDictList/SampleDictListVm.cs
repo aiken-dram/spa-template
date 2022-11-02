@@ -1,7 +1,25 @@
 namespace Application.Dictionary.SampleDict.Queries.GetSampleDictList;
 
-#warning This is example, remove entire file in actual application
-public class SampleDictListVm
+#warning SAMPLE, remove entire file in actual application
+public class SampleDictListDto : IMapFrom<Domain.Entities.SampleDict>
+{
+    /// <summary>
+    /// Id of dictionary in database
+    /// </summary>
+    public long idDict { get; set; }
+
+    /// <summary>
+    /// Name of dictionary
+    /// </summary>
+    public string dict { get; set; } = null!;
+
+    /// <summary>
+    /// Description of dictionary
+    /// </summary>
+    public string? description { get; set; }
+}
+
+public class SampleDictListVm : ListVm<SampleDictListDto>
 {
 
 }

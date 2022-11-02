@@ -10,15 +10,16 @@ public class AuditService : IAuditService
         _context = context;
     }
 
-    public async Task<Audit> UserUpdatePassword(Domain.Entities.User entity)
+#warning SAMPLE, remove in actual application
+    public async Task<Audit> SampleBatchUpdateAsync(Domain.Entities.Sample entity)
     {
         var res = new Audit(
             entity,
-            (int)eUserAuditAction.UpdatePassword,
+            (int)eSampleAuditAction.BatchUpdate,
             null);
 
         // AuditData
-        res.Add(await _audit.PropertyValue(entity, p => p.PassDate));
+        res.Add(await _audit.PropertyValueAsync(entity, p => p.IdType));
 
         return res;
     }

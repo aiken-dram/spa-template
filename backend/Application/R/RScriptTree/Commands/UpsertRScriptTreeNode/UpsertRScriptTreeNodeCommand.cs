@@ -1,3 +1,5 @@
+using FluentValidation.Results;
+
 namespace Application.R.RScriptTree.Commands.UpsertRScriptTreeNode;
 
 [Authorize(Modules = eAccountModule.ConfigurationAdmin)]
@@ -64,16 +66,25 @@ public class UpsertRScriptTreeNodeCommandHandler : IRequestHandler<UpsertRScript
         {
             //edit
             entity = await _context.RScriptTree
-                .FindIdAsync(request.id.Value, cancellationToken);
-
-            if (entity == null)
-                throw new NotFoundException(nameof(RScriptTreeNode), request.id);
+                .GetAsync(request.id.Value, cancellationToken);
         }
         else
         {
             //create
             entity = new RScriptTreeNode();
+            _context.RScriptTree.Add(entity);
         }
+
+        //set fields
+        entity.IdParent = request.idParent;
+        entity.IdRScript = request.idRScript;
+        entity.Name = request.name;
+        entity.Modules = request.modules;
+        entity.Icon = request.icon;
+        entity.Color = request.color;
+        entity.Description = request.description;
+
+        await _context.SaveChangesAsync(cancellationToken);
 
         return entity.Id;
     }

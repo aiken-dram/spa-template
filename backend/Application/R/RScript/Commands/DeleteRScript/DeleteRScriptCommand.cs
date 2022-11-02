@@ -1,5 +1,8 @@
 namespace Application.R.RScript.Commands.DeleteRScript;
 
+/// <summary>
+/// Delete R script
+/// </summary>
 [Authorize(Modules = eAccountModule.ConfigurationAdmin)]
 public class DeleteRScriptCommand : IRequest
 {
@@ -24,10 +27,7 @@ public class DeleteRScriptCommandHandler : IRequestHandler<DeleteRScriptCommand>
         //check access
 
         var entity = await _context.RScripts
-            .FindIdAsync(request.Id, cancellationToken);
-
-        if (entity == null)
-            throw new NotFoundException(nameof(Domain.Entities.RScript), request.Id);
+            .GetAsync(request.Id, cancellationToken);
 
         //changed foreign key to SET_NULL on delete, so tree should remain intact
         _context.RScripts.Remove(entity);

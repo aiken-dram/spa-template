@@ -16,6 +16,7 @@ public class GetDictionaryQuery : IRequest<IList<DictionaryDto>>
     ///     AccessRoles
     ///     AuditActions
     ///     AuditTargets
+    ///     RScriptParamTypes
     /// 
     ///     SampleTypes
     ///     SampleDicts
@@ -49,37 +50,37 @@ public class GetDictionaryQueryHandler : IRequestHandler<GetDictionaryQuery, ILi
         switch (request.Dictionary)
         {
             //list of all districts in dictionary
-                case "Districts":
+            case "Districts":
+                vm = await _context.Districts
+                    .ProjectTo<DictionaryDto>(_mapper.ConfigurationProvider)
+                    .OrderBy(p => p.Value)
+                    .ToListAsync(cancellationToken);
+                return vm;
+
+            //list of districts available for current user in dictionary
+            case "UserDistricts":
+                long uid = _user.CurrentUserId;
+                if (await _context.UserDistricts.CountAsync(p => p.IdUser == uid) > 0)
+                {
+                    //user districts have been defined in link table
+                    var query = from r in _context.Districts
+                                join u in _context.UserDistricts.Where(p => p.IdUser == uid)
+                                on r.IdDistrict equals u.IdDistrict
+                                select r;
+                    vm = await query
+                        .ProjectTo<DictionaryDto>(_mapper.ConfigurationProvider)
+                        .OrderBy(p => p.Value)
+                        .ToListAsync(cancellationToken);
+                }
+                else
+                {
+                    //no user districts have been defined, return all districts by default then
                     vm = await _context.Districts
                         .ProjectTo<DictionaryDto>(_mapper.ConfigurationProvider)
                         .OrderBy(p => p.Value)
                         .ToListAsync(cancellationToken);
-                    return vm;
-
-                //list of districts available for current user in dictionary
-                case "UserDistricts":
-                    long uid = _user.CurrentUserId;
-                    if (await _context.UserDistricts.CountAsync(p => p.IdUser == uid) > 0)
-                    {
-                        //user Districts have been defined in link table
-                        var query = from r in _context.Districts
-                                    join u in _context.UserDistricts.Where(p => p.IdUser == uid)
-                                    on r.IdDistrict equals u.IdDistrict
-                                    select r;
-                        vm = await query
-                            .ProjectTo<DictionaryDto>(_mapper.ConfigurationProvider)
-                            .OrderBy(p => p.Value)
-                            .ToListAsync(cancellationToken);
-                    }
-                    else
-                    {
-                        //no user districts have been defined, return all districts by default then
-                        vm = await _context.Districts
-                            .ProjectTo<DictionaryDto>(_mapper.ConfigurationProvider)
-                            .OrderBy(p => p.Value)
-                            .ToListAsync(cancellationToken);
-                    }
-                    return vm;
+                }
+                return vm;
 
             // list of access groups
             case "AccessGroups":
@@ -113,7 +114,14 @@ public class GetDictionaryQueryHandler : IRequestHandler<GetDictionaryQuery, ILi
                     .ToListAsync(cancellationToken);
                 return vm;
 
-#warning This is example, remove case in actual application
+            case "RScriptParamTypes":
+                vm = await _context.RScriptParamTypes
+                    .ProjectTo<DictionaryDto>(_mapper.ConfigurationProvider)
+                    .OrderBy(p => p.Value)
+                    .ToListAsync(cancellationToken);
+                return vm;
+
+#warning SAMPLE, remove case in actual application
             // sample types
             case "SampleTypes":
                 vm = await _context.SampleTypes
@@ -122,7 +130,7 @@ public class GetDictionaryQueryHandler : IRequestHandler<GetDictionaryQuery, ILi
                     .ToListAsync(cancellationToken);
                 return vm;
 
-#warning This is example, remove case in actual application
+#warning SAMPLE, remove case in actual application
             // sample dictionary
             case "SampleDicts":
                 vm = await _context.SampleDicts

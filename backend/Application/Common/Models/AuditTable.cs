@@ -1,12 +1,15 @@
-using AutoMapper;
-
-namespace Application.Account.User.Queries.GetVAuditTable;
+namespace Application.Common.Models;
 
 /// <summary>
-/// Data transfer object for audit data
+/// Audit data table class
 /// </summary>
-public class VAuditDataTableDto
+public class AuditDataTable : IMapFrom<VAuditData>
 {
+    /// <summary>
+    /// Source of audit
+    /// </summary>
+    public string source { get; set; } = null!;
+
     /// <summary>
     /// Id of audit data
     /// </summary>
@@ -29,10 +32,15 @@ public class VAuditDataTableDto
 }
 
 /// <summary>
-/// Data transfer object for user audit
+/// Audit table class
 /// </summary>
-public class VAuditTableDto
+public class AuditTable : IMapFrom<VAudit>
 {
+    /// <summary>
+    /// Source of audit
+    /// </summary>
+    public string source { get; set; } = null!;
+
     /// <summary>
     /// Id of user audit
     /// </summary>
@@ -94,15 +102,7 @@ public class VAuditTableDto
     public string? message { get; set; }
 
     /// <summary>
-    /// Collection of audit data dto
+    /// Collection of audit data
     /// </summary>
-    public ICollection<VAuditDataTableDto>? auditData { get; set; }
-}
-
-/// <summary>
-/// View model for table of audit
-/// </summary>
-public class VAuditTableVm : TableVm<VAuditTableDto>
-{
-
+    public virtual ICollection<AuditDataTable>? auditData { get; set; }
 }

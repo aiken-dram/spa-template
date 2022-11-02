@@ -3,6 +3,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Application.R.RScript.Queries.GetRScriptForm;
 
+/// <summary>
+/// Get R script form data
+/// </summary>
 public class GetRScriptFormQuery : IRequest<RScriptFormVm>
 {
     /// <summary>
@@ -30,10 +33,7 @@ public class GetRScriptFormQueryHandler : IRequestHandler<GetRScriptFormQuery, R
 
         var entity = await _context.RScripts
             .Include(p => p.RScriptParams).ThenInclude(p => p.IdTypeNavigation)
-            .FirstOrDefaultAsync(p => p.IdRScript == request.Id, cancellationToken);
-
-        if (entity == null)
-            throw new NotFoundException(nameof(Domain.Entities.RScript), request.Id);
+            .GetAsync(p => p.IdRScript == request.Id, cancellationToken);
 
         var vm = _mapper.Map<RScriptFormVm>(entity);
 

@@ -1,8 +1,9 @@
-using Shared.Application.Models;
-
 namespace Application.Sample.Queries.GetSampleTableFile;
 
-#warning This is example, remove entire file in actual application
+#warning SAMPLE, remove entire file in actual application
+/// <summary>
+/// View model for sample table file
+/// </summary>
 public class SampleTableFileVm : FileVm
 {
 

@@ -1,6 +1,6 @@
 using AutoMapper;
 
-namespace Application.Request.Queries.GetRequestTable;
+namespace Application.MessageQuery.Queries.GetRequestTable;
 
 public class RequestTableDto : IMapFrom<Domain.Entities.Request>
 {

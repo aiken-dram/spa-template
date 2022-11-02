@@ -65,12 +65,12 @@ public class RScriptVm : IMapFrom<Domain.Entities.RScript>
     /// <summary>
     /// List of R script parameters
     /// </summary>
-    public IEnumerable<RScriptParam> scriptParams { get; set; } = null!;
+    public IEnumerable<RScriptParamDto> scriptParams { get; set; } = null!;
 
     /// <summary>
     /// Content of R script file
     /// </summary>
-    public IEnumerable<string> scriptContent { get; set; } = null!;
+    public string scriptContent { get; set; } = null!;
 
     public void Mapping(Profile profile)
     {

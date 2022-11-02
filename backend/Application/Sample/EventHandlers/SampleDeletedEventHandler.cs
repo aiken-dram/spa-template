@@ -1,12 +1,9 @@
-using Application.Common.Interfaces;
-using Application.Common.Models;
 using Domain.Events;
-using MediatR;
 using Microsoft.Extensions.Logging;
 
 namespace Application.Sample.EventHandlers;
 
-#warning This is example, remove entire file in actual application
+#warning SAMPLE, remove entire file in actual application
 public class SampleDeletedEventHandler : INotificationHandler<DomainEventNotification<SampleDeletedEvent>>
 {
     private readonly ISPADbContext _context;

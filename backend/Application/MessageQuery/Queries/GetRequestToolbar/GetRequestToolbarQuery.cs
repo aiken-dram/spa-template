@@ -36,13 +36,13 @@ public class GetRequestToolbarQueryHandler : IRequestHandler<GetRequestToolbarQu
 
         var vm = new RequestToolbarVm();
 
-        //last 10 created items that were not delivered
+        //last 5 created items that were not delivered
         vm.Items = await query
             .Where(p => p.IdState != eRequestState.Delivered)
             .ProjectTo<RequestToolbarDto>(_mapper.ConfigurationProvider)
             .OrderByDescending(p => p.idRequest)
-            .Take(10)
-            .TagWith("FIRST PAGE TABLE") //this is fix for old DB2 version
+            .Take(5)
+            .TagWith("TABLE FIRST PAGE N5ROWS") //this is fix for old DB2 version
             .ToListAsync(cancellationToken);
 
         //total amount of not delivered requests

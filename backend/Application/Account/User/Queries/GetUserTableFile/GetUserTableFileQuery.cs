@@ -59,8 +59,8 @@ public class GetUserTableFileQueryHandler : IRequestHandler<GetUserTableFileQuer
             Filters = request.Filters
         };
 
-        var res = await _mediator.Send(query);
-        var fileContent = _file.BuildUserTableFile(res.Items);
+        var res = await _mediator.Send(query, cancellationToken);
+        var fileContent = await _file.BuildUserTableFileAsync(res.Items, cancellationToken);
 
         var vm = new UserTableFileVm
         {

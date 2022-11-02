@@ -46,13 +46,10 @@ public class UpdateCurrentUserCommandHandler : IRequestHandler<UpdateCurrentUser
             throw new AccessDeniedException(Messages.NotMatchingUserId);
         //access checked
 
-        var entity = await _context.Users.FindIdAsync(request.IdUser, cancellationToken);
-
-        if (entity == null)
-            throw new NotFoundException(nameof(Domain.Entities.User), request.IdUser);
+        var entity = await _context.Users.GetAsync(request.IdUser, cancellationToken);
 
         //audit
-        var audit = await _audit.Edit(entity, request, null);
+        var audit = await _audit.EditAsync(entity, request, null);
 
         entity.Name = request.Name;
         entity.Description = request.Description;

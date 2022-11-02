@@ -24,10 +24,7 @@ public class DeleteDistrictCommandHandler : IRequestHandler<DeleteDistrictComman
         //check access
 
         var entity = await _context.Districts
-            .FindIdAsync(request.Id, cancellationToken);
-
-        if (entity == null)
-            throw new NotFoundException(nameof(Domain.Entities.District), request.Id);
+            .GetAsync(Convert.ToInt32(request.Id), cancellationToken);
 
         _context.Districts.Remove(entity);
 
@@ -36,3 +33,4 @@ public class DeleteDistrictCommandHandler : IRequestHandler<DeleteDistrictComman
         return Unit.Value;
     }
 }
+

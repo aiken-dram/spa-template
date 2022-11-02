@@ -29,10 +29,7 @@ public class GetRScriptTreeNodeQueryHandler : IRequestHandler<GetRScriptTreeNode
         //check access
 
         var entity = await _context.RScriptTree
-            .FindIdAsync(request.Id, cancellationToken);
-
-        if (entity == null)
-            throw new NotFoundException(nameof(RScriptTreeNode), request.Id);
+            .GetAsync(request.Id, cancellationToken);
 
         var vm = _mapper.Map<RScriptTreeNodeVm>(entity);
 

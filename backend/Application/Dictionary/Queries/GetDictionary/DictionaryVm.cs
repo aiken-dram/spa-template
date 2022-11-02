@@ -7,9 +7,10 @@ public class DictionaryDto :
     IMapFrom<Role>,
     IMapFrom<AuditAction>,
     IMapFrom<AuditTarget>,
+    IMapFrom<RScriptParamType>,
     IMapFrom<Domain.Entities.District>,
 
-#warning This is example, remove next 2 lines in actual application
+#warning SAMPLE, remove next 2 lines in actual application
     IMapFrom<SampleType>,
     IMapFrom<Domain.Entities.SampleDict>
 {
@@ -47,12 +48,16 @@ public class DictionaryDto :
             .ForMember(p => p.Value, o => o.MapFrom(q => Convert.ToInt64(q.IdDistrict)))
             .ForMember(p => p.Text, o => o.MapFrom(q => q.IdDistrict.ToString() + " " + q.Name));
 
-#warning This is example, remove in actual application
-        profile.CreateMap<SampleType, DictionaryDto>()
-            .ForMember(p => p.Value, o => o.MapFrom(q => Convert.ToInt64(q.IdType)))
+        profile.CreateMap<RScriptParamType, DictionaryDto>()
+            .ForMember(p => p.Value, o => o.MapFrom(q => (long)q.IdType))
             .ForMember(p => p.Text, o => o.MapFrom(q => q.Description));
 
-#warning This is example, remove in actual application
+#warning SAMPLE, remove in actual application
+        profile.CreateMap<SampleType, DictionaryDto>()
+            .ForMember(p => p.Value, o => o.MapFrom(q => Convert.ToInt64((int)q.IdType)))
+            .ForMember(p => p.Text, o => o.MapFrom(q => q.Description));
+
+#warning SAMPLE, remove in actual application
         profile.CreateMap<Domain.Entities.SampleDict, DictionaryDto>()
             .ForMember(p => p.Value, o => o.MapFrom(q => Convert.ToInt64(q.IdDict)))
             .ForMember(p => p.Text, o => o.MapFrom(q => q.Description));

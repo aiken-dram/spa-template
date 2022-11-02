@@ -3,6 +3,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Application.Common.Interfaces;
 
+/// <summary>
+/// Database context
+/// </summary>
 public interface ISPADbContext
 {
     /// <summary>
@@ -121,14 +124,14 @@ public interface ISPADbContext
     /// <summary>
     /// Sample dictionary
     /// </summary>
-#warning This is example, remove in actual application
+#warning SAMPLE, remove in actual application
     DbSet<SampleDict> SampleDicts { get; set; }
 
 
     /// <summary>
     /// Dictionary of sample types
     /// </summary>
-#warning This is example, remove in actual application
+#warning SAMPLE, remove in actual application
     DbSet<SampleType> SampleTypes { get; set; }
     #endregion
 
@@ -156,7 +159,7 @@ public interface ISPADbContext
     DbSet<Domain.Entities.RScriptTreeNode> RScriptTree { get; set; }
     #endregion
 
-#warning This is example, remove entire region in actual application
+#warning SAMPLE, remove entire region in actual application
     #region SAMPLE
     /// <summary>
     /// Sample entities
@@ -205,17 +208,18 @@ public interface ISPADbContext
     Task<int> SetIntegrityAsync(string table, CancellationToken cancellationToken);
 
     /// <summary>
-    /// Get SQL messages from sql request
+    /// Get SQL messages from sql
     /// </summary>
-    /// <param name="sql">SQL request</param>
+    /// <param name="sql">SQL</param>
     IQueryable<SqlMessage> GetSqlMessages(string sql);
 
     /// <summary>
-    /// EXPORT SQL to CSV file
+    /// Export SQL to CSV file from database
     /// </summary>
     /// <param name="sql">SQL</param>
     /// <param name="file">Name of file</param>
     /// <param name="cancellationToken">Cancellation token</param>
-    Task<ExportResult> ExportSQLAsync(string sql, string file, CancellationToken cancellationToken);
+    /// <param name="timestampFormat">DateTime format for export</param>
+    Task<ExportResult> ExportSQLAsync(string sql, string file, CancellationToken cancellationToken, string timestampFormat = "DD.MM.YYYY");
     #endregion
 }

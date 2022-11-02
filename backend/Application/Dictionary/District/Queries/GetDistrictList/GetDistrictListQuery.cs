@@ -4,6 +4,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Application.Dictionary.District.Queries.GetDistrictList;
 
+/// <summary>
+/// Get list of districts in database
+/// </summary>
 public class GetDistrictListQuery : IRequest<DistrictListVm>
 { }
 
@@ -27,10 +30,12 @@ public class GetDistrictListQueryHandler : IRequestHandler<GetDistrictListQuery,
 
         var items = await _context.Districts
             .ProjectTo<DistrictListDto>(_mapper.ConfigurationProvider)
-            .OrderBy(p => p.IdDistrict)
+            .OrderBy(p => p.idDistrict)
             .ToListAsync(cancellationToken);
 
         var vm = new DistrictListVm { Items = items };
+
         return vm;
     }
 }
+

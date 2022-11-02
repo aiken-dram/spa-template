@@ -36,11 +36,7 @@ public class GetUserQueryHandler : IRequestHandler<GetUserQuery, UserVm>
 
         var entity = await _context.Users
             .Include(p => p.UserGroups).Include(p => p.UserRoles).Include(p => p.UserDistricts)
-            .Where(e => e.IdUser == request.Id)
-            .SingleOrDefaultAsync(cancellationToken);
-
-        if (entity == null)
-            throw new NotFoundException(nameof(Domain.Entities.User), request.Id);
+            .GetAsync(e => e.IdUser == request.Id, cancellationToken);
 
         var vm = _mapper.Map<UserVm>(entity);
         return vm;

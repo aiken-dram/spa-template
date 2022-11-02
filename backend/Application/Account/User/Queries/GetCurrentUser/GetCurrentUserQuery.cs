@@ -27,10 +27,7 @@ public class GetCurrentUserQueryHandler : IRequestHandler<GetCurrentUserQuery, C
     public async Task<CurrentUserVm> Handle(GetCurrentUserQuery request, CancellationToken cancellationToken)
     {
         var uid = _user.CurrentUserId;
-        var entity = await _context.Users.FindIdAsync(uid, cancellationToken);
-
-        if (entity == null)
-            throw new NotFoundException(nameof(Domain.Entities.User), uid);
+        var entity = await _context.Users.GetAsync(uid, cancellationToken);
 
         return _mapper.Map<CurrentUserVm>(entity);
     }

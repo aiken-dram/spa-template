@@ -3,12 +3,16 @@ namespace Application.Common.Interfaces;
 public interface IMessageQueryService
 {
     /// <summary>
-    /// Send message into queue service for processing by worker service
+    /// Send request into message query for processing with background worker
     /// </summary>
-    /// <param name="queue">Name of queue</param>
-    /// <param name="message">Message</param>
-    /// <param name="routingKey">Routing key</param>
-    void Send(string queue, string message, string routingKey);
+    /// <param name="request">Request</param>
+    void SendRequest(Domain.Entities.Request request);
+
+    /// <summary>
+    /// Send request into message query for sending SignalR to clients about request update from web application
+    /// </summary>
+    /// <param name="request">Request</param>
+    void SendRequestSignalR(Domain.Entities.Request request);
 
     /// <summary>
     /// Get queue length

@@ -15,4 +15,14 @@ public static class eQueue
     /// Queue for processing R scripts (statistics)
     /// </summary>
     public const string RQueryService = "spa_rquery";
+
+    /// <summary>
+    /// Queue for sending SignalR messages from hosted webapi
+    /// </summary>
+    /// <remarks>
+    /// I dont wanna host every background service as web application
+    /// so i'm gonna use this queue for alerts from background services
+    /// to be sent to signalR clients from single hosted WebApi application
+    /// </remarks>
+    public const string SignalR = "spa_signalr";
 }

@@ -1,4 +1,4 @@
-namespace Application.Request.Queries.GetRequestFile;
+namespace Application.MessageQuery.Queries.GetRequestFile;
 
 public class RequestFileVm : FileVm
 {

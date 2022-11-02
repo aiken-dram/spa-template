@@ -9,6 +9,12 @@ public class SignalRNotification : SignalRCommand, INotification
     public string Subject { get; set; }
 
     /// <summary>
+    /// Identity
+    /// </summary>
+    /// <example>1</example>
+    public long? Id { get; set; }
+
+    /// <summary>
     /// Body of message sent to client through SignalR
     /// </summary>
     /// <example>"User's password was updated"</example>
@@ -20,10 +26,11 @@ public class SignalRNotification : SignalRCommand, INotification
     /// <example>50</example>
     public int? Bar { get; set; }
 
-    public SignalRNotification(string idConnection, string subject, object msg, int? bar = null)
+    public SignalRNotification(string idConnection, string subject, long? id, object msg, int? bar = null)
     {
         this.IdConnection = idConnection;
         this.Subject = subject;
+        this.Id = id;
         this.Message = msg;
         this.Bar = bar;
     }
@@ -32,10 +39,14 @@ public class SignalRNotification : SignalRCommand, INotification
 public class SignalRNotificationHandler : INotificationHandler<SignalRNotification>
 {
     private readonly INotificationService _notification;
+    private readonly IUserService _user;
 
-    public SignalRNotificationHandler(INotificationService notification)
+    public SignalRNotificationHandler(
+        INotificationService notification,
+        IUserService user)
     {
         _notification = notification;
+        _user = user;
     }
 
     public async Task Handle(SignalRNotification notification, CancellationToken cancellationToken)
@@ -45,6 +56,8 @@ public class SignalRNotificationHandler : INotificationHandler<SignalRNotificati
             From = "server",
             To = notification.IdConnection,
             Subject = notification.Subject,
+            Id = notification.Id,
+            IdUser = _user.CurrentUserId,
             Body = notification.Message,
             Bar = notification.Bar
         });

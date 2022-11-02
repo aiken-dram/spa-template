@@ -1,6 +1,6 @@
 namespace Application.Sample.Commands.DeleteSample;
 
-#warning This is example, remove entire file in actual application
+#warning SAMPLE, remove entire file in actual application
 public class DeleteSampleCommand : IRequest
 {
     /// <summary>
@@ -24,10 +24,7 @@ public class DeleteSampleCommandHandler : IRequestHandler<DeleteSampleCommand>
         //check access
 
         var entity = await _context.Samples
-            .FindIdAsync(request.Id, cancellationToken);
-
-        if (entity == null)
-            throw new NotFoundException(nameof(Domain.Entities.Sample), request.Id);
+            .GetAsync(p => p.IdSample == request.Id, cancellationToken);
 
         _context.Samples.Remove(entity);
 

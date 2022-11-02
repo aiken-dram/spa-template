@@ -1,6 +1,6 @@
 namespace Application.Sample.Queries.GetSample;
 
-#warning This is example, remove entire file in actual application
+#warning SAMPLE, remove entire file in actual application
 public class SampleChildDto : IMapFrom<Domain.Entities.SampleChild>
 {
     /// <summary>
@@ -27,9 +27,14 @@ public class SampleVm : IMapFrom<Domain.Entities.Sample>
     public long idSample { get; set; }
 
     /// <summary>
+    /// Id of district
+    /// </summary>
+    public int? idDistrict { get; set; }
+
+    /// <summary>
     /// Id of sample type
     /// </summary>
-    public eSampleType idType { get; set; }
+    public int idType { get; set; }
 
     /// <summary>
     /// Id of sample dictionary

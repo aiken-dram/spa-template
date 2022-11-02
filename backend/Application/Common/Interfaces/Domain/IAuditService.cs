@@ -5,10 +5,11 @@ namespace Application.Common.Interfaces;
 /// </summary>
 public interface IAuditService
 {
+#warning SAMPLE, remove in actual application
     /// <summary>
-    /// Audit for updating user's password from file
+    /// Audit for batch updating sample entity
     /// </summary>
-    /// <param name="entity">User entity</param>
+    /// <param name="entity">Sample entity</param>
     /// <returns>Audit</returns>
-    Task<Audit> UserUpdatePassword(Domain.Entities.User entity);
+    Task<Audit> SampleBatchUpdateAsync(Domain.Entities.Sample entity);
 }

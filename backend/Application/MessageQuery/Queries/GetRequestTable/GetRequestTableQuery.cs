@@ -3,7 +3,7 @@ using Microsoft.Extensions.Logging;
 using AutoMapper.QueryableExtensions;
 using Microsoft.EntityFrameworkCore;
 
-namespace Application.Request.Queries.GetRequestTable;
+namespace Application.MessageQuery.Queries.GetRequestTable;
 
 public class GetRequestTableQuery : TableQuery, IRequest<RequestTableVm>
 {
@@ -43,15 +43,12 @@ public class GetRequestTableQueryHandler : IRequestHandler<GetRequestTableQuery,
             where d.IdUser == _user.CurrentUserId
             select d;
 
-        switch (request.SelectedFolder)
+        _query = request.SelectedFolder switch
         {
-            case 0:
-                _query = _query.Where(p => p.IdState != eRequestState.Delivered);
-                break;
-            case 1:
-                _query = _query.Where(p => p.IdState == eRequestState.Delivered);
-                break;
-        }
+            0 => _query.Where(p => p.IdState != eRequestState.Delivered),
+            1 => _query.Where(p => p.IdState == eRequestState.Delivered),
+            _ => _query
+        };
 
         var query = _query
             .ProjectTo<RequestTableDto>(_mapper.ConfigurationProvider);
@@ -63,7 +60,6 @@ public class GetRequestTableQueryHandler : IRequestHandler<GetRequestTableQuery,
             .TableQuery(request, "created")
             .ToListAsync(cancellationToken);
         vm.Total = await query.CountAsync(cancellationToken);
-        _logger.JsonLogDebug("Items", vm.Items);
         return vm;
     }
 }

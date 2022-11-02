@@ -3,10 +3,7 @@ namespace Application.Account.User.Commands.ProcessFile;
 /// <summary>
 /// View model for processing new password files
 /// </summary>
-public class ProcessFileVm
+public class ProcessFileVm : ListVm<Message>
 {
-    /// <summary>
-    /// List of messages
-    /// </summary>
-    public IList<Message> Items { get; set; } = null!;
+    public ProcessFileVm(IList<Message>? items) : base(items) { }
 }

@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Application.Sample.Queries.GetSample;
 
-#warning This is example, remove entire file in actual application
+#warning SAMPLE, remove entire file in actual application
 public class GetSampleQuery : IRequest<SampleVm>
 {
     /// <summary>
@@ -31,10 +31,7 @@ public class GetSampleQueryHandler : IRequestHandler<GetSampleQuery, SampleVm>
 
         var entity = await _context.Samples
             .Include(p => p.SampleChildren)
-            .FirstOrDefaultAsync(p => p.IdSample == request.Id, cancellationToken);
-
-        if (entity == null)
-            throw new NotFoundException(nameof(Domain.Entities.Sample), request.Id);
+            .GetAsync(p => p.IdSample == request.Id, cancellationToken);
 
         var vm = _mapper.Map<SampleVm>(entity);
 
