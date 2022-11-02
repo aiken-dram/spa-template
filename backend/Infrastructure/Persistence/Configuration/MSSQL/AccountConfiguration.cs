@@ -308,5 +308,9 @@ public class VAuditDataConfiguration : IEntityTypeConfiguration<VAuditData>
         entity.Property(e => e.Type)
             .HasMaxLength(120)
             .IsUnicode(false);
+
+        entity.HasOne(d => d.VAuditNavigation)
+            .WithMany(p => p.AuditData)
+            .HasForeignKey(p => new { p.Source, p.IdAudit });
     }
 }
