@@ -1,4 +1,4 @@
-using Shouldly;
+using FluentAssertions;
 using Xunit;
 using Xunit.Abstractions;
 
@@ -20,6 +20,6 @@ public class CurrentUserIdTests : ServiceTestBase
         var res = _user.CurrentUserId;
 
         //Then
-        res.ShouldBe(1);
+        res.Should().Be(1);
     }
 }

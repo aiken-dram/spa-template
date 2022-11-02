@@ -1,12 +1,13 @@
-using Application.Account.User.Queries.GetCurrentUserDetail;
-using Application.Account.User.Queries.GetUserAuthTable;
-using Application.Account.User.Queries.GetUserDetail;
+using Application.Account.User.Queries.GetCurrentUser;
+using Application.Account.User.Queries.GetAuditTable;
+using Application.Account.User.Queries.GetUser;
 using Application.Account.User.Queries.GetUserTable;
 using Application.Dictionary.Queries.GetDictionary;
 using AutoMapper;
 using Domain.Entities;
-using Shouldly;
+using FluentAssertions;
 using Xunit;
+using Application.Common.Models;
 
 namespace Application.UnitTests.Mappings;
 
@@ -29,26 +30,26 @@ public class MappingTests : IClassFixture<MappingTestsFixture>
 
     #region ACCOUNT
     [Fact]
-    public void ShouldMapUserToCurrentUserDetailVm()
+    public void ShouldMapUserToCurrentUserVm()
     {
         var entity = new Domain.Entities.User();
 
-        var result = _mapper.Map<CurrentUserDetailVm>(entity);
+        var result = _mapper.Map<CurrentUserVm>(entity);
 
-        result.ShouldNotBeNull();
-        result.ShouldBeOfType<CurrentUserDetailVm>();
+        result.Should().NotBeNull();
+        result.Should().BeOfType<CurrentUserVm>();
 
     }
 
     [Fact]
-    public void ShouldMapUserToUserDetailVm()
+    public void ShouldMapUserToUserVm()
     {
         var entity = new Domain.Entities.User();
 
-        var result = _mapper.Map<UserDetailVm>(entity);
+        var result = _mapper.Map<UserVm>(entity);
 
-        result.ShouldNotBeNull();
-        result.ShouldBeOfType<UserDetailVm>();
+        result.Should().NotBeNull();
+        result.Should().BeOfType<UserVm>();
 
     }
 
@@ -59,22 +60,36 @@ public class MappingTests : IClassFixture<MappingTestsFixture>
 
         var result = _mapper.Map<UserTableDto>(entity);
 
-        result.ShouldNotBeNull();
-        result.ShouldBeOfType<UserTableDto>();
+        result.Should().NotBeNull();
+        result.Should().BeOfType<UserTableDto>();
     }
 
     [Fact]
-    public void ShouldMapUserAuthToUserAuthTableDto()
+    public void ShouldMapUserAuditToAuditTableDto()
     {
         // Given
-        var entity = new Domain.Entities.UserAuth();
+        var entity = new Domain.Entities.VAudit();
 
         // When
-        var result = _mapper.Map<UserAuthTableDto>(entity);
+        var result = _mapper.Map<AuditTable>(entity);
 
         // Then
-        result.ShouldNotBeNull();
-        result.ShouldBeOfType<UserAuthTableDto>();
+        result.Should().NotBeNull();
+        result.Should().BeOfType<AuditTable>();
+    }
+
+    [Fact]
+    public void ShouldMapUserAuditDataToAuditDataTableDto()
+    {
+        // Given
+        var entity = new Domain.Entities.VAuditData();
+
+        // When
+        var result = _mapper.Map<AuditDataTable>(entity);
+
+        // Then
+        result.Should().NotBeNull();
+        result.Should().BeOfType<AuditDataTable>();
     }
     #endregion
 
@@ -86,8 +101,8 @@ public class MappingTests : IClassFixture<MappingTestsFixture>
 
         var result = _mapper.Map<DictionaryDto>(entity);
 
-        result.ShouldNotBeNull();
-        result.ShouldBeOfType<DictionaryDto>();
+        result.Should().NotBeNull();
+        result.Should().BeOfType<DictionaryDto>();
     }
 
     [Fact]
@@ -97,19 +112,19 @@ public class MappingTests : IClassFixture<MappingTestsFixture>
 
         var result = _mapper.Map<DictionaryDto>(entity);
 
-        result.ShouldNotBeNull();
-        result.ShouldBeOfType<DictionaryDto>();
+        result.Should().NotBeNull();
+        result.Should().BeOfType<DictionaryDto>();
     }
 
     [Fact]
-    public void ShouldMapAuthActionToDictionaryDto()
+    public void ShouldMapDistrictToDictionaryDto()
     {
-        var entity = new AuthAction();
+        var entity = new District();
 
         var result = _mapper.Map<DictionaryDto>(entity);
 
-        result.ShouldNotBeNull();
-        result.ShouldBeOfType<DictionaryDto>();
+        result.Should().NotBeNull();
+        result.Should().BeOfType<DictionaryDto>();
     }
     #endregion
 }

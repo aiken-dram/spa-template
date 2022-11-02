@@ -1,7 +1,7 @@
 using System;
-
-using System.Data.Common;
+using Application.Common.Interfaces;
 using Domain.Entities;
+using Domain.Enums;
 using Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 
@@ -9,13 +9,13 @@ namespace Infrastructure.UnitTests.Common;
 
 public class SPADbContextFactory
 {
-    public static SPADbContext CreateInMemory()
+    public static SPADbContext CreateInMemory(IDomainEventService domainEventService, ICurrentUserService currentUserService)
     {
         var options = new DbContextOptionsBuilder<SPADbContext>()
                 .UseInMemoryDatabase(Guid.NewGuid().ToString())
                 .Options;
 
-        var _context = new SPADbContext(options);
+        var _context = new SPADbContext(options, domainEventService, currentUserService);
 
         _context.Database.EnsureCreated();
 
@@ -93,29 +93,42 @@ public class SPADbContextFactory
         {
             new UserRole { Id = 1, IdUser = 2, IdRole = 1 },
         });
+
+        _context.UserDistricts.AddRange(new[]
+        {
+            new UserDistrict { Id = 1, IdUser = 4, IdDistrict = 1 },
+            new UserDistrict { Id = 2, IdUser = 5, IdDistrict = 2 },
+        });
         #endregion
 
         #region DICTIONARY
-        _context.AuthActions.AddRange(new[]
+        _context.Districts.AddRange(new[] {
+            new District { IdDistrict = 1, Name = "Анапа" },
+            new District { IdDistrict = 2, Name = "Армавир" },
+            new District { IdDistrict = 3, Name = "Белореченск" }
+        });
+
+        /*_context.AuthActions.AddRange(new[]
         {
             new AuthAction { IdAction = 1, Action = "LOGIN", Description = "Login description" },
             new AuthAction { IdAction = 2, Action = "WRONGPASS", Description = "Wrong pass description" },
             new AuthAction { IdAction = 3, Action = "EXPIRED", Description = "Expired description" },
             new AuthAction { IdAction = 4, Action = "LOCK", Description = "Lock description" },
-        });
+        });*/
 
         _context.RequestStates.AddRange(new[]
         {
-            new RequestState { IdState = 1, State = "QUEUE", Description = "Queue description" },
-            new RequestState { IdState = 2, State = "PROCESSING", Description = "Processing description" },
-            new RequestState { IdState = 3, State = "READY", Description = "Ready description" },
-            new RequestState { IdState = 4, State = "DELIVERED", Description = "Delivered description" },
-            new RequestState { IdState = 5, State = "ERROR", Description = "Error description" },
+            new RequestState { IdState = eRequestState.InQueue, State = "QUEUE", Description = "Queue description" },
+            new RequestState { IdState = eRequestState.Processing, State = "PROCESSING", Description = "Processing description" },
+            new RequestState { IdState = eRequestState.Ready, State = "READY", Description = "Ready description" },
+            new RequestState { IdState = eRequestState.Delivered, State = "DELIVERED", Description = "Delivered description" },
+            new RequestState { IdState = eRequestState.Error, State = "ERROR", Description = "Error description" },
         });
 
         _context.RequestTypes.AddRange(new[]
         {
-            new RequestType { IdType = 1, Type = "USER_EXPORT", Description = "User export description" },
+            new RequestType { IdType = eRequestType.TableExportAudit, Type = "TABLE_EXPORT_AUDIT", Description = "User export description" },
+            new RequestType { IdType = eRequestType.TableExportSample, Type = "TABLE_EXPORT_SAMPLE", Description = "User export description" },
         });
         #endregion
 

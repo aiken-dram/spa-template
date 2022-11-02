@@ -1,9 +1,8 @@
 using AutoMapper;
 using Infrastructure.Persistence;
 using Xunit;
-using Shouldly;
+using FluentAssertions;
 using Application.UnitTests.Common;
-using static Application.Account.User.Queries.GetUserTable.GetUserTableQuery;
 using Application.Account.User.Queries.GetUserTable;
 using Xunit.Abstractions;
 using System.Threading.Tasks;
@@ -53,15 +52,15 @@ public class GetUserTableQueryTests
         var result = await _sut.Handle(command, CancellationToken.None);
 
         //Then
-        result.Total.ShouldBe(6);
-        result.Items.ShouldNotBeEmpty();
-        result.Items.Count.ShouldBe(6);
-        result.Items.ShouldContain(p => p.idUser == 1);
-        result.Items.ShouldContain(p => p.idUser == 2);
-        result.Items.ShouldContain(p => p.idUser == 3);
-        result.Items.ShouldContain(p => p.idUser == 4);
-        result.Items.ShouldContain(p => p.idUser == 5);
-        result.Items.ShouldContain(p => p.idUser == 6);
+        result.Total.Should().Be(6);
+        result.Items.Should().NotBeEmpty();
+        result.Items!.Count.Should().Be(6);
+        result.Items.Should().Contain(p => p.idUser == 1);
+        result.Items.Should().Contain(p => p.idUser == 2);
+        result.Items.Should().Contain(p => p.idUser == 3);
+        result.Items.Should().Contain(p => p.idUser == 4);
+        result.Items.Should().Contain(p => p.idUser == 5);
+        result.Items.Should().Contain(p => p.idUser == 6);
     }
 
     [Fact]
@@ -83,12 +82,12 @@ public class GetUserTableQueryTests
         var result = await _sut.Handle(command, CancellationToken.None);
 
         // Then
-        result.Total.ShouldBe(4);
-        result.Items.ShouldNotBeEmpty();
-        result.Items.Count.ShouldBe(4);
-        result.Items.ShouldContain(p => p.idUser == 3);
-        result.Items.ShouldContain(p => p.idUser == 4);
-        result.Items.ShouldContain(p => p.idUser == 5);
-        result.Items.ShouldContain(p => p.idUser == 6);
+        result.Total.Should().Be(4);
+        result.Items.Should().NotBeEmpty();
+        result.Items!.Count.Should().Be(4);
+        result.Items.Should().Contain(p => p.idUser == 3);
+        result.Items.Should().Contain(p => p.idUser == 4);
+        result.Items.Should().Contain(p => p.idUser == 5);
+        result.Items.Should().Contain(p => p.idUser == 6);
     }
 }

@@ -1,6 +1,6 @@
 using System.Threading.Tasks;
 using Shared.Application.Exceptions;
-using Shouldly;
+using FluentAssertions;
 using Xunit;
 using Xunit.Abstractions;
 
@@ -19,7 +19,8 @@ public class ValidateTests : AuthServiceTestBase
         string userId = string.Empty;
 
         // Then
-        await Should.ThrowAsync<BadRequestException>(() => _auth.Validate(userId));
+        await FluentActions.Invoking(() =>
+            _auth.Validate(userId)).Should().ThrowAsync<BadRequestException>();
     }
 
     [Fact]
@@ -29,7 +30,8 @@ public class ValidateTests : AuthServiceTestBase
         string userId = "-1";
 
         // Then
-        await Should.ThrowAsync<BadRequestException>(() => _auth.Validate(userId));
+        await FluentActions.Invoking(() =>
+            _auth.Validate(userId)).Should().ThrowAsync<BadRequestException>();
     }
 
     [Fact]
@@ -39,7 +41,8 @@ public class ValidateTests : AuthServiceTestBase
         string userId = "5";
 
         // Then
-        await Should.ThrowAsync<BadRequestException>(() => _auth.Validate(userId));
+        await FluentActions.Invoking(() =>
+            _auth.Validate(userId)).Should().ThrowAsync<BadRequestException>();
     }
 
     [Fact]
@@ -49,6 +52,7 @@ public class ValidateTests : AuthServiceTestBase
         string userId = "1";
 
         // Then
-        await Should.NotThrowAsync(() => _auth.Validate(userId));
+        await FluentActions.Invoking(() =>
+            _auth.Validate(userId)).Should().NotThrowAsync();
     }
 }

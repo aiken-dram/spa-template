@@ -1,5 +1,5 @@
 using System.Threading.Tasks;
-using Shouldly;
+using FluentAssertions;
 using Xunit;
 using Xunit.Abstractions;
 
@@ -21,20 +21,22 @@ public class CurrentUserTests : AuthServiceTestBase
         var res = await _auth.CurrentUserAsync(userId);
 
         // Then
-        res.User.ShouldNotBeNull();
-        res.User.UserID.ShouldBe(1);
-        res.User.UserName.ShouldBe("Application admin");
+        res.User.Should().NotBeNull();
+        res.User.UserID.Should().Be(1);
+        res.User.UserName.Should().Be("Application admin");
 
 
-        res.User.UserGroups.ShouldNotBeEmpty();
-        res.User.UserGroups.Length.ShouldBe(1);
-        res.User.UserGroups.ShouldContain("Group of administrators");
+        res.User.UserGroups.Should().NotBeEmpty();
+        res.User.UserGroups.Length.Should().Be(1);
+        res.User.UserGroups.Should().Contain("Group of administrators");
 
-        res.User.UserModules.ShouldNotBeEmpty();
-        res.User.UserModules.Length.ShouldBe(4);
-        res.User.UserModules.ShouldContain("SECADM");
-        res.User.UserModules.ShouldContain("CFGADM");
-        res.User.UserModules.ShouldContain("DICTADM");
-        res.User.UserModules.ShouldContain("SUPERVISE");
+        res.User.UserDistricts.Should().BeEmpty();
+
+        res.User.UserModules.Should().NotBeEmpty();
+        res.User.UserModules.Length.Should().Be(4);
+        res.User.UserModules.Should().Contain("SECADM");
+        res.User.UserModules.Should().Contain("CFGADM");
+        res.User.UserModules.Should().Contain("DICTADM");
+        res.User.UserModules.Should().Contain("SUPERVISE");
     }
 }

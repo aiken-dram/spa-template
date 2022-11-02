@@ -1,7 +1,7 @@
 using System;
 using Application.Common.Interfaces;
 using Application.Common.Mappings;
-using Application.Common.Services;
+using Application.Services;
 using Application.UnitTests.Common;
 using AutoMapper;
 using Infrastructure.Persistence;
@@ -17,12 +17,17 @@ public class ServiceTestBase : IDisposable
     public Mock<ICurrentUserService> User { get; private set; }
 
     public UserService _user { get; private set; }
+    public Mock<IDomainEventService> _domainEventService;
+    public Mock<ICurrentUserService> _currentUserService;
 
     private XunitLogger<UserService> _logger_user;
 
     public ServiceTestBase(ITestOutputHelper output)
     {
-        _context = SPADbContextFactory.CreateInMemory();
+        _domainEventService = new Mock<IDomainEventService>();
+        _currentUserService = new Mock<ICurrentUserService>();
+
+        _context = SPADbContextFactory.CreateInMemory(_domainEventService.Object, _currentUserService.Object);
 
         var configurationProvider = new MapperConfiguration(cfg =>
         {

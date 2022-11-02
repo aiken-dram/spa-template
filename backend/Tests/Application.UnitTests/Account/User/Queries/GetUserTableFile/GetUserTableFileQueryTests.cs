@@ -1,10 +1,10 @@
 using Moq;
 using Xunit;
-using Shouldly;
+using FluentAssertions;
 using Application.UnitTests.Common;
 using Application.Common.Interfaces;
 using Application.Account.User.Queries.GetUserTableFile;
-using static Application.Account.User.Queries.GetUserTableFile.GetUserTableFileQuery;
+
 using Xunit.Abstractions;
 using MediatR;
 using Application.Account.User.Queries.GetUserTable;
@@ -20,7 +20,7 @@ public class GetUserTableFileQueryTests
 {
     private XunitLogger<GetUserTableFileQuery> _logger;
     private Mock<IMediator> _mediator;
-    private Mock<IFileBuilder> _file;
+    private Mock<IFileService> _file;
 
     private GetUserTableFileQueryHandler _sut;
 
@@ -28,7 +28,7 @@ public class GetUserTableFileQueryTests
     {
         _mediator = new Mock<IMediator>();
         _logger = new XunitLogger<GetUserTableFileQuery>(output);
-        _file = new Mock<IFileBuilder>();
+        _file = new Mock<IFileService>();
         _mediator
             .Setup(m => m.Send(It.IsAny<GetUserTableQuery>(), It.IsAny<CancellationToken>()))
             .Returns(async () => await Task.FromResult(new UserTableVm { Items = new List<UserTableDto>() }));
@@ -53,9 +53,9 @@ public class GetUserTableFileQueryTests
         var result = await _sut.Handle(command, CancellationToken.None);
 
         //Then
-        result.ShouldBeOfType<UserTableFileVm>();
-        result.ContentType.ShouldBe("text/csv");
-        result.FileName.ShouldContain($"{DateTime.Now:yyyy-MM-dd}.csv");
+        result.Should().BeOfType<UserTableFileVm>();
+        result.ContentType.Should().Be("text/csv");
+        result.FileName.Should().Contain($"{DateTime.Now:yyyy-MM-dd}.csv");
         _mediator.Verify(m =>
             m.Send(It.Is<GetUserTableQuery>(cc =>
                     cc.Page == 1 &&
@@ -66,6 +66,6 @@ public class GetUserTableFileQueryTests
                     cc.Search![0] == "searchField|searchOperation|searchValue"),
                 It.IsAny<CancellationToken>()),
             Times.Once);
-        _file.Verify(m => m.BuildUserTableFile(It.Is<List<UserTableDto>>(c => true)), Times.Once);
+        _file.Verify(m => m.BuildUserTableFileAsync(It.Is<List<UserTableDto>>(c => true), It.IsAny<CancellationToken>()), Times.Once);
     }
 }

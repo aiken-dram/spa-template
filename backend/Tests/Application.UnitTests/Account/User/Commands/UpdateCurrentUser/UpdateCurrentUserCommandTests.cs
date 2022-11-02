@@ -1,10 +1,9 @@
 using System.Threading.Tasks;
 using Xunit;
 using Application.Account.User.Commands.UpdateCurrentUser;
-using static Application.Account.User.Commands.UpdateCurrentUser.UpdateCurrentUserCommand;
 using System.Threading;
 using Shared.Application.Exceptions;
-using Shouldly;
+using FluentAssertions;
 using Moq;
 using Application.Common.Interfaces;
 using Application.UnitTests.Common;
@@ -36,7 +35,8 @@ public class UpdateCurrentUserCommandTests : TestBase
         };
 
         //Then
-        await Should.ThrowAsync<AccessDeniedException>(() => _sut.Handle(command, CancellationToken.None));
+        await FluentActions.Invoking(() =>
+            _sut.Handle(command, CancellationToken.None)).Should().ThrowAsync<AccessDeniedException>();
     }
 
     [Fact]
@@ -55,8 +55,8 @@ public class UpdateCurrentUserCommandTests : TestBase
 
         //Then
         var user = _context.Users.Find((long)1);
-        user.ShouldNotBeNull();
-        user.Name.ShouldBe("New name");
-        user.Description.ShouldBe("New description");
+        user.Should().NotBeNull();
+        user!.Name.Should().Be("New name");
+        user.Description.Should().Be("New description");
     }
 }

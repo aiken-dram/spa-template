@@ -3,10 +3,9 @@ using System.Threading.Tasks;
 using Application.Account.User.Commands.DeleteUser;
 using Application.UnitTests.Common;
 using Shared.Application.Exceptions;
-using Shouldly;
+using FluentAssertions;
 using Xunit;
 using Xunit.Abstractions;
-using static Application.Account.User.Commands.DeleteUser.DeleteUserCommand;
 
 namespace Application.UnitTests.Account.User.Commands.DeleteUser;
 
@@ -27,7 +26,8 @@ public class DeleteUserCommandTests : TestBase
         var command = new DeleteUserCommand { Id = -1 };
 
         //Then
-        await Should.ThrowAsync<NotFoundException>(() => _sut.Handle(command, CancellationToken.None));
+        await FluentActions.Invoking(() =>
+            _sut.Handle(command, CancellationToken.None)).Should().ThrowAsync<NotFoundException>();
     }
 
     [Fact]
@@ -41,6 +41,6 @@ public class DeleteUserCommandTests : TestBase
 
         // Then
         var user = _context.Users.Find((long)2);
-        user.ShouldBeNull();
+        user.Should().BeNull();
     }
 }

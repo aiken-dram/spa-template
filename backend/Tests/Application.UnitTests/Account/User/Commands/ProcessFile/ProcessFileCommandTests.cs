@@ -1,9 +1,8 @@
 using System.Threading.Tasks;
 using Xunit;
 using System.Threading;
-using Shouldly;
+using FluentAssertions;
 using Moq;
-using static Application.Account.User.Commands.ProcessFile.ProcessFileCommand;
 using Xunit.Abstractions;
 using Application.UnitTests.Common;
 using Application.Account.User.Commands.ProcessFile;
@@ -43,19 +42,19 @@ public class ProcessFileCommandTests : TestBase
 
         //Then
         //1. check result
-        result.ShouldBeOfType<ProcessFileVm>();
-        result.Items.ShouldNotBeEmpty();
-        result.Items.Count.ShouldBe(3);
+        result.Should().BeOfType<ProcessFileVm>();
+        result.Items.Should().NotBeEmpty();
+        result.Items!.Count.Should().Be(3);
 
-        result.Items[0].State.ShouldBe("success");
-        result.Items[0].Body.ShouldContain("admin");
+        result.Items[0].State.Should().Be("success");
+        result.Items[0].Body.Should().Contain("admin");
 
-        result.Items[1].State.ShouldBe("error");
-        result.Items[1].Body.ShouldContain("0");
-        result.Items[1].Body.ShouldContain("wrong");
+        result.Items[1].State.Should().Be("error");
+        result.Items[1].Body.Should().Contain("0");
+        result.Items[1].Body.Should().Contain("wrong");
 
-        result.Items[2].State.ShouldBe("error");
-        result.Items[2].Body.ShouldContain("wrong_string_format");
+        result.Items[2].State.Should().Be("error");
+        result.Items[2].Body.Should().Contain("wrong_string_format");
 
         //2. check mediator
         _mediator.Verify(x => x.Publish(It.Is<SignalRNotification>(p =>
@@ -64,10 +63,10 @@ public class ProcessFileCommandTests : TestBase
 
         //3. check context
         var user = _context.Users.Find((long)1);
-        user.ShouldNotBeNull();
-        user.Pass.ShouldBe("098f6bcd4621d373cade4e832627b4f6");
-        user.PassDate.ShouldNotBeNull();
-        user.PassDate.HasValue.ShouldBe(true);
-        user.PassDate.Value.ShouldBe(DateTime.Now.AddDays(90), TimeSpan.FromMinutes(10));
+        user.Should().NotBeNull();
+        user!.Pass.Should().Be("098f6bcd4621d373cade4e832627b4f6");
+        user.PassDate.Should().NotBeNull();
+        user.PassDate.HasValue.Should().Be(true);
+        user.PassDate!.Value.Should().BeCloseTo(DateTime.Now.AddDays(90), TimeSpan.FromMinutes(10));
     }
 }

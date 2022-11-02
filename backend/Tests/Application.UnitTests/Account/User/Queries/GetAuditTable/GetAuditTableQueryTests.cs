@@ -1,41 +1,44 @@
 using System.Threading;
 using System.Threading.Tasks;
-using Application.Account.User.Queries.GetUserAuthTable;
+using Application.Account.User.Queries.GetAuditTable;
 using Application.UnitTests.Common;
 using AutoMapper;
 using Shared.Application.Exceptions;
 using Infrastructure.Persistence;
-using Shouldly;
+using FluentAssertions;
 using Xunit;
 using Xunit.Abstractions;
-using static Application.Account.User.Queries.GetUserAuthTable.GetUserAuthTableQuery;
+using Moq;
+using Application.Common.Interfaces;
 
-namespace Application.UnitTests.Account.User.Queries.GetUserAuthTable;
+namespace Application.UnitTests.Account.User.Queries.GetAuditTable;
 
 [Collection("AccountQueryCollection")]
 public class GetUserAuthTableQueryTests
 {
     private readonly SPADbContext _context;
     private readonly IMapper _mapper;
-    private XunitLogger<GetUserAuthTableQuery> _logger;
+    private XunitLogger<GetAuditTableQuery> _logger;
+    private Mock<IUserService> _user;
 
-    private GetUserAuthTableQueryHandler _sut;
+    private GetAuditTableQueryHandler _sut;
 
     public GetUserAuthTableQueryTests(AccountQueryTestFixture fixture, ITestOutputHelper output)
     {
         _context = fixture._context;
+        _user = new Mock<IUserService>();
         _mapper = fixture.Mapper;
-        _logger = new XunitLogger<GetUserAuthTableQuery>(output);
-        _sut = new GetUserAuthTableQueryHandler(_context, _mapper);
+        _logger = new XunitLogger<GetAuditTableQuery>(output);
+        _sut = new GetAuditTableQueryHandler(_context, _user.Object, _mapper, _logger);
     }
 
     [Fact]
     public async Task Handle_GivenInvalidId_ThrowsNotFoundException()
     {
         //Given
-        var command = new GetUserAuthTableQuery
+        var command = new GetAuditTableQuery
         {
-            Id = -1,
+            IdUser = -1,
             Page = 1,
             ItemsPerPage = 10,
             SortBy = "stamp",
@@ -44,16 +47,17 @@ public class GetUserAuthTableQueryTests
         };
 
         //Then
-        await Should.ThrowAsync<NotFoundException>(() => _sut.Handle(command, CancellationToken.None));
+        await FluentActions.Invoking(() =>
+            _sut.Handle(command, CancellationToken.None)).Should().ThrowAsync<NotFoundException>();
     }
 
     [Fact]
     public async Task GetUserAuthTableTests()
     {
         // Given
-        var command = new GetUserAuthTableQuery
+        var command = new GetAuditTableQuery
         {
-            Id = 1,
+            IdUser = 1,
             Page = 1,
             ItemsPerPage = 10,
             SortBy = "stamp",
@@ -65,10 +69,10 @@ public class GetUserAuthTableQueryTests
         var result = await _sut.Handle(command, CancellationToken.None);
 
         //Then
-        result.Total.ShouldBe(2);
-        result.Items.ShouldNotBeEmpty();
-        result.Items.Count.ShouldBe(2);
-        result.Items.ShouldContain(p => p.idAuth == 1);
-        result.Items.ShouldContain(p => p.idAuth == 2);
+        result.Total.Should().Be(2);
+        result.Items.Should().NotBeEmpty();
+        result.Items!.Count.Should().Be(2);
+        result.Items.Should().Contain(p => p.idAudit == 1);
+        result.Items.Should().Contain(p => p.idAudit == 2);
     }
 }

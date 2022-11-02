@@ -41,12 +41,14 @@ public class UserServiceFactory
     {
         IdUser = 4,
         Modules = new string[] { },
+        Districts = new int[] { 1 }
     };
 
     private readonly static CurrentUser _user2 = new CurrentUser
     {
         IdUser = 5,
         Modules = new string[] { },
+        Districts = new int[] { 2 }
     };
 
     private readonly static CurrentUser _viewer = new CurrentUser

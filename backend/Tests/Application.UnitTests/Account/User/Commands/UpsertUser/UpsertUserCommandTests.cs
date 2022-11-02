@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using Application.Account.User.Commands.UpsertUser;
 using Application.UnitTests.Common;
 using Shared.Application.Exceptions;
-using Shouldly;
+using FluentAssertions;
 using Xunit;
 using Xunit.Abstractions;
 using static Application.Account.User.Commands.UpsertUser.UpsertUserCommand;
@@ -41,7 +41,8 @@ public class UpsertUserCommandTests : TestBase
         };
 
         //Then
-        await Should.ThrowAsync<NotFoundException>(() => _sut.Handle(command, CancellationToken.None));
+        await FluentActions.Invoking(() =>
+            _sut.Handle(command, CancellationToken.None)).Should().ThrowAsync<NotFoundException>();
     }
 
     [Fact]
@@ -59,25 +60,28 @@ public class UpsertUserCommandTests : TestBase
             PassDate = new DateTime(2021, 5, 28),
             Groups = new long[] { 1 },
             Roles = new long[] { },
+            Districts = new long[] { 3 },
         };
 
         //When
         var result = await _sut.Handle(command, CancellationToken.None);
 
         //Then
-        result.ShouldBeOfType<long>();
-        result.ShouldBe((long)1);
+        result.Should().BeOfType(typeof(long));
+        result.Should().Be((long)1);
         var user = _context.Users.Find(result);
-        user.ShouldNotBeNull();
-        user.IsActive.ShouldBe("T");
-        user.Login.ShouldBe("admin");
-        user.Pass.ShouldBe("21232f297a57a5a743894a0e4a801fc3");
-        user.Name.ShouldBe("User name");
-        user.Description.ShouldBe("User description");
-        user.PassDate.ShouldBe(new DateTime(2021, 5, 28));
-        user.UserGroups.Count.ShouldBe(1);
-        user.UserGroups.ShouldContain(p => p.IdGroup == 1);
-        user.UserRoles.Count.ShouldBe(0);
+        user.Should().NotBeNull();
+        user!.IsActive.Should().Be("T");
+        user.Login.Should().Be("admin");
+        user.Pass.Should().Be("21232f297a57a5a743894a0e4a801fc3");
+        user.Name.Should().Be("User name");
+        user.Description.Should().Be("User description");
+        user.PassDate.Should().Be(new DateTime(2021, 5, 28));
+        user.UserGroups.Count.Should().Be(1);
+        user.UserGroups.Should().Contain(p => p.IdGroup == 1);
+        user.UserRoles.Count.Should().Be(0);
+        user.UserDistricts.Count.Should().Be(1);
+        user.UserDistricts.Should().Contain(p => p.IdDistrict == 3);
     }
 
     [Fact]
@@ -95,24 +99,27 @@ public class UpsertUserCommandTests : TestBase
             PassDate = new DateTime(2021, 5, 28),
             Groups = new long[] { 1 },
             Roles = new long[] { },
+            Districts = new long[] { 3 },
         };
 
         //When
         var result = await _sut.Handle(command, CancellationToken.None);
 
         //Then
-        result.ShouldBeOfType<long>();
+        result.Should().BeOfType(typeof(long));
         var user = _context.Users.Find(result);
-        user.ShouldNotBeNull();
-        user.IsActive.ShouldBe("T");
-        user.Login.ShouldBe("new_user");
-        user.Pass.ShouldBe("21232f297a57a5a743894a0e4a801fc3");
-        user.Name.ShouldBe("User name");
-        user.Description.ShouldBe("User description");
-        user.PassDate.ShouldBe(new DateTime(2021, 5, 28));
-        user.UserGroups.Count.ShouldBe(1);
-        user.UserGroups.ShouldContain(p => p.IdGroup == 1);
-        user.UserRoles.Count.ShouldBe(0);
+        user.Should().NotBeNull();
+        user!.IsActive.Should().Be("T");
+        user.Login.Should().Be("new_user");
+        user.Pass.Should().Be("21232f297a57a5a743894a0e4a801fc3");
+        user.Name.Should().Be("User name");
+        user.Description.Should().Be("User description");
+        user.PassDate.Should().Be(new DateTime(2021, 5, 28));
+        user.UserGroups.Count.Should().Be(1);
+        user.UserGroups.Should().Contain(p => p.IdGroup == 1);
+        user.UserRoles.Count.Should().Be(0);
+        user.UserDistricts.Count.Should().Be(1);
+        user.UserDistricts.Should().Contain(p => p.IdDistrict == 3);
     }
 
     /**
@@ -138,6 +145,7 @@ public class UpsertUserCommandTests : TestBase
         };
 
         //Then
-        await Should.ThrowAsync<ValidationException>(() => _sut.Handle(command, CancellationToken.None));
+        await FluentActions.Invoking(() =>
+            _sut.Handle(command, CancellationToken.None)).Should().ThrowAsync<ValidationException>();
     }
 }

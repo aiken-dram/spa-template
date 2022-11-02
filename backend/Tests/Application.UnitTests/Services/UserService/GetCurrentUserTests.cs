@@ -1,6 +1,6 @@
 using System.Threading;
 using System.Threading.Tasks;
-using Shouldly;
+using FluentAssertions;
 using Xunit;
 using Xunit.Abstractions;
 
@@ -22,11 +22,11 @@ public class GetCurrentUserTests : ServiceTestBase
         var res = await _user.GetCurrentUserAsync(CancellationToken.None);
 
         //Then
-        res.IdUser.ShouldBe(1);
-        res.Modules.ShouldNotBeEmpty();
-        res.Modules.ShouldContain("SECADM");
-        res.Modules.ShouldContain("DICTADM");
-        res.Modules.ShouldContain("CFGADM");
-        res.Modules.ShouldContain("SUPERVISE");
+        res.IdUser.Should().Be(1);
+        res.Modules.Should().NotBeEmpty();
+        res.Modules.Should().Contain("SECADM");
+        res.Modules.Should().Contain("DICTADM");
+        res.Modules.Should().Contain("CFGADM");
+        res.Modules.Should().Contain("SUPERVISE");
     }
 }

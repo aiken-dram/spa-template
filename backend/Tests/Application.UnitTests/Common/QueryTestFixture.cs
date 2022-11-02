@@ -14,10 +14,16 @@ public class QueryTestFixture : IDisposable
     public SPADbContext _context { get; private set; }
     public IMapper Mapper { get; private set; }
     public Mock<ICurrentUserService> User { get; private set; }
+    public Mock<IDomainEventService> _domainEventService;
+    public Mock<ICurrentUserService> _currentUserService;
+
 
     public QueryTestFixture()
     {
-        _context = SPADbContextFactory.CreateInMemory();
+        _domainEventService = new Mock<IDomainEventService>();
+        _currentUserService = new Mock<ICurrentUserService>();
+
+        _context = SPADbContextFactory.CreateInMemory(_domainEventService.Object, _currentUserService.Object);
 
         Seed();
 
@@ -48,12 +54,12 @@ public class AccountQueryTestFixture : QueryTestFixture
     {
         base.Seed();
 
-        _context.UserAuth.AddRange(new[]
+        /*_context.UserAuth.AddRange(new[]
         {
             new UserAuth { IdAuth = 1, IdUser = 1, Stamp = DateTime.Now, IdAction = 1, System = "localhost", Message = "" },
             new UserAuth { IdAuth = 2, IdUser = 1, Stamp = DateTime.Now, IdAction = 2, System = "localhost", Message = "" },
             new UserAuth { IdAuth = 3, IdUser = 2, Stamp = DateTime.Now, IdAction = 2, System = "localhost", Message = "" },
-        });
+        });*/
 
         _context.SaveChanges();
     }

@@ -2,10 +2,9 @@ using AutoMapper;
 using Infrastructure.Persistence;
 using Moq;
 using Xunit;
-using Shouldly;
+using FluentAssertions;
 using Application.UnitTests.Common;
 using Application.Common.Interfaces;
-using static Application.Dictionary.Queries.GetDictionary.GetDictionaryQuery;
 using System.Threading.Tasks;
 using Application.Dictionary.Queries.GetDictionary;
 using System.Threading;
@@ -38,7 +37,8 @@ public class GetDictionaryQueryTests
         var command = new GetDictionaryQuery { Dictionary = "wrong" };
 
         // Then
-        await Should.ThrowAsync<NotFoundException>(() => _sut.Handle(command, CancellationToken.None));
+        await FluentActions.Invoking(() =>
+            _sut.Handle(command, CancellationToken.None)).Should().ThrowAsync<NotFoundException>();
     }
 
     [Fact]
@@ -51,13 +51,13 @@ public class GetDictionaryQueryTests
         var result = await _sut.Handle(command, CancellationToken.None);
 
         // Then
-        result.ShouldBeOfType<List<DictionaryDto>>();
-        result.ShouldNotBeEmpty();
-        result.Count.ShouldBe(4);
-        result.ShouldContain(p => p.Value == 1 && p.Text == "Admins");
-        result.ShouldContain(p => p.Value == 2 && p.Text == "Supervisors");
-        result.ShouldContain(p => p.Value == 3 && p.Text == "Users");
-        result.ShouldContain(p => p.Value == 4 && p.Text == "Viewers");
+        result.Should().BeOfType<List<DictionaryDto>>();
+        result.Should().NotBeEmpty();
+        result.Count.Should().Be(4);
+        result.Should().Contain(p => p.Value == 1 && p.Text == "Admins");
+        result.Should().Contain(p => p.Value == 2 && p.Text == "Supervisors");
+        result.Should().Contain(p => p.Value == 3 && p.Text == "Users");
+        result.Should().Contain(p => p.Value == 4 && p.Text == "Viewers");
     }
 
     [Fact]
@@ -70,13 +70,69 @@ public class GetDictionaryQueryTests
         var result = await _sut.Handle(command, CancellationToken.None);
 
         // Then
-        result.ShouldBeOfType<List<DictionaryDto>>();
-        result.ShouldNotBeEmpty();
-        result.Count.ShouldBe(4);
-        result.ShouldContain(p => p.Value == 1 && p.Text == "Access admins");
-        result.ShouldContain(p => p.Value == 2 && p.Text == "Application admins");
-        result.ShouldContain(p => p.Value == 3 && p.Text == "Supervisor");
-        result.ShouldContain(p => p.Value == 4 && p.Text == "Read only");
+        result.Should().BeOfType<List<DictionaryDto>>();
+        result.Should().NotBeEmpty();
+        result.Count.Should().Be(4);
+        result.Should().Contain(p => p.Value == 1 && p.Text == "Access admins");
+        result.Should().Contain(p => p.Value == 2 && p.Text == "Application admins");
+        result.Should().Contain(p => p.Value == 3 && p.Text == "Supervisor");
+        result.Should().Contain(p => p.Value == 4 && p.Text == "Read only");
+    }
+
+    [Fact]
+    public async Task GetDictionaryDistrictsTests()
+    {
+        // Given
+        var command = new GetDictionaryQuery { Dictionary = "Districts" };
+
+        // When
+        var result = await _sut.Handle(command, CancellationToken.None);
+
+        // Then
+        result.Should().BeOfType<List<DictionaryDto>>();
+        result.Should().NotBeEmpty();
+        result.Count.Should().Be(3);
+        result.Should().Contain(p => p.Value == 1 && p.Text == "1 Анапа");
+        result.Should().Contain(p => p.Value == 2 && p.Text == "2 Армавир");
+        result.Should().Contain(p => p.Value == 3 && p.Text == "3 Белореченск");
+    }
+
+    [Fact]
+    public async Task GetDictionaryUserDistrictsSupervisorTests()
+    {
+        // Given
+        UserServiceFactory.Setup(ref _user, eMockUser.Supervisor);
+        _sut = new GetDictionaryQueryHandler(_context, _mapper, _user.Object);
+        var command = new GetDictionaryQuery { Dictionary = "UserDistricts" };
+
+        // When
+        var result = await _sut.Handle(command, CancellationToken.None);
+
+        // Then
+        result.Should().BeOfType<List<DictionaryDto>>();
+        result.Should().NotBeEmpty();
+        result.Count.Should().Be(3);
+        result.Should().Contain(p => p.Value == 1 && p.Text == "1 Анапа");
+        result.Should().Contain(p => p.Value == 2 && p.Text == "2 Армавир");
+        result.Should().Contain(p => p.Value == 3 && p.Text == "3 Белореченск");
+    }
+
+    [Fact]
+    public async Task GetDictionaryUserDistrictsTests()
+    {
+        // Given
+        UserServiceFactory.Setup(ref _user, eMockUser.User1);
+        _sut = new GetDictionaryQueryHandler(_context, _mapper, _user.Object);
+        var command = new GetDictionaryQuery { Dictionary = "UserDistricts" };
+
+        // When
+        var result = await _sut.Handle(command, CancellationToken.None);
+
+        // Then
+        result.Should().BeOfType<List<DictionaryDto>>();
+        result.Should().NotBeEmpty();
+        result.Count.Should().Be(1);
+        result.Should().Contain(p => p.Value == 1 && p.Text == "1 Анапа");
     }
 
     [Fact]
@@ -89,12 +145,12 @@ public class GetDictionaryQueryTests
         var result = await _sut.Handle(command, CancellationToken.None);
 
         // Then
-        result.ShouldBeOfType<List<DictionaryDto>>();
-        result.ShouldNotBeEmpty();
-        result.Count.ShouldBe(4);
-        result.ShouldContain(p => p.Value == 1 && p.Text == "Login description");
-        result.ShouldContain(p => p.Value == 2 && p.Text == "Wrong pass description");
-        result.ShouldContain(p => p.Value == 3 && p.Text == "Expired description");
-        result.ShouldContain(p => p.Value == 4 && p.Text == "Lock description");
+        result.Should().BeOfType<List<DictionaryDto>>();
+        result.Should().NotBeEmpty();
+        result.Count.Should().Be(4);
+        result.Should().Contain(p => p.Value == 1 && p.Text == "Login description");
+        result.Should().Contain(p => p.Value == 2 && p.Text == "Wrong pass description");
+        result.Should().Contain(p => p.Value == 3 && p.Text == "Expired description");
+        result.Should().Contain(p => p.Value == 4 && p.Text == "Lock description");
     }
 }
