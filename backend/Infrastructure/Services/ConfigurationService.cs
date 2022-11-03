@@ -20,6 +20,11 @@ public class ConfigurationService :
     public string rPath { get; init; }
     public string rHome { get; init; }
     public string PATH { get; init; }
+    public string MQ { get; init; }
+    public int MQPort { get; init; }
+    public string MQUser { get; init; }
+    public string MQPass { get; init; }
+    public string MQUri { get; init; }
 
     private const string _requestStoragePath = "AppSettings:RequestStoragePath";
     private const string _databaseExportPath = "AppSettings:DatabaseExportPath";
@@ -35,6 +40,11 @@ public class ConfigurationService :
     private const string _rHome = "RService:rHome";
     private const string _rPath = "RService:rPath";
     private const string _PATH = "RService:PATH";
+    private const string _MQ = "MQ:Host";
+    private const string _MQPort = "MQ:Port";
+    private const string _MQUser = "MQ:Username";
+    private const string _MQPass = "MQ:Password";
+    private const string _MQUri = "MQ:Uri";
 
     public ConfigurationService(IConfiguration configuration)
     {
@@ -52,5 +62,10 @@ public class ConfigurationService :
         rHome = configuration[_rHome];
         rPath = configuration[_rPath];
         PATH = configuration[_PATH];
+        MQ = configuration[_MQ];
+        MQPort = Convert.ToInt32(configuration[_MQPort]);
+        MQUser = configuration[_MQUser];
+        MQPass = configuration[_MQPass];
+        MQUri = configuration[_MQUri];
     }
 }

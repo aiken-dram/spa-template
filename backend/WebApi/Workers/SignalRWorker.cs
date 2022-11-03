@@ -18,16 +18,43 @@ public class SignalRWorker : BackgroundService
 
     public SignalRWorker(
         ILogger<SignalRWorker> logger,
-        INotificationService notification)
+        INotificationService notification,
+        Infrastructure.Common.Interfaces.IConfigurationService configuration)
     {
         _logger = logger;
         _notification = notification;
 
-        var factory = new ConnectionFactory()
+        ConnectionFactory factory;
+        if (configuration.MQ == "localhost")
         {
-            HostName = "localhost",
-            DispatchConsumersAsync = true
-        };
+            _logger.Log(LogLevel.Information, "Connecting to local Rabbit MQ");
+            factory = new ConnectionFactory()
+            {
+                HostName = "localhost",
+                DispatchConsumersAsync = true
+            };
+        }
+        else if (!string.IsNullOrEmpty(configuration.MQUri))
+        {
+            _logger.Log(LogLevel.Information, "Connecting to Rabbit MQ uri");
+            factory = new ConnectionFactory()
+            {
+                Uri = new Uri(configuration.MQUri)
+            };
+        }
+        else
+        {
+            _logger.Log(LogLevel.Information, "Connecting to Rabbit MQ host {0}", configuration.MQ);
+            factory = new ConnectionFactory()
+            {
+                HostName = configuration.MQ,
+                Port = configuration.MQPort,
+                UserName = configuration.MQUser,
+                Password = configuration.MQPass,
+                DispatchConsumersAsync = true
+            };
+        }
+
         _connection = factory.CreateConnection();
         _channel = _connection.CreateModel();
 

@@ -10,13 +10,41 @@ namespace Infrastructure.Services;
 
 public class MessageQueryService : IMessageQueryService
 {
+    private readonly Infrastructure.Common.Interfaces.IConfigurationService _configuration;
     private ConnectionFactory _factory;
     private ILogger _logger;
 
-    public MessageQueryService(ILogger<MessageQueryService> logger)
+    public MessageQueryService(
+        Infrastructure.Common.Interfaces.IConfigurationService configuration,
+        ILogger<MessageQueryService> logger)
     {
-        this._factory = new ConnectionFactory() { HostName = "localhost" };
         _logger = logger;
+
+        if (configuration.MQ == "localhost")
+        {
+            _logger.Log(LogLevel.Information, "Connecting to local Rabbit MQ");
+            this._factory = new ConnectionFactory() { HostName = "localhost" };
+        }
+        else if (!string.IsNullOrEmpty(configuration.MQUri))
+        {
+            _logger.Log(LogLevel.Information, "Connecting to Rabbit MQ uri");
+            this._factory = new ConnectionFactory()
+            {
+                Uri = new Uri(configuration.MQUri)
+            };
+        }
+        else
+        {
+            logger.Log(LogLevel.Information, "Connecting to Rabbit MQ host {0}", configuration.MQ);
+            this._factory = new ConnectionFactory()
+            {
+                HostName = configuration.MQ,
+                Port = configuration.MQPort,
+                UserName = configuration.MQUser,
+                Password = configuration.MQPass
+            };
+        }
+
     }
 
     public int QueueLength(string queue)

@@ -66,4 +66,29 @@ public interface IConfigurationService
     /// PATH environmental variable for R service
     /// </summary>
     string PATH { get; }
+
+    /// <summary>
+    /// Host of Rabbit MQ
+    /// </summary>
+    string MQ { get; }
+
+    /// <summary>
+    /// Port of Rabbit MQ
+    /// </summary>
+    int MQPort { get; }
+
+    /// <summary>
+    /// Username of Rabbit MQ
+    /// </summary>
+    string MQUser { get; }
+
+    /// <summary>
+    /// Password of Rabbit MQ
+    /// </summary>
+    string MQPass { get; }
+
+    /// <summary>
+    /// URI of RabbitMQ
+    /// </summary>
+    string MQUri { get; }
 }
