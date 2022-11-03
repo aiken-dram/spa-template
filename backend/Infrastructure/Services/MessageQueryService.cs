@@ -10,7 +10,6 @@ namespace Infrastructure.Services;
 
 public class MessageQueryService : IMessageQueryService
 {
-    private readonly Infrastructure.Common.Interfaces.IConfigurationService _configuration;
     private ConnectionFactory _factory;
     private ILogger _logger;
 
