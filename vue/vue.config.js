@@ -5,7 +5,7 @@ module.exports = defineConfig({
   },
 
   transpileDependencies: ["vuetify"],
-  publicPath: "/app",
+  publicPath: "/",
   outputDir: "../publish/frontend",
 
   pluginOptions: {
