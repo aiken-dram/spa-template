@@ -1,13 +1,19 @@
 # SPA Template
 
-Project structure:
+## Sample application
+
+Sample application is hosted on https://aikendrum.bsite.net/
+
+Use `admin` username and `admin` password for logging in
+
+## Project structure:
 
 - frontend
   - frontend vue + vuetify application
 - database
-  - IBM Data Studio database development project
+  - development project for various databases
 - backend
-  - dotnet core clean architecture web api
+  - dotnet core web api based on clean architecture
 - docs
   - vuepress static site for documentation from .md files
 
@@ -17,8 +23,8 @@ see `readme.md` in each subdirectory for additional information
 
 - Node.js
 - Dotnet core SDK
-- Visual studio code
-- IBM Data Studio 4.1.3 for database project
+- Visual Studio Code
+- IBM Data Studio 4.1.3 for IBM database project
 
 ## Visual Studio Code
 
@@ -49,8 +55,6 @@ In `backend/webapi` run `dotnet watch run`
 Frontend application will be available from `http://localhost:5000/app/`
 
 Swagger will be available from `http://localhost:5000/swagger/`
-
-Healthcheck will be available from `http://localhost:5000/health/`
 
 ## Publishing
 
