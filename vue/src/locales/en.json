@@ -29,9 +29,9 @@
     "error": "Error",
     "chooseFieldFromList": "Select field from list",
     "table": {
-      "loading": "Data is loading...",
+      "loading": "Loading data...",
       "noData": "No data",
-      "noResult": "No results",
+      "noResult": "No result",
       "page": "Items on page:",
       "pageAll": "All:",
       "records": "Records {start} - {stop} from {length}"

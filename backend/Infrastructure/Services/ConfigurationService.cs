@@ -63,7 +63,9 @@ public class ConfigurationService :
         rPath = configuration[_rPath];
         PATH = configuration[_PATH];
         MQ = configuration[_MQ];
-        MQPort = Convert.ToInt32(configuration[_MQPort]);
+        int port = 0;
+        int.TryParse(configuration[_MQPort], out port);
+        MQPort = port;
         MQUser = configuration[_MQUser];
         MQPass = configuration[_MQPass];
         MQUri = configuration[_MQUri];
