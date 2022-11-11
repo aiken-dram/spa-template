@@ -126,7 +126,6 @@ export default {
 
     /** text filter */
     text(operator, name, text) {
-      console.log(operator);
       switch (operator) {
         case "contains":
           return `${name}|like|%${text}%`;
