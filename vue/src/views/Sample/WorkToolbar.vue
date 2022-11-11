@@ -46,21 +46,21 @@ export default {
       },
       extended: [
         {
-          title: this.$i18n.t("sample.toolbar.sample"),
+          title: "sample.toolbar.sample",
           children: [
             {
-              title: this.$i18n.t("sample.toolbar.dictionary"),
+              title: "sample.toolbar.dictionary",
               name: "IdDict",
-              type: "dictionary",
+              type: "dict",
               dict: DICT.SampleDicts,
             },
           ],
         },
         {
-          title: this.$i18n.t("sample.toolbar.children"),
+          title: "sample.toolbar.children",
           children: [
             {
-              title: this.$i18n.t("sample.toolbar.text"),
+              title: "sample.toolbar.text",
               name: "childrenText",
               type: "text",
             },

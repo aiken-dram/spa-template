@@ -83,7 +83,7 @@ export default {
       search: "", //search in table
       headers: [
         {
-          text: this.$i18n.t("common.actions"),
+          text: "common.actions",
           align: "start",
           value: "idUser",
           sortable: false,
@@ -91,48 +91,45 @@ export default {
           width: 120,
         },
         {
-          text: this.$i18n.t("admin.access.users.table.login"),
+          text: "admin.access.users.table.login",
           value: "login",
           filter: {
             name: "login",
-            label: this.$i18n.t("admin.access.users.table.loginFilter"),
             type: "text",
           },
         },
         {
-          text: this.$i18n.t("admin.access.users.table.isActive"),
+          text: "admin.access.users.table.isActive",
           value: "isActive",
           filter: {
             name: "isActive",
-            label: this.$i18n.t("admin.access.users.table.isActiveFilter"),
+            label: "admin.access.users.table.isActive",
             type: "checkbox",
           },
         },
         {
-          text: this.$i18n.t("admin.access.users.table.userName"),
+          text: "admin.access.users.table.userName",
           value: "name",
           filter: {
             name: "name",
-            label: this.$i18n.t("admin.access.users.table.userNameFilter"),
             type: "text",
           },
         },
         {
-          text: this.$i18n.t("admin.access.users.table.districts"),
+          text: "admin.access.users.table.districts",
           value: "districts",
           sortable: false,
         },
         {
-          text: this.$i18n.t("admin.access.users.table.groups"),
+          text: "admin.access.users.table.groups",
           value: "groups",
           sortable: false,
         },
         {
-          text: this.$i18n.t("admin.access.users.table.desc"),
+          text: "admin.access.users.table.desc",
           value: "description",
           filter: {
             name: "description",
-            label: this.$i18n.t("admin.access.users.table.descFilter"),
             type: "text",
           },
         },

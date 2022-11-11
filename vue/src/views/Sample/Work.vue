@@ -76,20 +76,33 @@ export default {
 
       headers: [
         {
-          text: this.$i18n.t("common.actions"),
+          text: "common.actions",
           align: "start",
           value: "cmd",
           sortable: false,
           filterable: false,
           width: 120,
         },
-        { text: this.$i18n.t("sample.table.district"), value: "idDistrict" },
-        { text: this.$i18n.t("sample.table.text"), value: "text" },
-        { text: this.$i18n.t("sample.table.number"), value: "number" },
         {
-          text: this.$i18n.t("sample.table.date"),
+          text: "sample.table.district",
+          value: "idDistrict",
+          filterable: false,
+        },
+        {
+          text: "sample.table.text",
+          value: "text",
+          filter: { name: "text", type: "text" },
+        },
+        {
+          text: "sample.table.number",
+          value: "number",
+          filter: { name: "number", type: "number" },
+        },
+        {
+          text: "sample.table.date",
           value: "date",
           format: "date",
+          filter: { name: "date", type: "date" },
         },
       ],
 

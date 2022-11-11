@@ -120,12 +120,34 @@ export default {
 
     selectedFolder: 0, //0 - income, 1 - delivered
     headers: [
-      { text: "Действия", value: "btn", width: 100, sortable: false },
-      { text: "Статус", value: "state", width: 140, sortable: false },
-      { text: "Тип", value: "typeDesc" },
-      { text: "Создан", value: "created", width: 160, format: "datetime" },
-      { text: "Обработан", value: "processed", width: 160, format: "datetime" },
-      { text: "Сохранен", value: "delivered", width: 160, format: "datetime" },
+      { text: "common.actions", value: "btn", width: 100, sortable: false },
+      { text: "mq.table.state", value: "state", width: 140, sortable: false },
+      {
+        text: "mq.table.type",
+        value: "typeDesc",
+        filter: { name: "typeDesc", type: "text" },
+      },
+      {
+        text: "mq.table.created",
+        value: "created",
+        width: 160,
+        format: "datetime",
+        filter: { name: "created", type: "date" },
+      },
+      {
+        text: "mq.table.processed",
+        value: "processed",
+        width: 160,
+        format: "datetime",
+        filter: { name: "processed", type: "date" },
+      },
+      {
+        text: "mq.table.delivered",
+        value: "delivered",
+        width: 160,
+        format: "datetime",
+        filter: { name: "delivered", type: "date" },
+      },
     ],
 
     actions: [{ title: "common.delete", action: "delete" }],

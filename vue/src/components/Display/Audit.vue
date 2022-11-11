@@ -79,7 +79,7 @@ export default {
 
       headers: [
         {
-          text: this.$i18n.t("audit.table.source"),
+          text: "audit.table.source",
           value: "source",
           hide: "SAMPLE",
           width: 80,
@@ -96,59 +96,53 @@ export default {
           },
         },
         {
-          text: this.$i18n.t("audit.table.user"),
+          text: "audit.table.user",
           value: "login",
           hide: "USER",
           width: 150,
           filter: {
             name: "login",
-            label: this.$i18n.t("audit.table.userFilter"),
             type: "text",
           },
         },
         {
-          text: this.$i18n.t("audit.table.stamp"),
+          text: "audit.table.stamp",
           value: "stamp",
           format: "datetime",
           width: 160,
           filter: {
             name: "stamp",
-            label: this.$i18n.t("audit.table.stampFilter"),
             type: "date",
           },
         },
-        /**/
         {
-          text: this.$i18n.t("audit.table.target"),
+          text: "audit.table.target",
           value: "targetDesc",
           hide: "SAMPLE",
           width: 160,
           filter: {
             name: "idTarget",
-            label: this.$i18n.t("audit.table.targetFilter"),
             type: "dict",
             dictionary: DICT.AuditTargets,
           },
         },
         {
-          text: this.$i18n.t("audit.table.action"),
+          text: "audit.table.action",
           value: "action",
           width: 160,
           filter: {
             name: "idAction",
-            label: this.$i18n.t("audit.table.actionFilter"),
             type: "dict",
             dictionary: DICT.AuditActions,
           },
         },
         {
-          text: this.$i18n.t("audit.table.targetName"),
+          text: "audit.table.targetName",
           value: "targetName",
           hide: "SAMPLE",
           width: 160,
           filter: {
             name: "targetName",
-            label: this.$i18n.t("audit.table.targetNameFilter"),
             type: "text",
           },
         },

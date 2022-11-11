@@ -37,6 +37,20 @@
       "records": "Records {start} - {stop} from {length}"
     },
     "filter": "Filter",
+    "filters": {
+      "date": "Select date period",
+      "dict": "Select value",
+      "mask": "Value",
+      "sign": "Not",
+      "operators": {
+        "contains": "Contains",
+        "equals": "Equals",
+        "startswith": "Starts with",
+        "endswith": "Ends with",
+        "more": "More than",
+        "less": "Less than"
+      }
+    },
     "state": {
       "success": "Success",
       "info": "Information",
@@ -127,15 +141,11 @@
         "table": {
           "activity": "User's activity",
           "login": "Login",
-          "loginFilter": "Search in login field",
           "isActive": "Is active?",
-          "isActiveFilter": "Is active?",
           "userName": "User name",
-          "userNameFilter": "Search in user name field",
           "groups": "Groups",
           "districts": "Districts",
-          "desc": "Description",
-          "descFilter": "Search in description field"
+          "desc": "Description"
         },
         "deleteUser": "Delete user?"
       },
@@ -199,7 +209,14 @@
     "deleteSample": "Delete sample?"
   },
   "mq": {
-    "deleteRequest": "Delete request?"
+    "deleteRequest": "Delete request?",
+    "table": {
+      "state": "State",
+      "type": "Type",
+      "created": "Created",
+      "processed": "Processed",
+      "delivered": "Delivered"
+    }
   },
   "stat": {
     "creatingRequest": "Creating request",
@@ -213,16 +230,11 @@
     "table": {
       "source": "Source",
       "user": "User",
-      "userFilter": "Search by login",
       "type": "Type",
       "stamp": "Time stamp",
-      "stampFilter": "Search by time stamp",
       "target": "Target",
-      "targetFilter": "Search by target",
       "action": "Action",
-      "actionFilter": "Search by action",
       "targetName": "Subject",
-      "targetNameFilter": "Search by subject",
       "data": "Data"
     },
     "data": {

@@ -7,7 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="SPA.Shared.Domain" Version="6.0.59" />
+    <PackageReference Include="SPA.Shared.Domain" Version="6.0.63" />
   </ItemGroup>
 
 </Project>
