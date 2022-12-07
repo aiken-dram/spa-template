@@ -54,7 +54,8 @@ builder.Services.Configure<ApiBehaviorOptions>(options =>
 });
 
 // In production, the vue files will be served from this directory
-builder.Services.AddSpaStaticFiles(configuration => { configuration.RootPath = "wwwroot"; });
+//builder.Services.AddSpaStaticFiles(configuration => { configuration.RootPath = "wwwroot"; });
+builder.Services.AddSpaStaticFiles(configuration => { configuration.RootPath = builder.Configuration["SpaRootPath"]; });
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -157,7 +158,9 @@ app.UseEndpoints(endpoints =>
 
 app.UseSpa(spa =>
 {
-    //spa.Options.SourcePath = "app";
+    string src = builder.Configuration["SpaSourcePath"];
+    if (!string.IsNullOrEmpty(src))
+        spa.Options.SourcePath = src;
     if (app.Environment.IsDevelopment())
         spa.UseProxyToSpaDevelopmentServer(baseUri: "http://localhost:8080");
 });
